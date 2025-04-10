@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Honeypot{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <h2>Dashboard</h2>
+    
+    <!-- Statistiques -->
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Total des attaques</h5>
+                    <h2 class="card-text">{{ total_attacks }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Attaques récentes (24h)</h5>
+                    <h2 class="card-text">{{ recent_attacks }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Top attaquants</h5>
+                    <h2 class="card-text">{{ top_attackers|length }}</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Graphiques -->
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Attaques par type</h5>
+                    <canvas id="attacksByTypeChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Attaques par heure</h5>
+                    <canvas id="attacksByHourChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Top attaquants -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Top attaquants</h5>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>IP</th>
+                                    <th>Première attaque</th>
+                                    <th>Dernière attaque</th>
+                                    <th>Pays</th>
+                                    <th>Statut</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for attacker in top_attackers %}
+                                <tr>
+                                    <td>{{ attacker.ip_address }}</td>
+                                    <td>{{ attacker.first_seen.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                                    <td>{{ attacker.last_seen.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                                    <td>{{ attacker.country or 'Inconnu' }}</td>
+                                    <td>
+                                        {% if attacker.is_blocked %}
+                                        <span class="badge bg-danger">Bloqué</span>
+                                        {% else %}
+                                        <span class="badge bg-warning">Actif</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Récupérer les données des graphiques
+    fetch('/api/stats')
+        .then(response => response.json())
+        .then(data => {
+            // Graphique des attaques par type
+            new Chart(document.getElementById('attacksByTypeChart'), {
+                type: 'pie',
+                data: {
+                    labels: Object.keys(data.attacks_by_type),
+                    datasets: [{
+                        data: Object.values(data.attacks_by_type),
+                        backgroundColor: [
+                            '#FF6384',
+                            '#36A2EB',
+                            '#FFCE56',
+                            '#4BC0C0',
+                            '#9966FF'
+                        ]
+                    }]
+                }
+            });
+            
+            // Graphique des attaques par heure
+            new Chart(document.getElementById('attacksByHourChart'), {
+                type: 'line',
+                data: {
+                    labels: Object.keys(data.attacks_by_hour),
+                    datasets: [{
+                        label: 'Attaques',
+                        data: Object.values(data.attacks_by_hour),
+                        borderColor: '#FF6384',
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        });
+</script>
+{% endblock %} 
