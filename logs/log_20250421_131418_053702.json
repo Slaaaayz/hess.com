@@ -1,0 +1,12 @@
+{
+  "eventid": "cowrie.session.connect",
+  "src_ip": "10.7.1.1",
+  "src_port": 37950,
+  "dst_ip": "10.7.1.15",
+  "dst_port": 2222,
+  "session": "d50f229403ee",
+  "protocol": "ssh",
+  "message": "New connection: 10.7.1.1:37950 (10.7.1.15:2222) [session: d50f229403ee]",
+  "sensor": "localhost.localdomain",
+  "timestamp": "2025-04-21T14:23:29.040675Z"
+}

@@ -1,0 +1,10 @@
+{
+  "eventid": "cowrie.login.failed",
+  "username": "slayz",
+  "password": "root",
+  "message": "login attempt [slayz/root] failed",
+  "sensor": "localhost.localdomain",
+  "timestamp": "2025-04-21T14:39:09.799466Z",
+  "src_ip": "10.7.1.1",
+  "session": "0c2b2ed11140"
+}

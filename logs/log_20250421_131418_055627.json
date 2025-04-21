@@ -1,0 +1,9 @@
+{
+  "eventid": "cowrie.client.version",
+  "version": "SSH-2.0-OpenSSH_9.2p1 Debian-2+deb12u4",
+  "message": "Remote SSH version: SSH-2.0-OpenSSH_9.2p1 Debian-2+deb12u4",
+  "sensor": "localhost.localdomain",
+  "timestamp": "2025-04-21T14:23:29.042417Z",
+  "src_ip": "10.7.1.1",
+  "session": "d50f229403ee"
+}
