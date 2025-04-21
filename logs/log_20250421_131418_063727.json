@@ -1,9 +1,0 @@
-{
-  "eventid": "cowrie.session.closed",
-  "duration": "120.0",
-  "message": "Connection lost after 120.0 seconds",
-  "sensor": "localhost.localdomain",
-  "timestamp": "2025-04-21T14:25:29.056617Z",
-  "src_ip": "10.7.1.1",
-  "session": "d50f229403ee"
-}
