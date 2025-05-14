@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  stockfish:
+    build: .
+    container_name: stockfish-engine
+    volumes:
+      - ./app:/app
+    stdin_open: true
+    tty: true 
