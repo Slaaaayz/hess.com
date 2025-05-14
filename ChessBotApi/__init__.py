@@ -1,0 +1,3 @@
+"""
+ChessBotApi package
+"""
