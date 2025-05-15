@@ -1,8 +1,5 @@
-import sys
-import os
-from datetime import datetime
-from PyQt6.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout, 
-                            QPushButton, QLabel, QMessageBox)
+import sys, os, platform, io, zipfile, requests
+from PyQt6.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QPushButton, QLabel, QMessageBox
 from PyQt6.QtCore import Qt, QTimer
 from selenium import webdriver
 from selenium.webdriver.firefox.service import Service as FirefoxService
@@ -14,208 +11,121 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import requests
-import zipfile
-import io
-import platform
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Chess.com Screenshot")
         self.setFixedSize(400, 200)
-
         central_widget = QWidget()
         self.setCentralWidget(central_widget)
         layout = QVBoxLayout(central_widget)
-
-        self.status_label = QLabel("Prêt à capturer")
+        self.status_label = QLabel("Prêt")
         self.status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(self.status_label)
-
-        self.toggle_button = QPushButton("Démarrer la capture")
+        self.toggle_button = QPushButton("Démarrer")
         self.toggle_button.clicked.connect(self.toggle_capture)
         layout.addWidget(self.toggle_button)
-
         self.driver = None
         self.timer = QTimer()
         self.timer.timeout.connect(self.capture_chessboard)
         self.is_capturing = False
-
-        if not os.path.exists("screenshots"):
-            os.makedirs("screenshots")
+        os.makedirs("screenshots", exist_ok=True)
 
     def download_geckodriver(self):
-        try:
-            system = platform.system().lower()
-            if system == "windows":
-                platform_name = "win64"
-                extension = ".zip"
-            elif system == "linux":
-                platform_name = "linux64"
-                extension = ".tar.gz"
-            else:
-                platform_name = "macos"
-                extension = ".tar.gz"
-
-            version = "v0.33.0"
-            url = f"https://github.com/mozilla/geckodriver/releases/download/{version}/geckodriver-{version}-{platform_name}{extension}"
-
-            response = requests.get(url)
-            response.raise_for_status()
-
-            driver_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "drivers")
-            if not os.path.exists(driver_dir):
-                os.makedirs(driver_dir)
-
-            if extension == ".zip":
-                with zipfile.ZipFile(io.BytesIO(response.content)) as zip_file:
-                    zip_file.extractall(driver_dir)
-            else:
-                import tarfile
-                with tarfile.open(fileobj=io.BytesIO(response.content), mode='r:gz') as tar:
-                    tar.extractall(driver_dir)
-
-            if system != "windows":
-                geckodriver_path = os.path.join(driver_dir, "geckodriver")
-                os.chmod(geckodriver_path, 0o755)
-
-            return os.path.join(driver_dir, "geckodriver" + (".exe" if system == "windows" else ""))
-
-        except Exception as e:
-            print(f"Erreur lors du téléchargement de geckodriver: {str(e)}")
-            return None
+        system = platform.system().lower()
+        platform_name, ext = ("win64", ".zip") if system == "windows" else (("linux64", ".tar.gz") if system == "linux" else ("macos", ".tar.gz"))
+        version = "v0.33.0"
+        url = f"https://github.com/mozilla/geckodriver/releases/download/{version}/geckodriver-{version}-{platform_name}{ext}"
+        data = requests.get(url, timeout=30).content
+        driver_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "drivers")
+        os.makedirs(driver_dir, exist_ok=True)
+        if ext == ".zip":
+            with zipfile.ZipFile(io.BytesIO(data)) as z:
+                z.extractall(driver_dir)
+        else:
+            import tarfile, io as _io
+            with tarfile.open(fileobj=_io.BytesIO(data), mode="r:gz") as t:
+                t.extractall(driver_dir)
+        if system != "windows":
+            os.chmod(os.path.join(driver_dir, "geckodriver"), 0o755)
+        return os.path.join(driver_dir, "geckodriver" + (".exe" if system == "windows" else ""))
 
     def get_driver(self):
         try:
-            try:
-                print("Tentative d'initialisation de Firefox...")
-                geckodriver_path = self.download_geckodriver()
-                if not geckodriver_path:
-                    raise Exception("Impossible de télécharger geckodriver")
-
-                firefox_options = FirefoxOptions()
-                firefox_options.add_argument("--width=1920")
-                firefox_options.add_argument("--height=1080")
-                firefox_options.add_argument("--start-maximized")
-                firefox_options.set_preference("browser.startup.homepage", "https://www.chess.com/play/online")
-                firefox_options.set_preference("browser.startup.homepage_override.mstone", "ignore")
-                firefox_options.set_preference("browser.startup.homepage_override.bookmarks", "ignore")
-
-                service = FirefoxService(executable_path=geckodriver_path)
-                driver = webdriver.Firefox(service=service, options=firefox_options)
-                driver.maximize_window()
-                print("Firefox initialisé avec succès!")
-                return driver
-
-            except Exception as firefox_error:
-                print(f"Erreur avec Firefox: {str(firefox_error)}")
-                print("Tentative d'initialisation de Chrome...")
-
-                chrome_options = ChromeOptions()
-                chrome_options.add_argument("--start-maximized")
-                chrome_options.add_argument("--disable-notifications")
-                chrome_options.add_argument("--disable-popup-blocking")
-
-                service = ChromeService(ChromeDriverManager().install())
-                driver = webdriver.Chrome(service=service, options=chrome_options)
-                driver.maximize_window()
-                print("Chrome initialisé avec succès!")
-                return driver
-
-        except Exception as e:
-            print(f"Erreur lors de l'initialisation des drivers: {str(e)}")
-            return None
+            path = self.download_geckodriver()
+            firefox_opts = FirefoxOptions()
+            firefox_opts.add_argument("--width=1920")
+            firefox_opts.add_argument("--height=1080")
+            firefox_opts.add_argument("--start-maximized")
+            srv = FirefoxService(executable_path=path)
+            d = webdriver.Firefox(service=srv, options=firefox_opts)
+            d.maximize_window()
+            return d
+        except Exception:
+            chrome_opts = ChromeOptions()
+            chrome_opts.add_argument("--start-maximized")
+            srv = ChromeService(ChromeDriverManager().install())
+            d = webdriver.Chrome(service=srv, options=chrome_opts)
+            d.maximize_window()
+            return d
 
     def capture_chessboard(self):
         try:
             if not self.driver:
                 self.driver = self.get_driver()
-                if not self.driver:
-                    raise Exception("Impossible d'initialiser le navigateur")
                 self.driver.get("https://www.chess.com/play/online")
-                print("Page chess.com chargée")
-
             wait = WebDriverWait(self.driver, 20)
-            # print("Recherche de l'échiquier...")
-
-            chessboard = wait.until(
-                EC.presence_of_element_located((By.ID, "board-layout-chessboard"))
-            )
-            wait.until(
-                EC.element_to_be_clickable((By.ID, "board-layout-chessboard"))
-            )
-            # print("Échiquier trouvé!")
-
+            board = wait.until(EC.presence_of_element_located((By.ID, "board-layout-chessboard")))
             filename = "screenshots/chessboard.png"
             if os.path.exists(filename):
                 os.remove(filename)
-                # print("Ancien screenshot supprimé")
-
-            try:
-                chessboard.screenshot(filename)
-            except Exception as e:
-                if "stale" in str(e).lower():
-                    print("Élément stale détecté, nouvelle tentative...")
-                    chessboard = wait.until(
-                        EC.presence_of_element_located((By.ID, "board-layout-chessboard"))
-                    )
-                    chessboard.screenshot(filename)
-                else:
-                    raise e
-
-            self.status_label.setText(f"Screenshot mis à jour: {filename}")
-            print(f"Screenshot sauvegardé: {filename}")
-
+            board.screenshot(filename)
+            self.status_label.setText("Screenshot OK")
             self.send_to_api(filename)
-
         except Exception as e:
-            error_msg = f"Erreur lors de la capture: {str(e)}"
-            print(error_msg)
-            self.status_label.setText(error_msg)
+            self.status_label.setText(str(e))
             self.stop_capture()
-            QMessageBox.warning(self, "Erreur", error_msg)
+            QMessageBox.warning(self, "Erreur", str(e))
 
     def send_to_api(self, image_path):
         try:
             with open(image_path, "rb") as img:
-                files = {'image': img}
-                response = requests.post("http://localhost:5000/analyze", files=files)
-                if response.status_code == 200:
-                    data = response.json()
-                    fen = data.get("fen", "")
-                    print(f"FEN reçu: {fen}")
-                else:
-                    print(f"Erreur API: {response.status_code}, {response.text}")
+                r = requests.post("http://localhost:5000/analyze", files={"image": img}, timeout=10)
+            if r.ok:
+                data = r.json()
+                move = data.get("best_move") or data.get("fen") or ""
+                self.status_label.setText(f"Meilleur coup: {move}" if move else "Réponse vide")
+                print(f"Réponse API: {data}")
+            else:
+                self.status_label.setText(f"API {r.status_code}")
+                print(r.text)
         except Exception as e:
-            print(f"Erreur lors de l'envoi à l'API: {str(e)}")
+            self.status_label.setText("Erreur API")
+            print(e)
 
     def toggle_capture(self):
-        if self.is_capturing:
-            self.stop_capture()
-        else:
-            self.start_capture()
+        (self.stop_capture() if self.is_capturing else self.start_capture())
 
     def start_capture(self):
         self.is_capturing = True
-        self.toggle_button.setText("Arrêter la capture")
-        self.status_label.setText("Capture en cours...")
-        self.timer.start(5000)
+        self.toggle_button.setText("Arrêter")
+        self.timer.start(2000)
 
     def stop_capture(self):
         self.is_capturing = False
-        self.toggle_button.setText("Démarrer la capture")
+        self.toggle_button.setText("Démarrer")
         self.timer.stop()
         if self.driver:
             self.driver.quit()
             self.driver = None
 
-    def closeEvent(self, event):
+    def closeEvent(self, e):
         self.stop_capture()
-        event.accept()
+        e.accept()
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app = QApplication(sys.argv)
-    window = MainWindow()
-    window.show()
+    w = MainWindow()
+    w.show()
     sys.exit(app.exec())

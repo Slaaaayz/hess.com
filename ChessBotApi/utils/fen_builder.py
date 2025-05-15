@@ -26,7 +26,6 @@ def split_board(image):
     
     # Vérifier si nous avons assez d'espace horizontal
     if end_x - start_x < target_size:
-        print("⚠️ Attention: L'image n'est pas assez large pour le rognage demandé")
         # Ajuster pour prendre le maximum possible
         start_x = max(0, w - target_size)
         end_x = w
@@ -36,7 +35,6 @@ def split_board(image):
     
     # Redimensionner si nécessaire (au cas où l'image était plus petite)
     if cropped_image.shape[0] != target_size or cropped_image.shape[1] != target_size:
-        print("⚠️ Redimensionnement de l'image à", target_size, "x", target_size)
         cropped_image = cv2.resize(cropped_image, (target_size, target_size))
     
     # Diviser en cases de 102x102 pixels (816/8 = 102)
@@ -90,8 +88,6 @@ def compare_templates(source, template, method=cv2.TM_CCOEFF_NORMED):
     return val
 
 def classify_square(square_img, templates_dir, threshold=0):
-    print(f"\n🧩 Classification de la case...")
-
     # Prétraitement de la case
     square_gray = preprocess_gray(square_img)
     square_binary = preprocess_binary(square_img)
@@ -107,7 +103,6 @@ def classify_square(square_img, templates_dir, threshold=0):
             path = os.path.join(root, file)
             template_img = cv2.imread(path, cv2.IMREAD_COLOR)
             if template_img is None:
-                print(f"⚠️ Erreur de lecture : {file}")
                 continue
 
             try:
@@ -130,21 +125,10 @@ def classify_square(square_img, templates_dir, threshold=0):
 
                 if total_score >= threshold:
                     results.append((piece_name, total_score))
-            except Exception as e:
-                print(f"❌ Erreur sur {file}: {str(e)}")
+            except Exception:
                 continue
 
     results.sort(key=lambda x: x[1], reverse=True)
-
-    if results:
-        print(f"\n🏆 Pièce la plus probable : {results[0][0]} (score: {results[0][1]:.3f})")
-    else:
-        print("\n❓ Aucune pièce reconnue (score insuffisant)")
-
-    print("\n📋 Classement des correspondances :")
-    for name, score in results:
-        print(f"  {name}: {score:.3f}")
-
     return results
 
 def generate_fen_from_matrix(pieces_matrix):

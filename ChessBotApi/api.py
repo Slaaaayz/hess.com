@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
-import cv2, numpy as np, os, base64, subprocess, time
+import cv2, numpy as np, os, base64
+from stockfish import Stockfish
 
 from ChessBotApi.utils.fen_builder import (
     split_board,
@@ -13,6 +14,8 @@ app = Flask(__name__)
 UPLOAD_FOLDER = "uploads"
 ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg"}
 TEMPLATES_DIR = "./ChessBotApi/templates"
+STOCKFISH_PATH = "/usr/games/stockfish"  # 🔁 adapte ce chemin à ton exécutable
+
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 app.config["MAX_CONTENT_LENGTH"] = 16 * 1024 * 1024
@@ -42,46 +45,11 @@ def process_image(img):
     return generate_fen_from_matrix(matrix)
 
 
-def best_move_from_stockfish(fen, depth=20):
-    p = subprocess.Popen(
-        ["docker", "exec", "-i", "stockfish-engine", "stockfish"],
-        stdin=subprocess.PIPE,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        text=True,
-        bufsize=1,
-        universal_newlines=True,
-    )
-
-    def send(cmd):
-        p.stdin.write(cmd + "\n")
-        p.stdin.flush()
-
-    send("uci")
-    while True:
-        if p.stdout.readline().strip() == "uciok":
-            break
-    send("isready")
-    while True:
-        if p.stdout.readline().strip() == "readyok":
-            break
-    send(f"position fen {fen}")
-    send(f"go depth {depth}")
-
-    best = None
-    while True:
-        line = p.stdout.readline().strip()
-        if line.startswith("bestmove"):
-            best = line.split()[1]
-            break
-
-    send("quit")
-    p.terminate()
-
-    if best is None:
-        raise RuntimeError("bestmove not found")
-
-    return best
+def best_move_from_stockfish(fen: str, skill_level=20, depth=15) -> str:
+    stockfish = Stockfish(path=STOCKFISH_PATH)
+    stockfish.set_skill_level(skill_level)
+    stockfish.set_fen_position(fen)
+    return stockfish.get_best_move_time(1000)  # 1000 ms de calcul
 
 
 @app.route("/analyze", methods=["POST"])
@@ -91,9 +59,7 @@ def analyze():
         if "image" in request.files:
             f = request.files["image"]
             if f.filename and allowed_file(f.filename):
-                img = cv2.imdecode(
-                    np.frombuffer(f.read(), np.uint8), cv2.IMREAD_COLOR
-                )
+                img = cv2.imdecode(np.frombuffer(f.read(), np.uint8), cv2.IMREAD_COLOR)
         elif request.is_json:
             data = request.get_json()
             if "image" in data:
@@ -110,7 +76,11 @@ def analyze():
             return jsonify({"error": "split error", "status": "error"}), 400
 
         move = best_move_from_stockfish(fen)
-        return jsonify({"best_move": move, "status": "success"})
+        return jsonify({
+            "fen": fen,
+            "best_move": move,
+            "status": "success"
+        })
 
     except Exception as e:
         return jsonify({"error": str(e), "status": "error"}), 500
