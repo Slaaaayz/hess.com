@@ -1,6 +1,8 @@
 from flask import Flask, request, jsonify
 import cv2, numpy as np, os, base64
 from stockfish import Stockfish
+import atexit
+import signal
 
 from ChessBotApi.utils.fen_builder import (
     split_board,
@@ -14,12 +16,48 @@ app = Flask(__name__)
 UPLOAD_FOLDER = "uploads"
 ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg"}
 TEMPLATES_DIR = "./ChessBotApi/templates"
-STOCKFISH_PATH = "/usr/games/stockfish"  # 🔁 adapte ce chemin à ton exécutable
+STOCKFISH_PATH = os.getenv("STOCKFISH_PATH", "/usr/games/stockfish")
+
+# Vérifier si Stockfish existe
+if not os.path.exists(STOCKFISH_PATH):
+    raise FileNotFoundError(f"Stockfish non trouvé à {STOCKFISH_PATH}. Veuillez définir la variable d'environnement STOCKFISH_PATH.")
 
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 app.config["MAX_CONTENT_LENGTH"] = 16 * 1024 * 1024
 
+# Stockage global de l'instance Stockfish
+stockfish_instance = None
+
+def get_stockfish():
+    global stockfish_instance
+    if stockfish_instance is None:
+        try:
+            stockfish_instance = Stockfish(path=STOCKFISH_PATH)
+            stockfish_instance.set_skill_level(20)
+        except Exception as e:
+            raise RuntimeError(f"Erreur lors de l'initialisation de Stockfish: {str(e)}")
+    return stockfish_instance
+
+def cleanup_stockfish():
+    global stockfish_instance
+    if stockfish_instance is not None:
+        try:
+            stockfish_instance.quit()
+        except:
+            pass
+        stockfish_instance = None
+
+# Enregistrer la fonction de nettoyage
+atexit.register(cleanup_stockfish)
+
+def signal_handler(signum, frame):
+    cleanup_stockfish()
+    exit(0)
+
+# Gérer les signaux de terminaison
+signal.signal(signal.SIGINT, signal_handler)
+signal.signal(signal.SIGTERM, signal_handler)
 
 def allowed_file(name):
     return "." in name and name.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -46,10 +84,13 @@ def process_image(img):
 
 
 def best_move_from_stockfish(fen: str, skill_level=20, depth=15) -> str:
-    stockfish = Stockfish(path=STOCKFISH_PATH)
-    stockfish.set_skill_level(skill_level)
-    stockfish.set_fen_position(fen)
-    return stockfish.get_best_move_time(1000)  # 1000 ms de calcul
+    try:
+        stockfish = get_stockfish()
+        stockfish.set_fen_position(fen)
+        return stockfish.get_best_move_time(1000)  # 1000 ms de calcul
+    except Exception as e:
+        cleanup_stockfish()  # Réinitialiser Stockfish en cas d'erreur
+        raise RuntimeError(f"Erreur Stockfish: {str(e)}")
 
 
 @app.route("/analyze", methods=["POST"])
@@ -87,4 +128,6 @@ def analyze():
 
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=5000)
+    # Désactiver le mode debug en production
+    debug_mode = os.getenv("FLASK_DEBUG", "False").lower() == "true"
+    app.run(debug=debug_mode, host="0.0.0.0", port=5000)
