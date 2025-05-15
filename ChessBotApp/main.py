@@ -14,7 +14,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import geckodriver_autoinstaller
+import subprocess
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -47,48 +47,50 @@ class MainWindow(QMainWindow):
         if not os.path.exists("screenshots"):
             os.makedirs("screenshots")
     
+    def is_firefox_installed(self):
+        """Vérifie si Firefox est installé"""
+        try:
+            if sys.platform == "win32":
+                subprocess.run(['where', 'firefox'], capture_output=True, check=True)
+            else:
+                subprocess.run(['which', 'firefox'], capture_output=True, check=True)
+            return True
+        except:
+            return False
+    
     def get_driver(self):
         """Crée et retourne un driver Firefox ou Chrome"""
         try:
-            # Essayer d'abord Firefox
-            try:
-                print("Tentative d'initialisation de Firefox...")
-                # Installation automatique de geckodriver si nécessaire
-                geckodriver_autoinstaller.install()
-                
-                firefox_options = FirefoxOptions()
-                # firefox_options.add_argument("--headless")
-                firefox_options.add_argument("--width=1920")
-                firefox_options.add_argument("--height=1080")
-                firefox_options.add_argument("--start-maximized")
-                
-                # Ajouter des préférences Firefox
-                firefox_options.set_preference("browser.startup.homepage", "https://www.chess.com/play/online")
-                firefox_options.set_preference("browser.startup.homepage_override.mstone", "ignore")
-                firefox_options.set_preference("browser.startup.homepage_override.bookmarks", "ignore")
-                
-                service = FirefoxService(GeckoDriverManager().install())
-                driver = webdriver.Firefox(service=service, options=firefox_options)
-                driver.maximize_window()
-                print("Firefox initialisé avec succès!")
-                return driver
-                
-            except Exception as firefox_error:
-                print(f"Erreur avec Firefox: {str(firefox_error)}")
-                print("Tentative d'initialisation de Chrome...")
-                
-                # Si Firefox échoue, essayer Chrome
-                chrome_options = ChromeOptions()
-                # chrome_options.add_argument("--headless=new")
-                chrome_options.add_argument("--start-maximized")
-                chrome_options.add_argument("--disable-notifications")
-                chrome_options.add_argument("--disable-popup-blocking")
-                
-                service = ChromeService(ChromeDriverManager().install())
-                driver = webdriver.Chrome(service=service, options=chrome_options)
-                driver.maximize_window()
-                print("Chrome initialisé avec succès!")
-                return driver
+            # Vérifier si Firefox est installé
+            if self.is_firefox_installed():
+                print("Firefox est installé, tentative d'initialisation...")
+                try:
+                    firefox_options = FirefoxOptions()
+                    firefox_options.add_argument("--width=1920")
+                    firefox_options.add_argument("--height=1080")
+                    firefox_options.add_argument("--start-maximized")
+                    
+                    service = FirefoxService(GeckoDriverManager().install())
+                    driver = webdriver.Firefox(service=service, options=firefox_options)
+                    driver.maximize_window()
+                    print("Firefox initialisé avec succès!")
+                    return driver
+                except Exception as firefox_error:
+                    print(f"Erreur avec Firefox: {str(firefox_error)}")
+            
+            print("Tentative d'initialisation de Chrome...")
+            chrome_options = ChromeOptions()
+            chrome_options.add_argument("--start-maximized")
+            chrome_options.add_argument("--disable-notifications")
+            chrome_options.add_argument("--disable-popup-blocking")
+            chrome_options.add_argument("--no-sandbox")
+            chrome_options.add_argument("--disable-dev-shm-usage")
+            
+            service = ChromeService(ChromeDriverManager().install())
+            driver = webdriver.Chrome(service=service, options=chrome_options)
+            driver.maximize_window()
+            print("Chrome initialisé avec succès!")
+            return driver
                 
         except Exception as e:
             print(f"Erreur lors de l'initialisation des drivers: {str(e)}")
