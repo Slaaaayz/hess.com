@@ -14,7 +14,10 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import subprocess
+import requests
+import zipfile
+import io
+import platform
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -47,50 +50,101 @@ class MainWindow(QMainWindow):
         if not os.path.exists("screenshots"):
             os.makedirs("screenshots")
     
-    def is_firefox_installed(self):
-        """Vérifie si Firefox est installé"""
+    def download_geckodriver(self):
+        """Télécharge manuellement geckodriver"""
         try:
-            if sys.platform == "win32":
-                subprocess.run(['where', 'firefox'], capture_output=True, check=True)
+            # Déterminer la version et l'OS
+            system = platform.system().lower()
+            if system == "windows":
+                platform_name = "win64"
+                extension = ".zip"
+            elif system == "linux":
+                platform_name = "linux64"
+                extension = ".tar.gz"
             else:
-                subprocess.run(['which', 'firefox'], capture_output=True, check=True)
-            return True
-        except:
-            return False
+                platform_name = "macos"
+                extension = ".tar.gz"
+
+            # URL de la dernière version stable
+            version = "v0.33.0"  # Version stable récente
+            url = f"https://github.com/mozilla/geckodriver/releases/download/{version}/geckodriver-{version}-{platform_name}{extension}"
+            
+            print(f"Téléchargement de geckodriver depuis: {url}")
+            
+            # Télécharger le fichier
+            response = requests.get(url)
+            response.raise_for_status()
+            
+            # Créer le dossier drivers s'il n'existe pas
+            driver_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "drivers")
+            if not os.path.exists(driver_dir):
+                os.makedirs(driver_dir)
+            
+            # Extraire le fichier
+            if extension == ".zip":
+                with zipfile.ZipFile(io.BytesIO(response.content)) as zip_file:
+                    zip_file.extractall(driver_dir)
+            else:
+                import tarfile
+                with tarfile.open(fileobj=io.BytesIO(response.content), mode='r:gz') as tar:
+                    tar.extractall(driver_dir)
+            
+            # Rendre le fichier exécutable sur Linux/Mac
+            if system != "windows":
+                geckodriver_path = os.path.join(driver_dir, "geckodriver")
+                os.chmod(geckodriver_path, 0o755)
+            
+            return os.path.join(driver_dir, "geckodriver" + (".exe" if system == "windows" else ""))
+            
+        except Exception as e:
+            print(f"Erreur lors du téléchargement de geckodriver: {str(e)}")
+            return None
     
     def get_driver(self):
         """Crée et retourne un driver Firefox ou Chrome"""
         try:
-            # Vérifier si Firefox est installé
-            if self.is_firefox_installed():
-                print("Firefox est installé, tentative d'initialisation...")
-                try:
-                    firefox_options = FirefoxOptions()
-                    firefox_options.add_argument("--width=1920")
-                    firefox_options.add_argument("--height=1080")
-                    firefox_options.add_argument("--start-maximized")
-                    
-                    service = FirefoxService(GeckoDriverManager().install())
-                    driver = webdriver.Firefox(service=service, options=firefox_options)
-                    driver.maximize_window()
-                    print("Firefox initialisé avec succès!")
-                    return driver
-                except Exception as firefox_error:
-                    print(f"Erreur avec Firefox: {str(firefox_error)}")
-            
-            print("Tentative d'initialisation de Chrome...")
-            chrome_options = ChromeOptions()
-            chrome_options.add_argument("--start-maximized")
-            chrome_options.add_argument("--disable-notifications")
-            chrome_options.add_argument("--disable-popup-blocking")
-            chrome_options.add_argument("--no-sandbox")
-            chrome_options.add_argument("--disable-dev-shm-usage")
-            
-            service = ChromeService(ChromeDriverManager().install())
-            driver = webdriver.Chrome(service=service, options=chrome_options)
-            driver.maximize_window()
-            print("Chrome initialisé avec succès!")
-            return driver
+            # Essayer d'abord Firefox
+            try:
+                print("Tentative d'initialisation de Firefox...")
+                
+                # Télécharger geckodriver manuellement
+                geckodriver_path = self.download_geckodriver()
+                if not geckodriver_path:
+                    raise Exception("Impossible de télécharger geckodriver")
+                
+                firefox_options = FirefoxOptions()
+                # firefox_options.add_argument("--headless")
+                firefox_options.add_argument("--width=1920")
+                firefox_options.add_argument("--height=1080")
+                firefox_options.add_argument("--start-maximized")
+                
+                # Ajouter des préférences Firefox
+                firefox_options.set_preference("browser.startup.homepage", "https://www.chess.com/play/online")
+                firefox_options.set_preference("browser.startup.homepage_override.mstone", "ignore")
+                firefox_options.set_preference("browser.startup.homepage_override.bookmarks", "ignore")
+                
+                service = FirefoxService(executable_path=geckodriver_path)
+                driver = webdriver.Firefox(service=service, options=firefox_options)
+                driver.maximize_window()
+                print("Firefox initialisé avec succès!")
+                return driver
+                
+            except Exception as firefox_error:
+                print(f"Erreur avec Firefox: {str(firefox_error)}")
+                print("Tentative d'initialisation de Chrome...")
+                
+                # Si Firefox échoue, essayer Chrome
+                chrome_options = ChromeOptions()
+                # chrome_options.add_argument("--headless=new")
+                chrome_options.add_argument("--start-maximized")
+                chrome_options.add_argument("--disable-notifications")
+                chrome_options.add_argument("--disable-popup-blocking")
+                
+                service = ChromeService(ChromeDriverManager().install())
+                driver = webdriver.Chrome(service=service, options=chrome_options)
+                driver.maximize_window()
+                print("Chrome initialisé avec succès!")
+                return driver
                 
         except Exception as e:
             print(f"Erreur lors de l'initialisation des drivers: {str(e)}")
