@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-from ChessBotApi.utils.fen_builder import split_board, analyze_square, classify_square
+from ChessBotApi.utils.fen_builder import split_board, analyze_square, classify_square, generate_fen_from_matrix
 
 # Définition des constantes pour l'échiquier
 files = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
@@ -70,6 +70,11 @@ for i, row in enumerate(pieces_matrix):
     print(f"│ {8-i}")
 print("  ───────────────────────────────────────")
 print("    a    b    c    d    e    f    g    h")
+
+# Générer et afficher le FEN
+fen = generate_fen_from_matrix(pieces_matrix)
+print("\nNotation FEN générée:")
+print(fen)
 
 print("\nLégende des pièces:")
 print("ERR : Erreur d'analyse")
