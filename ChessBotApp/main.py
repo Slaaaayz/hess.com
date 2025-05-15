@@ -137,7 +137,7 @@ class MainWindow(QMainWindow):
                 print("Page chess.com chargée")
 
             wait = WebDriverWait(self.driver, 20)
-            print("Recherche de l'échiquier...")
+            # print("Recherche de l'échiquier...")
 
             chessboard = wait.until(
                 EC.presence_of_element_located((By.ID, "board-layout-chessboard"))
@@ -145,12 +145,12 @@ class MainWindow(QMainWindow):
             wait.until(
                 EC.element_to_be_clickable((By.ID, "board-layout-chessboard"))
             )
-            print("Échiquier trouvé!")
+            # print("Échiquier trouvé!")
 
             filename = "screenshots/chessboard.png"
             if os.path.exists(filename):
                 os.remove(filename)
-                print("Ancien screenshot supprimé")
+                # print("Ancien screenshot supprimé")
 
             try:
                 chessboard.screenshot(filename)
