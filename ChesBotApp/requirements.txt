@@ -1,6 +1,0 @@
-PyQt6
-requests
-selenium
-Pillow
-webdriver-manager
-geckodriver-autoinstaller 
