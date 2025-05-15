@@ -6,8 +6,11 @@ from PyQt6.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout,
 from PyQt6.QtCore import Qt, QTimer
 from selenium import webdriver
 from selenium.webdriver.firefox.service import Service as FirefoxService
+from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
+from selenium.webdriver.chrome.options import Options as ChromeOptions
 from webdriver_manager.firefox import GeckoDriverManager
+from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -45,33 +48,50 @@ class MainWindow(QMainWindow):
             os.makedirs("screenshots")
     
     def get_driver(self):
-        """Crée et retourne un driver Firefox"""
+        """Crée et retourne un driver Firefox ou Chrome"""
         try:
-            # Installation automatique de geckodriver si nécessaire
-            geckodriver_autoinstaller.install()
-            
-            firefox_options = FirefoxOptions()
-            # Retirer le mode headless pour voir le navigateur
-            # firefox_options.add_argument("--headless")
-            firefox_options.add_argument("--width=1920")
-            firefox_options.add_argument("--height=1080")
-            firefox_options.add_argument("--start-maximized")
-            
-            # Ajouter des préférences Firefox
-            firefox_options.set_preference("browser.startup.homepage", "https://www.chess.com/play/online")
-            firefox_options.set_preference("browser.startup.homepage_override.mstone", "ignore")
-            firefox_options.set_preference("browser.startup.homepage_override.bookmarks", "ignore")
-            
-            service = FirefoxService(GeckoDriverManager().install())
-            driver = webdriver.Firefox(service=service, options=firefox_options)
-            
-            # Maximiser la fenêtre
-            driver.maximize_window()
-            
-            return driver
+            # Essayer d'abord Firefox
+            try:
+                print("Tentative d'initialisation de Firefox...")
+                # Installation automatique de geckodriver si nécessaire
+                geckodriver_autoinstaller.install()
+                
+                firefox_options = FirefoxOptions()
+                # firefox_options.add_argument("--headless")
+                firefox_options.add_argument("--width=1920")
+                firefox_options.add_argument("--height=1080")
+                firefox_options.add_argument("--start-maximized")
+                
+                # Ajouter des préférences Firefox
+                firefox_options.set_preference("browser.startup.homepage", "https://www.chess.com/play/online")
+                firefox_options.set_preference("browser.startup.homepage_override.mstone", "ignore")
+                firefox_options.set_preference("browser.startup.homepage_override.bookmarks", "ignore")
+                
+                service = FirefoxService(GeckoDriverManager().install())
+                driver = webdriver.Firefox(service=service, options=firefox_options)
+                driver.maximize_window()
+                print("Firefox initialisé avec succès!")
+                return driver
+                
+            except Exception as firefox_error:
+                print(f"Erreur avec Firefox: {str(firefox_error)}")
+                print("Tentative d'initialisation de Chrome...")
+                
+                # Si Firefox échoue, essayer Chrome
+                chrome_options = ChromeOptions()
+                # chrome_options.add_argument("--headless=new")
+                chrome_options.add_argument("--start-maximized")
+                chrome_options.add_argument("--disable-notifications")
+                chrome_options.add_argument("--disable-popup-blocking")
+                
+                service = ChromeService(ChromeDriverManager().install())
+                driver = webdriver.Chrome(service=service, options=chrome_options)
+                driver.maximize_window()
+                print("Chrome initialisé avec succès!")
+                return driver
                 
         except Exception as e:
-            print(f"Erreur lors de l'initialisation du driver: {str(e)}")
+            print(f"Erreur lors de l'initialisation des drivers: {str(e)}")
             return None
     
     def capture_chessboard(self):
@@ -163,4 +183,4 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     window = MainWindow()
     window.show()
-    sys.exit(app.exec())
+    sys.exit(app.exec()) 
