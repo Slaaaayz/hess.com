@@ -1,155 +1,120 @@
 from flask import Flask, request, jsonify
-import cv2
-import numpy as np
-from ChessBotApi.utils.fen_builder import split_board, analyze_square, classify_square, generate_fen_from_matrix
-import os
-import base64
-import subprocess
-import time
-from werkzeug.utils import secure_filename
+import cv2, numpy as np, os, base64, subprocess, time
+
+from ChessBotApi.utils.fen_builder import (
+    split_board,
+    analyze_square,
+    classify_square,
+    generate_fen_from_matrix,
+)
 
 app = Flask(__name__)
 
-UPLOAD_FOLDER = 'uploads'
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
-TEMPLATES_DIR = './ChessBotApi/templates'
-
+UPLOAD_FOLDER = "uploads"
+ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg"}
+TEMPLATES_DIR = "./ChessBotApi/templates"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
+app.config["MAX_CONTENT_LENGTH"] = 16 * 1024 * 1024
 
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+def allowed_file(name):
+    return "." in name and name.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
-def process_image(image_data):
-    grid = split_board(image_data)
+
+def process_image(img):
+    grid = split_board(img)
     if grid is None:
-        return None, "Impossible de diviser l'échiquier"
+        return None
+    files = "abcdefgh"
+    ranks = "12345678"
+    matrix = []
+    for r in reversed(ranks):
+        row = []
+        for f in files:
+            sq = analyze_square(grid, f + r)
+            if sq is None:
+                row.append("ERR")
+            else:
+                res = classify_square(sq, TEMPLATES_DIR)
+                row.append(res[0][0] if res else "NUL")
+        matrix.append(row)
+    return generate_fen_from_matrix(matrix)
 
-    files = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
-    ranks = ['1', '2', '3', '4', '5', '6', '7', '8']
-    pieces_matrix = []
 
-    for rank in reversed(ranks):
-        row_pieces = []
-        for file in files:
-            square_name = f"{file}{rank}"
-            square = analyze_square(grid, square_name)
-            if square is None:
-                row_pieces.append("ERR")
-                continue
+def best_move_from_stockfish(fen, depth=20):
+    p = subprocess.Popen(
+        ["docker", "exec", "-i", "stockfish-engine", "stockfish"],
+        stdin=subprocess.PIPE,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+        bufsize=1,
+        universal_newlines=True,
+    )
 
-            results = classify_square(square, TEMPLATES_DIR)
-            if not results:
-                row_pieces.append("NUL")
-                continue
+    def send(cmd):
+        p.stdin.write(cmd + "\n")
+        p.stdin.flush()
 
-            best_piece = results[0][0]
-            row_pieces.append(best_piece)
+    send("uci")
+    while True:
+        if p.stdout.readline().strip() == "uciok":
+            break
+    send("isready")
+    while True:
+        if p.stdout.readline().strip() == "readyok":
+            break
+    send(f"position fen {fen}")
+    send(f"go depth {depth}")
 
-        pieces_matrix.append(row_pieces)
+    best = None
+    while True:
+        line = p.stdout.readline().strip()
+        if line.startswith("bestmove"):
+            best = line.split()[1]
+            break
 
-    fen = generate_fen_from_matrix(pieces_matrix)
-    return fen, None
+    send("quit")
+    p.terminate()
 
-def get_best_move(fen: str, time_limit: float = 1.0):
+    if best is None:
+        raise RuntimeError("bestmove not found")
+
+    return best
+
+
+@app.route("/analyze", methods=["POST"])
+def analyze():
     try:
-        cmd = ["docker", "exec", "-i", "stockfish-engine", "stockfish"]
-        process = subprocess.Popen(
-            cmd,
-            stdin=subprocess.PIPE,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            text=True,
-            bufsize=1,
-            universal_newlines=True
-        )
-
-        time.sleep(0.1)
-
-        commands = [
-            "uci",
-            "setoption name Skill Level value 20",
-            f"position fen {fen}",
-            f"go movetime {int(time_limit * 1000)}"
-        ]
-
-        for command in commands:
-            process.stdin.write(command + "\n")
-            process.stdin.flush()
-            time.sleep(0.1)
-
-        best_move = None
-        start_time = time.time()
-
-        while time.time() - start_time < time_limit + 1:
-            line = process.stdout.readline().strip()
-            if not line:
-                continue
-
-            if line.startswith("bestmove"):
-                best_move = line.split()[1]
-                break
-
-        process.stdin.write("quit\n")
-        process.stdin.flush()
-        process.terminate()
-
-        return best_move or "no_move_found"
-
-    except Exception as e:
-        return f"Erreur Stockfish: {str(e)}"
-
-@app.route('/analyze', methods=['POST'])
-def analyze_chess_position():
-    try:
-        image = None
-
-        if 'image' in request.files:
-            file = request.files['image']
-            if file.filename != '' and allowed_file(file.filename):
-                file_bytes = file.read()
-                nparr = np.frombuffer(file_bytes, np.uint8)
-                image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-
-        if image is None and request.is_json:
+        img = None
+        if "image" in request.files:
+            f = request.files["image"]
+            if f.filename and allowed_file(f.filename):
+                img = cv2.imdecode(
+                    np.frombuffer(f.read(), np.uint8), cv2.IMREAD_COLOR
+                )
+        elif request.is_json:
             data = request.get_json()
-            if 'image' in data:
-                try:
-                    image_data = base64.b64decode(data['image'])
-                    nparr = np.frombuffer(image_data, np.uint8)
-                    image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-                except Exception as e:
-                    return jsonify({
-                        'error': f'Erreur de décodage base64: {str(e)}',
-                        'status': 'error'
-                    }), 400
+            if "image" in data:
+                img = cv2.imdecode(
+                    np.frombuffer(base64.b64decode(data["image"]), np.uint8),
+                    cv2.IMREAD_COLOR,
+                )
 
-        if image is None:
-            return jsonify({
-                'error': 'Aucune image valide fournie',
-                'status': 'error'
-            }), 400
+        if img is None:
+            return jsonify({"error": "no image", "status": "error"}), 400
 
-        fen, error = process_image(image)
-        if error:
-            return jsonify({
-                'error': error,
-                'status': 'error'
-            }), 400
+        fen = process_image(img)
+        if fen is None:
+            return jsonify({"error": "split error", "status": "error"}), 400
 
-        best_move = get_best_move(fen)
-        return jsonify({
-            'best_move': best_move,
-            'status': 'success'
-        })
+        move = best_move_from_stockfish(fen)
+        return jsonify({"best_move": move, "status": "success"})
 
     except Exception as e:
-        return jsonify({
-            'error': f'Erreur lors de l\'analyse: {str(e)}',
-            'status': 'error'
-        }), 500
+        return jsonify({"error": str(e), "status": "error"}), 500
 
-if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)
+
+if __name__ == "__main__":
+    app.run(debug=True, host="0.0.0.0", port=5000)
