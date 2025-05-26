@@ -14,6 +14,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.action_chains import ActionChains
 import time
 
 class ModernSwitch(QCheckBox):
@@ -36,20 +37,95 @@ class ModernSwitch(QCheckBox):
             }
         ''')
 
+class MoveExecutor:
+    def __init__(self, driver):
+        self.driver = driver
+        self.board = None
+
+    def update_board_info(self):
+        try:
+            wait = WebDriverWait(self.driver, 10)
+            self.board = wait.until(
+                EC.presence_of_element_located((By.ID, "board-layout-chessboard"))
+            )
+            wait.until(EC.visibility_of(self.board))
+            self.driver.execute_script("arguments[0].scrollIntoView(true);", self.board)
+            time.sleep(0.5)
+            return True
+        except Exception as e:
+            print(f"Erreur lors de la mise à jour des informations du plateau: {e}")
+            return False
+
+    def get_board_orientation(self):
+        board_class = self.board.get_attribute('class')
+        return 'black' if 'flipped' in board_class else 'white'
+
+    def algebraic_to_square_class(self, square):
+        file = ord(square[0]) - ord('a') + 1
+        rank = square[1]
+        return f"square-{file}{rank}"
+
+    def algebraic_to_coords(self, square, square_size, orientation):
+        file = ord(square[0]) - ord('a')
+        rank = int(square[1]) - 1
+        if orientation == 'white':
+            x = file * square_size + square_size / 2
+            y = (7 - rank) * square_size + square_size / 2
+        else:  # black
+            x = (7 - file) * square_size + square_size / 2
+            y = rank * square_size + square_size / 2
+        return x, y
+
+    def execute_move(self, move):
+        if not self.update_board_info():
+            return False
+        try:
+            from_square = move[:2]
+            to_square = move[2:]
+            print(f"Tentative de mouvement de {from_square} à {to_square}")
+
+            from_class = self.algebraic_to_square_class(from_square)
+            wait = WebDriverWait(self.driver, 10)
+            from_elem = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, f".piece.{from_class}")))
+
+            board_rect = self.board.rect
+            square_size = board_rect['width'] / 8
+            orientation = self.get_board_orientation()
+
+            from_x, from_y = self.algebraic_to_coords(from_square, square_size, orientation)
+            to_x, to_y = self.algebraic_to_coords(to_square, square_size, orientation)
+
+            offset_x = to_x - from_x
+            offset_y = to_y - from_y
+
+            actions = ActionChains(self.driver)
+            actions.move_to_element(from_elem).click_and_hold().pause(0.1)
+            actions.move_by_offset(offset_x, offset_y).pause(0.1)
+            actions.release().perform()
+            print(f"Drag & drop de {from_square} vers {to_square} effectué.")
+            return True
+        except Exception as e:
+            print(f"Erreur lors de l'exécution du coup (drag & drop): {e}")
+            return False
+
 class CaptureThread(QThread):
     move_found = pyqtSignal(str, str, float)  # move, fen, score
     error = pyqtSignal(str)
 
-    def __init__(self, parent=None, skill_level=20, depth=15):
+    def __init__(self, parent=None, skill_level=20, depth=15, auto_play=False):
         super().__init__(parent)
         self._running = True
         self.driver = None
         self.skill_level = skill_level
         self.depth = depth
+        self.auto_play = auto_play
+        self.move_executor = None
 
-    def update_parameters(self, skill_level, depth):
+    def update_parameters(self, skill_level, depth, auto_play=None):
         self.skill_level = skill_level
         self.depth = depth
+        if auto_play is not None:
+            self.auto_play = auto_play
 
     def stop(self):
         self._running = False
@@ -106,6 +182,8 @@ class CaptureThread(QThread):
             os.makedirs("screenshots", exist_ok=True)
             self.driver = self.get_driver()
             self.driver.get("https://www.chess.com/play/online")
+            self.move_executor = MoveExecutor(self.driver)
+            
             while self._running:
                 try:
                     wait = WebDriverWait(self.driver, 20)
@@ -116,6 +194,11 @@ class CaptureThread(QThread):
                     board.screenshot(filename)
                     move, fen, score = self.send_to_api(filename)
                     self.move_found.emit(move, fen, score)
+                    
+                    # Exécuter le coup si auto_play est activé
+                    if self.auto_play and move and len(move) == 4:
+                        self.move_executor.execute_move(move)
+                        
                 except Exception as e:
                     self.error.emit(f"Erreur capture: {e}")
                     try:
@@ -166,6 +249,7 @@ class MainWindow(QMainWindow):
         self.capture_thread = None
         self.skill_level = 20
         self.depth = 15
+        self.auto_play = False
         self.setStyleSheet('''
             QMainWindow, QWidget {
                 background: #181a20;
@@ -229,6 +313,15 @@ class MainWindow(QMainWindow):
         enabled_layout.addWidget(self.enabled_switch)
         enabled_layout.addStretch(1)
         layout.addLayout(enabled_layout)
+
+        # Bot switch
+        bot_layout = QHBoxLayout()
+        bot_layout.addWidget(QLabel("Bot:"))
+        self.bot_switch = ModernSwitch()
+        self.bot_switch.stateChanged.connect(self.toggle_bot)
+        bot_layout.addWidget(self.bot_switch)
+        bot_layout.addStretch(1)
+        layout.addLayout(bot_layout)
 
         # Skill Level
         skill_layout = QHBoxLayout()
@@ -311,12 +404,19 @@ class MainWindow(QMainWindow):
             self.stop_capture()
             self.log_message("Capture stopped")
 
+    def toggle_bot(self, state):
+        self.auto_play = bool(state)
+        if self.capture_thread and self.capture_thread.isRunning():
+            self.capture_thread.update_parameters(self.skill_level, self.depth, self.auto_play)
+        self.log_message(f"Bot {'activé' if self.auto_play else 'désactivé'}")
+
     def start_capture(self):
         if self.capture_thread and self.capture_thread.isRunning():
             return
         self.capture_thread = CaptureThread(
             skill_level=self.skill_level,
-            depth=self.depth
+            depth=self.depth,
+            auto_play=self.auto_play
         )
         self.capture_thread.move_found.connect(self.update_move)
         self.capture_thread.error.connect(self.show_error)
@@ -336,14 +436,14 @@ class MainWindow(QMainWindow):
         self.skill_value_label.setText(str(value))
         self.log_message(f"Skill level updated to {value}")
         if self.capture_thread and self.capture_thread.isRunning():
-            self.capture_thread.update_parameters(self.skill_level, self.depth)
+            self.capture_thread.update_parameters(self.skill_level, self.depth, self.auto_play)
 
     def update_depth(self, value):
         self.depth = value
         self.depth_value_label.setText(str(value))
         self.log_message(f"Depth updated to {value}")
         if self.capture_thread and self.capture_thread.isRunning():
-            self.capture_thread.update_parameters(self.skill_level, self.depth)
+            self.capture_thread.update_parameters(self.skill_level, self.depth, self.auto_play)
 
     def update_move(self, move, fen, score):
         self.bestmove_label.setText(move)

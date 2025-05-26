@@ -19,7 +19,7 @@ app = Flask(__name__)
 UPLOAD_FOLDER = "uploads"
 ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg"}
 TEMPLATES_DIR = "./ChessBotApi/templates"
-STOCKFISH_PATH = os.getenv("STOCKFISH_PATH", "C:/Users/trist/Desktop/stockfish/stockfish-windows-x86-64-avx2.exe")
+STOCKFISH_PATH = os.getenv("STOCKFISH_PATH", "/usr/games/stockfish")
 
 # Vérifier si Stockfish existe
 if not os.path.exists(STOCKFISH_PATH):
