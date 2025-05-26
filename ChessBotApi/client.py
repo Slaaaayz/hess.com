@@ -69,4 +69,4 @@ def main():
             print(f"⚠️ Impossible de sauvegarder le FEN: {str(e)}")
 
 if __name__ == "__main__":
-    main() 
+    main()
