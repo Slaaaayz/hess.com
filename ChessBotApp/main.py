@@ -1,6 +1,7 @@
 import sys, os, platform, io, zipfile, requests
 from PyQt6.QtWidgets import (
-    QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QCheckBox
+    QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QCheckBox,
+    QSlider
 )
 from PyQt6.QtCore import Qt, QThread, pyqtSignal
 from selenium import webdriver
@@ -36,7 +37,7 @@ class ModernSwitch(QCheckBox):
         ''')
 
 class CaptureThread(QThread):
-    move_found = pyqtSignal(str, str)  # move, fen
+    move_found = pyqtSignal(str, str, float)  # move, fen, score
     error = pyqtSignal(str)
 
     def __init__(self, parent=None):
@@ -107,8 +108,8 @@ class CaptureThread(QThread):
                     if os.path.exists(filename):
                         os.remove(filename)
                     board.screenshot(filename)
-                    move, fen = self.send_to_api(filename)
-                    self.move_found.emit(move, fen)
+                    move, fen, score = self.send_to_api(filename)
+                    self.move_found.emit(move, fen, score)
                 except Exception as e:
                     self.error.emit(f"Erreur capture: {e}")
                     try:
@@ -132,22 +133,33 @@ class CaptureThread(QThread):
     def send_to_api(self, image_path):
         try:
             with open(image_path, "rb") as img:
-                r = requests.post("http://localhost:5000/analyze", files={"image": img}, timeout=10)
+                params = {
+                    'skill_level': self.skill_level,
+                    'depth': self.depth
+                }
+                r = requests.post("http://localhost:5000/analyze", 
+                                files={"image": img}, 
+                                params=params,
+                                timeout=10)
             if r.ok:
                 data = r.json()
                 move = data.get("best_move") or ""
                 fen = data.get("fen") or ""
-                return move, fen
+                score = data.get("score", 0)
+                return move, fen, score
             else:
-                return f"API {r.status_code}", ""
+                return f"API {r.status_code}", "", 0
         except Exception as e:
-            return f"Erreur API: {e}", ""
+            return f"Erreur API: {e}", "", 0
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("klar.gg")
-        self.setFixedSize(350, 150)
+        self.setFixedSize(350, 250)
+        self.capture_thread = None
+        self.skill_level = 20
+        self.depth = 15
         self.setStyleSheet('''
             QMainWindow, QWidget {
                 background: #181a20;
@@ -158,9 +170,34 @@ class MainWindow(QMainWindow):
             QLabel {
                 color: #e0e0e0;
             }
+            QSlider::groove:horizontal {
+                border: 1px solid #3a3d45;
+                height: 8px;
+                background: #2a2d35;
+                margin: 2px 0;
+                border-radius: 4px;
+            }
+            QSlider::handle:horizontal {
+                background: #4e8cff;
+                border: none;
+                width: 16px;
+                height: 16px;
+                margin: -4px 0;
+                border-radius: 8px;
+            }
+            QSlider::handle:horizontal:hover {
+                background: #5e9cff;
+            }
+            QSlider::sub-page:horizontal {
+                background: #4e8cff;
+                border-radius: 4px;
+            }
+            QSlider::add-page:horizontal {
+                background: #2a2d35;
+                border-radius: 4px;
+            }
         ''')
         self.init_ui()
-        self.capture_thread = None
 
     def init_ui(self):
         central = QWidget()
@@ -178,6 +215,46 @@ class MainWindow(QMainWindow):
         enabled_layout.addStretch(1)
         layout.addLayout(enabled_layout)
 
+        # Skill Level
+        skill_layout = QHBoxLayout()
+        skill_label = QLabel("Skill Level:")
+        skill_label.setFixedWidth(80)
+        skill_layout.addWidget(skill_label)
+        
+        self.skill_slider = QSlider(Qt.Orientation.Horizontal)
+        self.skill_slider.setRange(1, 20)
+        self.skill_slider.setValue(self.skill_level)
+        self.skill_slider.setFixedWidth(180)
+        self.skill_slider.valueChanged.connect(self.update_skill)
+        skill_layout.addWidget(self.skill_slider)
+        
+        self.skill_value_label = QLabel(str(self.skill_level))
+        self.skill_value_label.setFixedWidth(30)
+        self.skill_value_label.setAlignment(Qt.AlignmentFlag.AlignRight)
+        skill_layout.addWidget(self.skill_value_label)
+        skill_layout.addStretch(1)
+        layout.addLayout(skill_layout)
+
+        # Depth
+        depth_layout = QHBoxLayout()
+        depth_label = QLabel("Depth:")
+        depth_label.setFixedWidth(80)
+        depth_layout.addWidget(depth_label)
+        
+        self.depth_slider = QSlider(Qt.Orientation.Horizontal)
+        self.depth_slider.setRange(1, 30)
+        self.depth_slider.setValue(self.depth)
+        self.depth_slider.setFixedWidth(180)
+        self.depth_slider.valueChanged.connect(self.update_depth)
+        depth_layout.addWidget(self.depth_slider)
+        
+        self.depth_value_label = QLabel(str(self.depth))
+        self.depth_value_label.setFixedWidth(30)
+        self.depth_value_label.setAlignment(Qt.AlignmentFlag.AlignRight)
+        depth_layout.addWidget(self.depth_value_label)
+        depth_layout.addStretch(1)
+        layout.addLayout(depth_layout)
+
         # Best move
         move_layout = QHBoxLayout()
         move_layout.addWidget(QLabel("Next Move:"))
@@ -185,6 +262,14 @@ class MainWindow(QMainWindow):
         move_layout.addWidget(self.bestmove_label)
         move_layout.addStretch(1)
         layout.addLayout(move_layout)
+
+        # Score
+        score_layout = QHBoxLayout()
+        score_layout.addWidget(QLabel("Score:"))
+        self.score_label = QLabel("")
+        score_layout.addWidget(self.score_label)
+        score_layout.addStretch(1)
+        layout.addLayout(score_layout)
 
         # FEN
         fen_layout = QHBoxLayout()
@@ -215,14 +300,26 @@ class MainWindow(QMainWindow):
             self.capture_thread = None
         self.bestmove_label.setText("")
         self.fen_label.setText("")
+        self.score_label.setText("")
 
-    def update_move(self, move, fen):
+    def update_skill(self, value):
+        self.skill_level = value
+        self.skill_value_label.setText(str(value))
+
+    def update_depth(self, value):
+        self.depth = value
+        self.depth_value_label.setText(str(value))
+
+    def update_move(self, move, fen, score):
         self.bestmove_label.setText(move)
         self.fen_label.setText(fen)
+        score_str = f"{'+' if score > 0 else ''}{score/100:.2f}"
+        self.score_label.setText(score_str)
 
     def show_error(self, msg):
         self.bestmove_label.setText(msg)
         self.fen_label.setText("")
+        self.score_label.setText("")
 
     def closeEvent(self, e):
         self.stop_capture()

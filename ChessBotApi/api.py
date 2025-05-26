@@ -83,11 +83,15 @@ def process_image(img):
     return generate_fen_from_matrix(matrix)
 
 
-def best_move_from_stockfish(fen: str, skill_level=20, depth=15) -> str:
+def best_move_from_stockfish(fen: str, skill_level=20, depth=15) -> tuple[str, float]:
     try:
         stockfish = get_stockfish()
+        stockfish.set_skill_level(skill_level)
         stockfish.set_fen_position(fen)
-        return stockfish.get_best_move_time(1000)  # 1000 ms de calcul
+        stockfish.set_depth(depth)
+        move = stockfish.get_best_move_time(1000)  # 1000 ms de calcul
+        score = stockfish.get_evaluation()['value']
+        return move, score
     except Exception as e:
         cleanup_stockfish()  # Réinitialiser Stockfish en cas d'erreur
         raise RuntimeError(f"Erreur Stockfish: {str(e)}")
@@ -112,14 +116,19 @@ def analyze():
         if img is None:
             return jsonify({"error": "no image", "status": "error"}), 400
 
+        # Récupérer les paramètres de configuration
+        skill_level = int(request.args.get('skill_level', 20))
+        depth = int(request.args.get('depth', 15))
+
         fen = process_image(img)
         if fen is None:
             return jsonify({"error": "split error", "status": "error"}), 400
 
-        move = best_move_from_stockfish(fen)
+        move, score = best_move_from_stockfish(fen, skill_level, depth)
         return jsonify({
             "fen": fen,
             "best_move": move,
+            "score": score,
             "status": "success"
         })
 
