@@ -1,6 +1,8 @@
 import sys, os, platform, io, zipfile, requests
-from PyQt6.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QPushButton, QLabel, QMessageBox
-from PyQt6.QtCore import Qt, QTimer
+from PyQt6.QtWidgets import (
+    QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QCheckBox
+)
+from PyQt6.QtCore import Qt, QThread, pyqtSignal
 from selenium import webdriver
 from selenium.webdriver.firefox.service import Service as FirefoxService
 from selenium.webdriver.chrome.service import Service as ChromeService
@@ -11,28 +13,48 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+import time
 
-class MainWindow(QMainWindow):
-    def __init__(self):
-        super().__init__()
-        self.setWindowTitle("Chess.com Screenshot")
-        self.setFixedSize(400, 200)
-        central_widget = QWidget()
-        self.setCentralWidget(central_widget)
-        layout = QVBoxLayout(central_widget)
-        self.status_label = QLabel("Prêt")
-        self.status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        layout.addWidget(self.status_label)
-        self.toggle_button = QPushButton("Démarrer")
-        self.toggle_button.clicked.connect(self.toggle_capture)
-        layout.addWidget(self.toggle_button)
+class ModernSwitch(QCheckBox):
+    def __init__(self, label=""):
+        super().__init__(label)
+        self.setTristate(False)
+        self.setStyleSheet('''
+            QCheckBox::indicator {
+                width: 40px; height: 20px;
+            }
+            QCheckBox::indicator:unchecked {
+                border-radius: 10px;
+                background: #444;
+                border: 2px solid #666;
+            }
+            QCheckBox::indicator:checked {
+                border-radius: 10px;
+                background: #4e8cff;
+                border: 2px solid #4e8cff;
+            }
+        ''')
+
+class CaptureThread(QThread):
+    move_found = pyqtSignal(str, str)  # move, fen
+    error = pyqtSignal(str)
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self._running = True
         self.driver = None
-        self.timer = QTimer()
-        self.timer.timeout.connect(self.capture_chessboard)
-        self.is_capturing = False
-        os.makedirs("screenshots", exist_ok=True)
+
+    def stop(self):
+        self._running = False
+        if self.driver:
+            try:
+                self.driver.quit()
+            except Exception:
+                pass
+            self.driver = None
 
     def download_geckodriver(self):
+        import platform
         system = platform.system().lower()
         platform_name, ext = ("win64", ".zip") if system == "windows" else (("linux64", ".tar.gz") if system == "linux" else ("macos", ".tar.gz"))
         version = "v0.33.0"
@@ -58,6 +80,7 @@ class MainWindow(QMainWindow):
             firefox_opts.add_argument("--width=1920")
             firefox_opts.add_argument("--height=1080")
             firefox_opts.add_argument("--start-maximized")
+            firefox_opts.add_argument("--disable-blink-features=AutomationControlled")
             srv = FirefoxService(executable_path=path)
             d = webdriver.Firefox(service=srv, options=firefox_opts)
             d.maximize_window()
@@ -65,28 +88,46 @@ class MainWindow(QMainWindow):
         except Exception:
             chrome_opts = ChromeOptions()
             chrome_opts.add_argument("--start-maximized")
+            chrome_opts.add_argument("--disable-blink-features=AutomationControlled")
             srv = ChromeService(ChromeDriverManager().install())
             d = webdriver.Chrome(service=srv, options=chrome_opts)
             d.maximize_window()
             return d
 
-    def capture_chessboard(self):
+    def run(self):
         try:
-            if not self.driver:
-                self.driver = self.get_driver()
-                self.driver.get("https://www.chess.com/play/online")
-            wait = WebDriverWait(self.driver, 20)
-            board = wait.until(EC.presence_of_element_located((By.ID, "board-layout-chessboard")))
-            filename = "screenshots/chessboard.png"
-            if os.path.exists(filename):
-                os.remove(filename)
-            board.screenshot(filename)
-            self.status_label.setText("Screenshot OK")
-            self.send_to_api(filename)
+            os.makedirs("screenshots", exist_ok=True)
+            self.driver = self.get_driver()
+            self.driver.get("https://www.chess.com/play/online")
+            while self._running:
+                try:
+                    wait = WebDriverWait(self.driver, 20)
+                    board = wait.until(EC.presence_of_element_located((By.ID, "board-layout-chessboard")))
+                    filename = "screenshots/chessboard.png"
+                    if os.path.exists(filename):
+                        os.remove(filename)
+                    board.screenshot(filename)
+                    move, fen = self.send_to_api(filename)
+                    self.move_found.emit(move, fen)
+                except Exception as e:
+                    self.error.emit(f"Erreur capture: {e}")
+                    try:
+                        self.driver.get("https://www.chess.com/play/online")
+                    except Exception:
+                        pass
+                for _ in range(30):
+                    if not self._running:
+                        break
+                    self.msleep(100)
         except Exception as e:
-            self.status_label.setText(str(e))
-            self.stop_capture()
-            QMessageBox.warning(self, "Erreur", str(e))
+            self.error.emit(f"Erreur navigateur: {e}")
+        finally:
+            if self.driver:
+                try:
+                    self.driver.quit()
+                except Exception:
+                    pass
+                self.driver = None
 
     def send_to_api(self, image_path):
         try:
@@ -94,31 +135,94 @@ class MainWindow(QMainWindow):
                 r = requests.post("http://localhost:5000/analyze", files={"image": img}, timeout=10)
             if r.ok:
                 data = r.json()
-                move = data.get("best_move") or data.get("fen") or ""
-                self.status_label.setText(f"Meilleur coup: {move}" if move else "Réponse vide")
-                print(f"Réponse API: {data}")
+                move = data.get("best_move") or ""
+                fen = data.get("fen") or ""
+                return move, fen
             else:
-                self.status_label.setText(f"API {r.status_code}")
-                print(r.text)
+                return f"API {r.status_code}", ""
         except Exception as e:
-            self.status_label.setText("Erreur API")
-            print(e)
+            return f"Erreur API: {e}", ""
+
+class MainWindow(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("klar.gg")
+        self.setFixedSize(350, 150)
+        self.setStyleSheet('''
+            QMainWindow, QWidget {
+                background: #181a20;
+                color: #e0e0e0;
+                font-family: Segoe UI, Arial, sans-serif;
+                font-size: 13px;
+            }
+            QLabel {
+                color: #e0e0e0;
+            }
+        ''')
+        self.init_ui()
+        self.capture_thread = None
+
+    def init_ui(self):
+        central = QWidget()
+        self.setCentralWidget(central)
+        layout = QVBoxLayout(central)
+        layout.setContentsMargins(16, 16, 16, 16)
+        layout.setSpacing(10)
+
+        # Enabled switch
+        enabled_layout = QHBoxLayout()
+        enabled_layout.addWidget(QLabel("Enabled:"))
+        self.enabled_switch = ModernSwitch()
+        self.enabled_switch.stateChanged.connect(self.toggle_capture)
+        enabled_layout.addWidget(self.enabled_switch)
+        enabled_layout.addStretch(1)
+        layout.addLayout(enabled_layout)
+
+        # Best move
+        move_layout = QHBoxLayout()
+        move_layout.addWidget(QLabel("Next Move:"))
+        self.bestmove_label = QLabel("")
+        move_layout.addWidget(self.bestmove_label)
+        move_layout.addStretch(1)
+        layout.addLayout(move_layout)
+
+        # FEN
+        fen_layout = QHBoxLayout()
+        fen_layout.addWidget(QLabel("FEN:"))
+        self.fen_label = QLabel("")
+        fen_layout.addWidget(self.fen_label)
+        fen_layout.addStretch(1)
+        layout.addLayout(fen_layout)
 
     def toggle_capture(self):
-        (self.stop_capture() if self.is_capturing else self.start_capture())
+        if self.enabled_switch.isChecked():
+            self.start_capture()
+        else:
+            self.stop_capture()
 
     def start_capture(self):
-        self.is_capturing = True
-        self.toggle_button.setText("Arrêter")
-        self.timer.start(2000)
+        if self.capture_thread and self.capture_thread.isRunning():
+            return
+        self.capture_thread = CaptureThread()
+        self.capture_thread.move_found.connect(self.update_move)
+        self.capture_thread.error.connect(self.show_error)
+        self.capture_thread.start()
 
     def stop_capture(self):
-        self.is_capturing = False
-        self.toggle_button.setText("Démarrer")
-        self.timer.stop()
-        if self.driver:
-            self.driver.quit()
-            self.driver = None
+        if self.capture_thread:
+            self.capture_thread.stop()
+            self.capture_thread.wait()
+            self.capture_thread = None
+        self.bestmove_label.setText("")
+        self.fen_label.setText("")
+
+    def update_move(self, move, fen):
+        self.bestmove_label.setText(move)
+        self.fen_label.setText(fen)
+
+    def show_error(self, msg):
+        self.bestmove_label.setText(msg)
+        self.fen_label.setText("")
 
     def closeEvent(self, e):
         self.stop_capture()

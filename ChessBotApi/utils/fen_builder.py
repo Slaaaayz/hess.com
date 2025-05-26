@@ -121,7 +121,7 @@ def classify_square(square_img, templates_dir, threshold=0):
                 # Réduire le score des cases vides
                 piece_name = file.replace('.png', '')
                 if piece_name in ['blackcase', 'whitecase']:
-                    total_score = total_score / 1.25
+                    total_score = total_score / 1.23
 
                 if total_score >= threshold:
                     results.append((piece_name, total_score))
