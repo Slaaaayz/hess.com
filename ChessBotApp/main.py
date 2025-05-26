@@ -1,7 +1,7 @@
 import sys, os, platform, io, zipfile, requests
 from PyQt6.QtWidgets import (
     QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QCheckBox,
-    QSlider
+    QSlider, QTextEdit
 )
 from PyQt6.QtCore import Qt, QThread, pyqtSignal
 from selenium import webdriver
@@ -40,10 +40,16 @@ class CaptureThread(QThread):
     move_found = pyqtSignal(str, str, float)  # move, fen, score
     error = pyqtSignal(str)
 
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, skill_level=20, depth=15):
         super().__init__(parent)
         self._running = True
         self.driver = None
+        self.skill_level = skill_level
+        self.depth = depth
+
+    def update_parameters(self, skill_level, depth):
+        self.skill_level = skill_level
+        self.depth = depth
 
     def stop(self):
         self._running = False
@@ -156,7 +162,7 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("klar.gg")
-        self.setFixedSize(350, 250)
+        self.setFixedSize(350, 400)
         self.capture_thread = None
         self.skill_level = 20
         self.depth = 15
@@ -195,6 +201,15 @@ class MainWindow(QMainWindow):
             QSlider::add-page:horizontal {
                 background: #2a2d35;
                 border-radius: 4px;
+            }
+            QTextEdit {
+                background: #1a1c22;
+                color: #a0a0a0;
+                border: 1px solid #2a2d35;
+                border-radius: 4px;
+                padding: 4px;
+                font-family: 'Consolas', 'Courier New', monospace;
+                font-size: 12px;
             }
         ''')
         self.init_ui()
@@ -279,16 +294,30 @@ class MainWindow(QMainWindow):
         fen_layout.addStretch(1)
         layout.addLayout(fen_layout)
 
+        # Logs
+        log_layout = QVBoxLayout()
+        log_layout.addWidget(QLabel("Logs:"))
+        self.log_text = QTextEdit()
+        self.log_text.setReadOnly(True)
+        self.log_text.setFixedHeight(100)
+        log_layout.addWidget(self.log_text)
+        layout.addLayout(log_layout)
+
     def toggle_capture(self):
         if self.enabled_switch.isChecked():
             self.start_capture()
+            self.log_message("Capture started")
         else:
             self.stop_capture()
+            self.log_message("Capture stopped")
 
     def start_capture(self):
         if self.capture_thread and self.capture_thread.isRunning():
             return
-        self.capture_thread = CaptureThread()
+        self.capture_thread = CaptureThread(
+            skill_level=self.skill_level,
+            depth=self.depth
+        )
         self.capture_thread.move_found.connect(self.update_move)
         self.capture_thread.error.connect(self.show_error)
         self.capture_thread.start()
@@ -305,21 +334,38 @@ class MainWindow(QMainWindow):
     def update_skill(self, value):
         self.skill_level = value
         self.skill_value_label.setText(str(value))
+        self.log_message(f"Skill level updated to {value}")
+        if self.capture_thread and self.capture_thread.isRunning():
+            self.capture_thread.update_parameters(self.skill_level, self.depth)
 
     def update_depth(self, value):
         self.depth = value
         self.depth_value_label.setText(str(value))
+        self.log_message(f"Depth updated to {value}")
+        if self.capture_thread and self.capture_thread.isRunning():
+            self.capture_thread.update_parameters(self.skill_level, self.depth)
 
     def update_move(self, move, fen, score):
         self.bestmove_label.setText(move)
         self.fen_label.setText(fen)
         score_str = f"{'+' if score > 0 else ''}{score/100:.2f}"
         self.score_label.setText(score_str)
+        self.log_message(f"Move: {move} | Score: {score_str} | FEN: {fen}")
 
     def show_error(self, msg):
         self.bestmove_label.setText(msg)
         self.fen_label.setText("")
         self.score_label.setText("")
+        self.log_message(msg, is_error=True)
+
+    def log_message(self, message, is_error=False):
+        timestamp = time.strftime("%H:%M:%S")
+        color = "#ff6b6b" if is_error else "#4e8cff"
+        self.log_text.append(f'<span style="color: {color}">[{timestamp}]</span> {message}')
+        # Scroll to bottom
+        self.log_text.verticalScrollBar().setValue(
+            self.log_text.verticalScrollBar().maximum()
+        )
 
     def closeEvent(self, e):
         self.stop_capture()

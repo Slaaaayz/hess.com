@@ -3,6 +3,9 @@ import cv2, numpy as np, os, base64
 from stockfish import Stockfish
 import atexit
 import signal
+import logging
+import traceback
+from datetime import datetime
 
 from ChessBotApi.utils.fen_builder import (
     split_board,
@@ -28,6 +31,17 @@ app.config["MAX_CONTENT_LENGTH"] = 16 * 1024 * 1024
 
 # Stockage global de l'instance Stockfish
 stockfish_instance = None
+
+# Configuration du logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s [%(levelname)s] %(message)s',
+    handlers=[
+        logging.StreamHandler(),
+        logging.FileHandler('chessbot_api.log')
+    ]
+)
+logger = logging.getLogger(__name__)
 
 def get_stockfish():
     global stockfish_instance
@@ -64,48 +78,79 @@ def allowed_file(name):
 
 
 def process_image(img):
-    grid = split_board(img)
-    if grid is None:
+    try:
+        logger.info("Processing chessboard image")
+        grid = split_board(img)
+        if grid is None:
+            logger.error("Failed to split board")
+            return None
+            
+        files = "abcdefgh"
+        ranks = "12345678"
+        matrix = []
+        for r in reversed(ranks):
+            row = []
+            for f in files:
+                sq = analyze_square(grid, f + r)
+                if sq is None:
+                    logger.error(f"Failed to analyze square {f}{r}")
+                    row.append("ERR")
+                else:
+                    res = classify_square(sq, TEMPLATES_DIR)
+                    piece = res[0][0] if res else "NUL"
+                    row.append(piece)
+                    if piece == "ERR":
+                        logger.error(f"Failed to classify square {f}{r}")
+            matrix.append(row)
+        
+        fen = generate_fen_from_matrix(matrix)
+        logger.info(f"Generated FEN: {fen}")
+        return fen
+    except Exception as e:
+        error_msg = f"Image processing error: {str(e)}\n{traceback.format_exc()}"
+        logger.error(error_msg)
         return None
-    files = "abcdefgh"
-    ranks = "12345678"
-    matrix = []
-    for r in reversed(ranks):
-        row = []
-        for f in files:
-            sq = analyze_square(grid, f + r)
-            if sq is None:
-                row.append("ERR")
-            else:
-                res = classify_square(sq, TEMPLATES_DIR)
-                row.append(res[0][0] if res else "NUL")
-        matrix.append(row)
-    return generate_fen_from_matrix(matrix)
 
 
 def best_move_from_stockfish(fen: str, skill_level=20, depth=15) -> tuple[str, float]:
     try:
+        logger.info(f"Calculating best move for FEN: {fen}")
+        logger.info(f"Parameters - Skill: {skill_level}, Depth: {depth}")
+        
         stockfish = get_stockfish()
         stockfish.set_skill_level(skill_level)
         stockfish.set_fen_position(fen)
         stockfish.set_depth(depth)
+        
         move = stockfish.get_best_move_time(1000)  # 1000 ms de calcul
         score = stockfish.get_evaluation()['value']
+        
+        logger.info(f"Best move found: {move} with score: {score/100:.2f}")
         return move, score
     except Exception as e:
+        error_msg = f"Stockfish error: {str(e)}\n{traceback.format_exc()}"
+        logger.error(error_msg)
         cleanup_stockfish()  # Réinitialiser Stockfish en cas d'erreur
-        raise RuntimeError(f"Erreur Stockfish: {str(e)}")
+        raise RuntimeError(error_msg)
 
 
 @app.route("/analyze", methods=["POST"])
 def analyze():
     try:
+        logger.info("Received analyze request")
         img = None
+        
+        # Log request details
+        logger.info(f"Request method: {request.method}")
+        logger.info(f"Request headers: {dict(request.headers)}")
+        
         if "image" in request.files:
             f = request.files["image"]
             if f.filename and allowed_file(f.filename):
+                logger.info(f"Processing uploaded file: {f.filename}")
                 img = cv2.imdecode(np.frombuffer(f.read(), np.uint8), cv2.IMREAD_COLOR)
         elif request.is_json:
+            logger.info("Processing JSON request")
             data = request.get_json()
             if "image" in data:
                 img = cv2.imdecode(
@@ -114,26 +159,57 @@ def analyze():
                 )
 
         if img is None:
-            return jsonify({"error": "no image", "status": "error"}), 400
+            logger.error("No valid image found in request")
+            return jsonify({
+                "error": "no image",
+                "status": "error",
+                "details": "No valid image was provided in the request"
+            }), 400
 
         # Récupérer les paramètres de configuration
         skill_level = int(request.args.get('skill_level', 20))
         depth = int(request.args.get('depth', 15))
+        logger.info(f"Analysis parameters - Skill: {skill_level}, Depth: {depth}")
 
         fen = process_image(img)
         if fen is None:
-            return jsonify({"error": "split error", "status": "error"}), 400
+            logger.error("Failed to process image into FEN")
+            return jsonify({
+                "error": "split error",
+                "status": "error",
+                "details": "Failed to process the chessboard image"
+            }), 400
 
-        move, score = best_move_from_stockfish(fen, skill_level, depth)
-        return jsonify({
-            "fen": fen,
-            "best_move": move,
-            "score": score,
-            "status": "success"
-        })
+        try:
+            move, score = best_move_from_stockfish(fen, skill_level, depth)
+            response = {
+                "fen": fen,
+                "best_move": move,
+                "score": score,
+                "status": "success",
+                "timestamp": datetime.now().isoformat()
+            }
+            logger.info(f"Analysis successful: {response}")
+            return jsonify(response)
+        except Exception as e:
+            error_msg = f"Analysis failed: {str(e)}"
+            logger.error(error_msg)
+            return jsonify({
+                "error": str(e),
+                "status": "error",
+                "details": error_msg,
+                "timestamp": datetime.now().isoformat()
+            }), 500
 
     except Exception as e:
-        return jsonify({"error": str(e), "status": "error"}), 500
+        error_msg = f"Unexpected error: {str(e)}\n{traceback.format_exc()}"
+        logger.error(error_msg)
+        return jsonify({
+            "error": str(e),
+            "status": "error",
+            "details": error_msg,
+            "timestamp": datetime.now().isoformat()
+        }), 500
 
 
 if __name__ == "__main__":

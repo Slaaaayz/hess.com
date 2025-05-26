@@ -1,0 +1,154 @@
+2025-05-26 15:53:22,771 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.183:5000
+2025-05-26 15:53:22,773 [INFO] [33mPress CTRL+C to quit[0m
+2025-05-26 15:56:46,048 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.183:5000
+2025-05-26 15:56:46,048 [INFO] [33mPress CTRL+C to quit[0m
+2025-05-26 15:57:04,061 [INFO] Received analyze request
+2025-05-26 15:57:04,061 [INFO] Request method: POST
+2025-05-26 15:57:04,061 [INFO] Request headers: {'Host': 'localhost:5000', 'User-Agent': 'python-requests/2.32.3', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '169421', 'Content-Type': 'multipart/form-data; boundary=503876885c2e0d474a2c554c31aae147'}
+2025-05-26 15:57:04,066 [INFO] Processing uploaded file: chessboard.png
+2025-05-26 15:57:04,085 [INFO] Analysis parameters - Skill: 20, Depth: 15
+2025-05-26 15:57:04,086 [INFO] Processing chessboard image
+2025-05-26 15:57:07,074 [INFO] Generated FEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+2025-05-26 15:57:07,075 [INFO] Calculating best move for FEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+2025-05-26 15:57:07,076 [INFO] Parameters - Skill: 20, Depth: 15
+2025-05-26 15:57:18,278 [INFO] Best move found: e2e4 with score: 0.33
+2025-05-26 15:57:18,279 [INFO] Analysis successful: {'fen': 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', 'best_move': 'e2e4', 'score': 33, 'status': 'success', 'timestamp': '2025-05-26T15:57:18.279570'}
+2025-05-26 15:57:18,281 [INFO] 127.0.0.1 - - [26/May/2025 15:57:18] "POST /analyze?skill_level=20&depth=15 HTTP/1.1" 200 -
+2025-05-26 15:57:19,457 [INFO] Received analyze request
+2025-05-26 15:57:19,458 [INFO] Request method: POST
+2025-05-26 15:57:19,459 [INFO] Request headers: {'Host': 'localhost:5000', 'User-Agent': 'python-requests/2.32.3', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '154377', 'Content-Type': 'multipart/form-data; boundary=4e53a9960d9e9643a926beede3136a6c'}
+2025-05-26 15:57:19,461 [INFO] Processing uploaded file: chessboard.png
+2025-05-26 15:57:19,470 [INFO] Analysis parameters - Skill: 20, Depth: 15
+2025-05-26 15:57:19,471 [INFO] Processing chessboard image
+2025-05-26 15:57:22,755 [INFO] Generated FEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/NNBQKBNR w KQkq - 0 1
+2025-05-26 15:57:22,756 [INFO] Calculating best move for FEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/NNBQKBNR w KQkq - 0 1
+2025-05-26 15:57:22,756 [INFO] Parameters - Skill: 20, Depth: 15
+2025-05-26 15:57:23,777 [INFO] Best move found: e2e4 with score: -2.34
+2025-05-26 15:57:23,778 [INFO] Analysis successful: {'fen': 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/NNBQKBNR w KQkq - 0 1', 'best_move': 'e2e4', 'score': -234, 'status': 'success', 'timestamp': '2025-05-26T15:57:23.778435'}
+2025-05-26 15:57:23,779 [INFO] 127.0.0.1 - - [26/May/2025 15:57:23] "POST /analyze?skill_level=20&depth=15 HTTP/1.1" 200 -
+2025-05-26 15:57:29,199 [INFO] Received analyze request
+2025-05-26 15:57:29,201 [INFO] Request method: POST
+2025-05-26 15:57:29,203 [INFO] Request headers: {'Host': 'localhost:5000', 'User-Agent': 'python-requests/2.32.3', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '154377', 'Content-Type': 'multipart/form-data; boundary=d14c311206c3f87b7bccb970b91d2c4d'}
+2025-05-26 15:57:29,226 [INFO] Processing uploaded file: chessboard.png
+2025-05-26 15:57:29,246 [INFO] Analysis parameters - Skill: 20, Depth: 15
+2025-05-26 15:57:29,248 [INFO] Processing chessboard image
+2025-05-26 15:57:32,093 [INFO] Generated FEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/NNBQKBNR w KQkq - 0 1
+2025-05-26 15:57:32,094 [INFO] Calculating best move for FEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/NNBQKBNR w KQkq - 0 1
+2025-05-26 15:57:32,094 [INFO] Parameters - Skill: 20, Depth: 15
+2025-05-26 15:57:33,135 [INFO] Best move found: e2e4 with score: -2.24
+2025-05-26 15:57:33,136 [INFO] Analysis successful: {'fen': 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/NNBQKBNR w KQkq - 0 1', 'best_move': 'e2e4', 'score': -224, 'status': 'success', 'timestamp': '2025-05-26T15:57:33.136486'}
+2025-05-26 15:57:33,137 [INFO] 127.0.0.1 - - [26/May/2025 15:57:33] "POST /analyze?skill_level=20&depth=15 HTTP/1.1" 200 -
+2025-05-26 15:57:38,523 [INFO] Received analyze request
+2025-05-26 15:57:38,527 [INFO] Request method: POST
+2025-05-26 15:57:38,530 [INFO] Request headers: {'Host': 'localhost:5000', 'User-Agent': 'python-requests/2.32.3', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '154377', 'Content-Type': 'multipart/form-data; boundary=00bf5c20ac2269e08389d8f7c4ba385e'}
+2025-05-26 15:57:38,540 [INFO] Processing uploaded file: chessboard.png
+2025-05-26 15:57:38,595 [INFO] Analysis parameters - Skill: 20, Depth: 15
+2025-05-26 15:57:38,600 [INFO] Processing chessboard image
+2025-05-26 15:57:41,836 [INFO] Generated FEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/NNBQKBNR w KQkq - 0 1
+2025-05-26 15:57:41,836 [INFO] Calculating best move for FEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/NNBQKBNR w KQkq - 0 1
+2025-05-26 15:57:41,837 [INFO] Parameters - Skill: 20, Depth: 15
+2025-05-26 15:57:42,901 [INFO] Best move found: e2e4 with score: -2.34
+2025-05-26 15:57:42,904 [INFO] Analysis successful: {'fen': 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/NNBQKBNR w KQkq - 0 1', 'best_move': 'e2e4', 'score': -234, 'status': 'success', 'timestamp': '2025-05-26T15:57:42.904199'}
+2025-05-26 15:57:42,907 [INFO] 127.0.0.1 - - [26/May/2025 15:57:42] "POST /analyze?skill_level=20&depth=15 HTTP/1.1" 200 -
+2025-05-26 15:57:48,303 [INFO] Received analyze request
+2025-05-26 15:57:48,311 [INFO] Request method: POST
+2025-05-26 15:57:48,316 [INFO] Request headers: {'Host': 'localhost:5000', 'User-Agent': 'python-requests/2.32.3', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '154377', 'Content-Type': 'multipart/form-data; boundary=64dc5f4ea8571328fd51f1085f996751'}
+2025-05-26 15:57:48,341 [INFO] Processing uploaded file: chessboard.png
+2025-05-26 15:57:48,397 [INFO] Analysis parameters - Skill: 20, Depth: 15
+2025-05-26 15:57:48,399 [INFO] Processing chessboard image
+2025-05-26 15:57:51,593 [INFO] Generated FEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/NNBQKBNR w KQkq - 0 1
+2025-05-26 15:57:51,594 [INFO] Calculating best move for FEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/NNBQKBNR w KQkq - 0 1
+2025-05-26 15:57:51,594 [INFO] Parameters - Skill: 20, Depth: 15
+2025-05-26 15:57:52,632 [INFO] Best move found: e2e4 with score: -2.35
+2025-05-26 15:57:52,633 [INFO] Analysis successful: {'fen': 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/NNBQKBNR w KQkq - 0 1', 'best_move': 'e2e4', 'score': -235, 'status': 'success', 'timestamp': '2025-05-26T15:57:52.633417'}
+2025-05-26 15:57:52,634 [INFO] 127.0.0.1 - - [26/May/2025 15:57:52] "POST /analyze?skill_level=20&depth=15 HTTP/1.1" 200 -
+2025-05-26 15:57:58,012 [INFO] Received analyze request
+2025-05-26 15:57:58,014 [INFO] Request method: POST
+2025-05-26 15:57:58,017 [INFO] Request headers: {'Host': 'localhost:5000', 'User-Agent': 'python-requests/2.32.3', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '154377', 'Content-Type': 'multipart/form-data; boundary=f2da62d157274fce0ce66179ddaddfdd'}
+2025-05-26 15:57:58,033 [INFO] Processing uploaded file: chessboard.png
+2025-05-26 15:57:58,096 [INFO] Analysis parameters - Skill: 20, Depth: 15
+2025-05-26 15:57:58,100 [INFO] Processing chessboard image
+2025-05-26 15:58:01,397 [INFO] Generated FEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/NNBQKBNR w KQkq - 0 1
+2025-05-26 15:58:01,398 [INFO] Calculating best move for FEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/NNBQKBNR w KQkq - 0 1
+2025-05-26 15:58:01,398 [INFO] Parameters - Skill: 20, Depth: 15
+2025-05-26 15:58:02,470 [INFO] Best move found: e2e4 with score: -2.35
+2025-05-26 15:58:02,472 [INFO] Analysis successful: {'fen': 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/NNBQKBNR w KQkq - 0 1', 'best_move': 'e2e4', 'score': -235, 'status': 'success', 'timestamp': '2025-05-26T15:58:02.472446'}
+2025-05-26 15:58:02,475 [INFO] 127.0.0.1 - - [26/May/2025 15:58:02] "POST /analyze?skill_level=20&depth=15 HTTP/1.1" 200 -
+2025-05-26 15:58:08,007 [INFO] Received analyze request
+2025-05-26 15:58:08,009 [INFO] Request method: POST
+2025-05-26 15:58:08,011 [INFO] Request headers: {'Host': 'localhost:5000', 'User-Agent': 'python-requests/2.32.3', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '154377', 'Content-Type': 'multipart/form-data; boundary=7734362783083093444cf70b74a74e21'}
+2025-05-26 15:58:08,023 [INFO] Processing uploaded file: chessboard.png
+2025-05-26 15:58:08,048 [INFO] Analysis parameters - Skill: 20, Depth: 15
+2025-05-26 15:58:08,049 [INFO] Processing chessboard image
+2025-05-26 15:58:11,275 [INFO] Generated FEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/NNBQKBNR w KQkq - 0 1
+2025-05-26 15:58:11,275 [INFO] Calculating best move for FEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/NNBQKBNR w KQkq - 0 1
+2025-05-26 15:58:11,276 [INFO] Parameters - Skill: 20, Depth: 15
+2025-05-26 15:58:12,305 [INFO] Best move found: e2e4 with score: -2.32
+2025-05-26 15:58:12,305 [INFO] Analysis successful: {'fen': 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/NNBQKBNR w KQkq - 0 1', 'best_move': 'e2e4', 'score': -232, 'status': 'success', 'timestamp': '2025-05-26T15:58:12.305719'}
+2025-05-26 15:58:12,306 [INFO] 127.0.0.1 - - [26/May/2025 15:58:12] "POST /analyze?skill_level=20&depth=15 HTTP/1.1" 200 -
+2025-05-26 15:58:17,689 [INFO] Received analyze request
+2025-05-26 15:58:17,691 [INFO] Request method: POST
+2025-05-26 15:58:17,693 [INFO] Request headers: {'Host': 'localhost:5000', 'User-Agent': 'python-requests/2.32.3', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '154377', 'Content-Type': 'multipart/form-data; boundary=8e3f435ad9093b707de2e37df7e83c5b'}
+2025-05-26 15:58:17,700 [INFO] Processing uploaded file: chessboard.png
+2025-05-26 15:58:17,723 [INFO] Analysis parameters - Skill: 20, Depth: 15
+2025-05-26 15:58:17,724 [INFO] Processing chessboard image
+2025-05-26 15:58:20,841 [INFO] Generated FEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/NNBQKBNR w KQkq - 0 1
+2025-05-26 15:58:20,842 [INFO] Calculating best move for FEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/NNBQKBNR w KQkq - 0 1
+2025-05-26 15:58:20,842 [INFO] Parameters - Skill: 20, Depth: 15
+2025-05-26 15:58:21,973 [INFO] Best move found: e2e4 with score: -2.39
+2025-05-26 15:58:21,976 [INFO] Analysis successful: {'fen': 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/NNBQKBNR w KQkq - 0 1', 'best_move': 'e2e4', 'score': -239, 'status': 'success', 'timestamp': '2025-05-26T15:58:21.976072'}
+2025-05-26 15:58:21,984 [INFO] 127.0.0.1 - - [26/May/2025 15:58:21] "POST /analyze?skill_level=20&depth=15 HTTP/1.1" 200 -
+2025-05-26 15:58:27,397 [INFO] Received analyze request
+2025-05-26 15:58:27,401 [INFO] Request method: POST
+2025-05-26 15:58:27,407 [INFO] Request headers: {'Host': 'localhost:5000', 'User-Agent': 'python-requests/2.32.3', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '154377', 'Content-Type': 'multipart/form-data; boundary=eb021581f74d65b7710a5c0da5461bb6'}
+2025-05-26 15:58:27,417 [INFO] Processing uploaded file: chessboard.png
+2025-05-26 15:58:27,433 [INFO] Analysis parameters - Skill: 20, Depth: 15
+2025-05-26 15:58:27,436 [INFO] Processing chessboard image
+2025-05-26 15:58:30,616 [INFO] Generated FEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/NNBQKBNR w KQkq - 0 1
+2025-05-26 15:58:30,617 [INFO] Calculating best move for FEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/NNBQKBNR w KQkq - 0 1
+2025-05-26 15:58:30,617 [INFO] Parameters - Skill: 20, Depth: 15
+2025-05-26 15:58:31,658 [INFO] Best move found: e2e4 with score: -2.35
+2025-05-26 15:58:31,659 [INFO] Analysis successful: {'fen': 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/NNBQKBNR w KQkq - 0 1', 'best_move': 'e2e4', 'score': -235, 'status': 'success', 'timestamp': '2025-05-26T15:58:31.659572'}
+2025-05-26 15:58:31,660 [INFO] 127.0.0.1 - - [26/May/2025 15:58:31] "POST /analyze?skill_level=20&depth=15 HTTP/1.1" 200 -
+2025-05-26 15:58:37,019 [INFO] Received analyze request
+2025-05-26 15:58:37,023 [INFO] Request method: POST
+2025-05-26 15:58:37,026 [INFO] Request headers: {'Host': 'localhost:5000', 'User-Agent': 'python-requests/2.32.3', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '154377', 'Content-Type': 'multipart/form-data; boundary=5e6914187e300d68b262468cb635a17f'}
+2025-05-26 15:58:37,030 [INFO] Processing uploaded file: chessboard.png
+2025-05-26 15:58:37,044 [INFO] Analysis parameters - Skill: 20, Depth: 15
+2025-05-26 15:58:37,045 [INFO] Processing chessboard image
+2025-05-26 15:58:40,262 [INFO] Generated FEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/NNBQKBNR w KQkq - 0 1
+2025-05-26 15:58:40,263 [INFO] Calculating best move for FEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/NNBQKBNR w KQkq - 0 1
+2025-05-26 15:58:40,263 [INFO] Parameters - Skill: 20, Depth: 15
+2025-05-26 15:58:41,620 [INFO] Best move found: e2e4 with score: -2.38
+2025-05-26 15:58:41,621 [INFO] Analysis successful: {'fen': 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/NNBQKBNR w KQkq - 0 1', 'best_move': 'e2e4', 'score': -238, 'status': 'success', 'timestamp': '2025-05-26T15:58:41.621583'}
+2025-05-26 15:58:41,623 [INFO] 127.0.0.1 - - [26/May/2025 15:58:41] "POST /analyze?skill_level=20&depth=15 HTTP/1.1" 200 -
+2025-05-26 15:58:47,084 [INFO] Received analyze request
+2025-05-26 15:58:47,088 [INFO] Request method: POST
+2025-05-26 15:58:47,090 [INFO] Request headers: {'Host': 'localhost:5000', 'User-Agent': 'python-requests/2.32.3', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '154377', 'Content-Type': 'multipart/form-data; boundary=aaa2dd1a028c908cda4bb05db5e903be'}
+2025-05-26 15:58:47,110 [INFO] Processing uploaded file: chessboard.png
+2025-05-26 15:58:47,195 [INFO] Analysis parameters - Skill: 20, Depth: 15
+2025-05-26 15:58:47,200 [INFO] Processing chessboard image
+2025-05-26 15:58:50,328 [INFO] Generated FEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/NNBQKBNR w KQkq - 0 1
+2025-05-26 15:58:50,329 [INFO] Calculating best move for FEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/NNBQKBNR w KQkq - 0 1
+2025-05-26 15:58:50,329 [INFO] Parameters - Skill: 20, Depth: 15
+2025-05-26 15:58:51,395 [INFO] Best move found: e2e4 with score: -2.34
+2025-05-26 15:58:51,397 [INFO] Analysis successful: {'fen': 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/NNBQKBNR w KQkq - 0 1', 'best_move': 'e2e4', 'score': -234, 'status': 'success', 'timestamp': '2025-05-26T15:58:51.397621'}
+2025-05-26 15:58:51,400 [INFO] 127.0.0.1 - - [26/May/2025 15:58:51] "POST /analyze?skill_level=20&depth=15 HTTP/1.1" 200 -
+2025-05-26 15:58:56,800 [INFO] Received analyze request
+2025-05-26 15:58:56,803 [INFO] Request method: POST
+2025-05-26 15:58:56,807 [INFO] Request headers: {'Host': 'localhost:5000', 'User-Agent': 'python-requests/2.32.3', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '154377', 'Content-Type': 'multipart/form-data; boundary=7f461f0e4da6316bbfa6d9595c1e2ca3'}
+2025-05-26 15:58:56,819 [INFO] Processing uploaded file: chessboard.png
+2025-05-26 15:58:56,872 [INFO] Analysis parameters - Skill: 20, Depth: 15
+2025-05-26 15:58:56,882 [INFO] Processing chessboard image
+2025-05-26 15:59:00,104 [INFO] Generated FEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/NNBQKBNR w KQkq - 0 1
+2025-05-26 15:59:00,105 [INFO] Calculating best move for FEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/NNBQKBNR w KQkq - 0 1
+2025-05-26 15:59:00,105 [INFO] Parameters - Skill: 20, Depth: 15
+2025-05-26 15:59:01,326 [INFO] Best move found: e2e4 with score: -2.32
+2025-05-26 15:59:01,326 [INFO] Analysis successful: {'fen': 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/NNBQKBNR w KQkq - 0 1', 'best_move': 'e2e4', 'score': -232, 'status': 'success', 'timestamp': '2025-05-26T15:59:01.326944'}
+2025-05-26 15:59:01,328 [INFO] 127.0.0.1 - - [26/May/2025 15:59:01] "POST /analyze?skill_level=20&depth=15 HTTP/1.1" 200 -
