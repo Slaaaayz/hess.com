@@ -1,9 +1,13 @@
 import sys, os, platform, io, zipfile, requests
+import tkinter as tk
+from tkinter import ttk
+from pynput import keyboard
 from PyQt6.QtWidgets import (
     QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QCheckBox,
     QSlider, QTextEdit
 )
-from PyQt6.QtCore import Qt, QThread, pyqtSignal
+from PyQt6.QtCore import Qt, QThread, pyqtSignal, QTimer
+from PyQt6.QtGui import QKeySequence, QShortcut
 from selenium import webdriver
 from selenium.webdriver.firefox.service import Service as FirefoxService
 from selenium.webdriver.chrome.service import Service as ChromeService
@@ -241,6 +245,117 @@ class CaptureThread(QThread):
         except Exception as e:
             return f"Erreur API: {e}", "", 0
 
+class OverlayWindow:
+    def __init__(self):
+        self.root = tk.Tk()
+        self.root.withdraw()  # Cache la fenêtre initialement
+        
+        # Configuration de la fenêtre
+        self.root.overrideredirect(True)  # Supprime la barre de titre
+        self.root.attributes('-topmost', True)  # Garde la fenêtre au-dessus
+        self.root.attributes('-alpha', 0.9)  # Transparence
+        
+        # Position initiale
+        self.root.geometry('350x400+50+50')
+        
+        # Style
+        self.root.configure(bg='#181a20')
+        
+        # Création du conteneur principal
+        self.main_frame = ttk.Frame(self.root)
+        self.main_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
+        
+        # Variables
+        self.visible = True
+        self.ctrl_pressed = False
+        
+        # Bindings
+        self.root.bind('<Button-1>', self.start_move)
+        self.root.bind('<B1-Motion>', self.on_move)
+        
+        # Raccourci global avec pynput
+        self.listener = keyboard.Listener(
+            on_press=self.on_press,
+            on_release=self.on_release
+        )
+        self.listener.start()
+        
+        # Style ttk
+        style = ttk.Style()
+        style.configure('TFrame', background='#181a20')
+        style.configure('TLabel', background='#181a20', foreground='#e0e0e0')
+        
+        # Labels pour les informations
+        self.move_label = ttk.Label(self.main_frame, text="Next Move: ")
+        self.move_label.pack(anchor='w', pady=2)
+        
+        self.score_label = ttk.Label(self.main_frame, text="Score: ")
+        self.score_label.pack(anchor='w', pady=2)
+        
+        self.fen_label = ttk.Label(self.main_frame, text="FEN: ")
+        self.fen_label.pack(anchor='w', pady=2)
+        
+        # Zone de logs
+        self.log_text = tk.Text(self.main_frame, height=10, bg='#1a1c22', fg='#a0a0a0',
+                               font=('Consolas', 10))
+        self.log_text.pack(fill=tk.BOTH, expand=True, pady=5)
+        
+        # Afficher la fenêtre
+        self.root.deiconify()
+        
+    def on_press(self, key):
+        try:
+            if key == keyboard.Key.ctrl_l or key == keyboard.Key.ctrl_r:
+                self.ctrl_pressed = True
+            elif key == keyboard.Key.space and self.ctrl_pressed:
+                self.toggle_visibility()
+        except AttributeError:
+            pass
+            
+    def on_release(self, key):
+        try:
+            if key == keyboard.Key.ctrl_l or key == keyboard.Key.ctrl_r:
+                self.ctrl_pressed = False
+        except AttributeError:
+            pass
+        
+    def toggle_visibility(self):
+        self.visible = not self.visible
+        if self.visible:
+            self.root.deiconify()
+        else:
+            self.root.withdraw()
+            
+    def start_move(self, event):
+        self.x = event.x
+        self.y = event.y
+        
+    def on_move(self, event):
+        deltax = event.x - self.x
+        deltay = event.y - self.y
+        x = self.root.winfo_x() + deltax
+        y = self.root.winfo_y() + deltay
+        self.root.geometry(f"+{x}+{y}")
+        
+    def update_info(self, move, fen, score):
+        self.move_label.config(text=f"Next Move: {move}")
+        self.score_label.config(text=f"Score: {score}")
+        self.fen_label.config(text=f"FEN: {fen}")
+        
+    def log_message(self, message, is_error=False):
+        timestamp = time.strftime("%H:%M:%S")
+        color = "#ff6b6b" if is_error else "#4e8cff"
+        self.log_text.insert(tk.END, f'[{timestamp}] {message}\n')
+        self.log_text.see(tk.END)
+        
+    def update(self):
+        self.root.update()
+        
+    def destroy(self):
+        if self.listener:
+            self.listener.stop()
+        self.root.destroy()
+
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -250,6 +365,19 @@ class MainWindow(QMainWindow):
         self.skill_level = 20
         self.depth = 15
         self.auto_play = False
+        
+        # Création de l'overlay
+        self.overlay = OverlayWindow()
+        
+        # Timer pour mettre à jour l'overlay
+        self.update_timer = QTimer()
+        self.update_timer.timeout.connect(self.update_overlay)
+        self.update_timer.start(100)  # Mise à jour toutes les 100ms
+        
+        # Raccourci global pour masquer/afficher l'overlay
+        self.shortcut = QShortcut(QKeySequence("Ctrl+Space"), self)
+        self.shortcut.activated.connect(self.toggle_overlay)
+        
         self.setStyleSheet('''
             QMainWindow, QWidget {
                 background: #181a20;
@@ -445,12 +573,19 @@ class MainWindow(QMainWindow):
         if self.capture_thread and self.capture_thread.isRunning():
             self.capture_thread.update_parameters(self.skill_level, self.depth, self.auto_play)
 
+    def update_overlay(self):
+        self.overlay.update()
+
     def update_move(self, move, fen, score):
         self.bestmove_label.setText(move)
         self.fen_label.setText(fen)
         score_str = f"{'+' if score > 0 else ''}{score/100:.2f}"
         self.score_label.setText(score_str)
         self.log_message(f"Move: {move} | Score: {score_str} | FEN: {fen}")
+        
+        # Mise à jour de l'overlay
+        self.overlay.update_info(move, fen, score_str)
+        self.overlay.log_message(f"Move: {move} | Score: {score_str} | FEN: {fen}")
 
     def show_error(self, msg):
         self.bestmove_label.setText(msg)
@@ -462,14 +597,20 @@ class MainWindow(QMainWindow):
         timestamp = time.strftime("%H:%M:%S")
         color = "#ff6b6b" if is_error else "#4e8cff"
         self.log_text.append(f'<span style="color: {color}">[{timestamp}]</span> {message}')
-        # Scroll to bottom
         self.log_text.verticalScrollBar().setValue(
             self.log_text.verticalScrollBar().maximum()
         )
+        
+        # Mise à jour des logs de l'overlay
+        self.overlay.log_message(message, is_error)
 
     def closeEvent(self, e):
         self.stop_capture()
+        self.overlay.destroy()  # Fermer l'overlay
         e.accept()
+
+    def toggle_overlay(self):
+        self.overlay.toggle_visibility()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
