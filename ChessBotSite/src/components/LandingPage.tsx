@@ -1,8 +1,11 @@
 import { motion } from 'framer-motion'
 import { PlayIcon, UserIcon, LockClosedIcon } from '@heroicons/react/24/outline'
 import { useEffect } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 
 function LandingPage() {
+    const navigate = useNavigate()
+
     useEffect(() => {
         // Empêcher le scroll horizontal et corriger les marges
         document.body.style.overflowX = 'hidden'
@@ -166,40 +169,44 @@ function LandingPage() {
                         gap: 'clamp(0.5rem, 2vw, 1.5rem)',
                         flexWrap: 'nowrap'
                     }}>
-                        <button style={{
-                            color: '#9ca3af',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '0.5rem',
-                            background: 'none',
-                            border: 'none',
-                            cursor: 'pointer',
-                            transition: 'color 0.3s',
-                            fontSize: 'clamp(0.8rem, 2vw, 1rem)',
-                            padding: '0.5rem',
-                            whiteSpace: 'nowrap'
-                        }}
+                        <button
+                            onClick={() => navigate('/login')}
+                            style={{
+                                color: '#9ca3af',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '0.5rem',
+                                background: 'none',
+                                border: 'none',
+                                cursor: 'pointer',
+                                transition: 'color 0.3s',
+                                fontSize: 'clamp(0.8rem, 2vw, 1rem)',
+                                padding: '0.5rem',
+                                whiteSpace: 'nowrap'
+                            }}
                             onMouseEnter={(e) => handleMouseEnter(e, '#22c55e')}
                             onMouseLeave={(e) => handleMouseLeave(e, '#9ca3af')}
                         >
                             <UserIcon style={{ width: '1.25rem', height: '1.25rem' }} />
                             <span style={{ display: window.innerWidth < 480 ? 'none' : 'inline' }}>Connexion</span>
                         </button>
-                        <button style={{
-                            background: 'rgba(34, 197, 94, 0.2)',
-                            border: '1px solid rgba(34, 197, 94, 0.5)',
-                            color: '#22c55e',
-                            padding: 'clamp(0.5rem, 2vw, 0.75rem) clamp(1rem, 3vw, 1.5rem)',
-                            borderRadius: '0.25rem',
-                            cursor: 'pointer',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '0.5rem',
-                            transition: 'all 0.3s',
-                            fontSize: 'clamp(0.8rem, 2vw, 1rem)',
-                            whiteSpace: 'nowrap'
-                        }}
-                            onMouseEnter={(e) => handleButtonMouseEnter(e, 'rgba(34, 197, 94, 0.3)', '#22c55e')}
+                        <button
+                            onClick={() => navigate('/register')}
+                            style={{
+                                background: 'rgba(34, 197, 94, 0.2)',
+                                border: '1px solid rgba(34, 197, 94, 0.5)',
+                                color: '#22c55e',
+                                padding: 'clamp(0.5rem, 2vw, 0.75rem) clamp(1rem, 3vw, 1.5rem)',
+                                borderRadius: '0.25rem',
+                                cursor: 'pointer',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '0.5rem',
+                                transition: 'all 0.3s',
+                                fontSize: 'clamp(0.8rem, 2vw, 1rem)',
+                                whiteSpace: 'nowrap'
+                            }}
+                            onMouseEnter={(e) => handleButtonMouseEnter(e, 'rgba(34, 197, 94, 0.3)', 'rgba(34, 197, 94, 0.7)')}
                             onMouseLeave={(e) => handleButtonMouseLeave(e, 'rgba(34, 197, 94, 0.2)', 'rgba(34, 197, 94, 0.5)')}
                         >
                             <LockClosedIcon style={{ width: '1.25rem', height: '1.25rem' }} />

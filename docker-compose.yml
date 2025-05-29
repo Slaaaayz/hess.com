@@ -1,13 +1,6 @@
 version: '3.8'
 
 services:
-  stockfish:
-    build: .
-    container_name: stockfish-engine
-    volumes:
-      - ./app:/app
-    stdin_open: true
-    tty: true
 
   mysql:
     image: mysql:8.0
@@ -19,7 +12,7 @@ services:
       MYSQL_USER: hess_user
       MYSQL_PASSWORD: hess_password
     ports:
-      - "3306:3306"
+      - "3307:3306"
     volumes:
       - mysql_data:/var/lib/mysql
 

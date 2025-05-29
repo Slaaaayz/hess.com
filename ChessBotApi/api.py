@@ -1,11 +1,14 @@
 from flask import Flask, request, jsonify
-import cv2, numpy as np, os, base64
+import cv2, numpy as np, os, base64, sys
 from stockfish import Stockfish
 import atexit
 import signal
 import logging
 import traceback
 from datetime import datetime
+
+# Ajouter le répertoire parent au PYTHONPATH pour permettre les imports absolus
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from ChessBotApi.utils.fen_builder import (
     split_board,
@@ -19,7 +22,7 @@ app = Flask(__name__)
 UPLOAD_FOLDER = "uploads"
 ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg"}
 TEMPLATES_DIR = "./ChessBotApi/templates"
-STOCKFISH_PATH = os.getenv("STOCKFISH_PATH", "/usr/games/stockfish")
+STOCKFISH_PATH = os.getenv("STOCKFISH_PATH", "C:/Users/trist/Desktop/stockfish")
 
 # Vérifier si Stockfish existe
 if not os.path.exists(STOCKFISH_PATH):

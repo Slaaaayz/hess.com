@@ -4,3 +4,7 @@ selenium
 Pillow
 webdriver-manager
 geckodriver-autoinstaller
+flask
+opencv-python
+numpy
+stockfish

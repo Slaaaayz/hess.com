@@ -235,7 +235,7 @@ class CaptureThread(QThread):
                     'skill_level': self.skill_level,
                     'depth': self.depth
                 }
-                r = requests.post("http://localhost:5000/analyze", 
+                r = requests.post("http://127.0.0.1:5000/analyze", 
                                 files={"image": img}, 
                                 params=params,
                                 timeout=10)
