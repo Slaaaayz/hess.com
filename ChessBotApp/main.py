@@ -4,7 +4,7 @@ from tkinter import ttk
 from pynput import keyboard
 from PyQt6.QtWidgets import (
     QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QCheckBox,
-    QSlider, QTextEdit
+    QSlider, QTextEdit, QLineEdit
 )
 from PyQt6.QtCore import Qt, QThread, pyqtSignal, QTimer
 from PyQt6.QtGui import QKeySequence, QShortcut
@@ -121,7 +121,7 @@ class CaptureThread(QThread):
     move_found = pyqtSignal(str, str, float)  # move, fen, score
     error = pyqtSignal(str)
 
-    def __init__(self, parent=None, skill_level=20, depth=15, auto_play=False):
+    def __init__(self, parent=None, skill_level=20, depth=15, auto_play=False, api_key=""):
         super().__init__(parent)
         self._running = True
         self.driver = None
@@ -129,12 +129,15 @@ class CaptureThread(QThread):
         self.depth = depth
         self.auto_play = auto_play
         self.move_executor = None
+        self.api_key = api_key
 
-    def update_parameters(self, skill_level, depth, auto_play=None):
+    def update_parameters(self, skill_level, depth, auto_play=None, api_key=None):
         self.skill_level = skill_level
         self.depth = depth
         if auto_play is not None:
             self.auto_play = auto_play
+        if api_key is not None:
+            self.api_key = api_key
 
     def stop(self):
         self._running = False
@@ -235,9 +238,13 @@ class CaptureThread(QThread):
                     'skill_level': self.skill_level,
                     'depth': self.depth
                 }
-                r = requests.post("http://127.0.0.1:5000/analyze", 
+                headers = {
+                    'X-API-Key': self.api_key
+                }
+                r = requests.post("http://127.0.0.1:5001/analyze", 
                                 files={"image": img}, 
                                 params=params,
+                                headers=headers,
                                 timeout=10)
             if r.ok:
                 data = r.json()
@@ -246,7 +253,10 @@ class CaptureThread(QThread):
                 score = data.get("score", 0)
                 return move, fen, score
             else:
-                return f"API {r.status_code}", "", 0
+                error_msg = f"API {r.status_code}"
+                if r.status_code == 401:
+                    error_msg = "Invalid API key"
+                return error_msg, "", 0
         except Exception as e:
             return f"Erreur API: {e}", "", 0
 
@@ -373,6 +383,7 @@ class MainWindow(QMainWindow):
         self.auto_play = False
         self.voice_enabled = False
         self.move_executor = None
+        self.api_key = ""
         
         # Création de l'overlay
         self.overlay = OverlayWindow()
@@ -395,6 +406,16 @@ class MainWindow(QMainWindow):
             }
             QLabel {
                 color: #e0e0e0;
+            }
+            QLineEdit {
+                background: #1a1c22;
+                color: #e0e0e0;
+                border: 1px solid #2a2d35;
+                border-radius: 4px;
+                padding: 4px;
+            }
+            QLineEdit:focus {
+                border: 1px solid #4e8cff;
             }
             QSlider::groove:horizontal {
                 border: 1px solid #3a3d45;
@@ -440,6 +461,15 @@ class MainWindow(QMainWindow):
         layout = QVBoxLayout(central)
         layout.setContentsMargins(16, 16, 16, 16)
         layout.setSpacing(10)
+
+        # API Key
+        api_key_layout = QHBoxLayout()
+        api_key_layout.addWidget(QLabel("API Key:"))
+        self.api_key_input = QLineEdit()
+        self.api_key_input.setPlaceholderText("Enter your API key")
+        self.api_key_input.textChanged.connect(self.update_api_key)
+        api_key_layout.addWidget(self.api_key_input)
+        layout.addLayout(api_key_layout)
 
         # Enabled switch
         enabled_layout = QHBoxLayout()
@@ -570,7 +600,8 @@ class MainWindow(QMainWindow):
         self.capture_thread = CaptureThread(
             skill_level=self.skill_level,
             depth=self.depth,
-            auto_play=self.auto_play
+            auto_play=self.auto_play,
+            api_key=self.api_key
         )
         self.capture_thread.move_found.connect(self.update_move)
         self.capture_thread.error.connect(self.show_error)
@@ -689,6 +720,17 @@ class MainWindow(QMainWindow):
                     self.log_message(f"Échec de l'exécution du mouvement {move}", is_error=True)
         else:
             self.log_message(f"Format de mouvement non reconnu: {text}", is_error=True)
+
+    def update_api_key(self, text):
+        self.api_key = text
+        self.log_message("API key updated")
+        if self.capture_thread and self.capture_thread.isRunning():
+            self.capture_thread.update_parameters(
+                self.skill_level, 
+                self.depth, 
+                self.auto_play, 
+                self.api_key
+            )
 
 class VoiceRecognitionThread(QThread):
     text_recognized = pyqtSignal(str)

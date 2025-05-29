@@ -11066,3 +11066,846 @@ Traceback (most recent call last):
 RuntimeError: Erreur lors de l'initialisation de Stockfish: [WinError 5] Acc�s refus�
 
 2025-05-29 17:25:52,337 [INFO] 127.0.0.1 - - [29/May/2025 17:25:52] "[35m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 500 -
+2025-05-29 17:31:05,474 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.148:5000
+2025-05-29 17:31:05,474 [INFO] [33mPress CTRL+C to quit[0m
+2025-05-29 17:31:57,813 [INFO] Received analyze request
+2025-05-29 17:31:57,813 [INFO] Request method: POST
+2025-05-29 17:31:57,813 [INFO] Request headers: {'Host': '127.0.0.1:5000', 'User-Agent': 'python-requests/2.31.0', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '173976', 'Content-Type': 'multipart/form-data; boundary=a3f1fd3215b0038f3575be20b1248460'}
+2025-05-29 17:31:57,814 [INFO] Processing uploaded file: chessboard.png
+2025-05-29 17:31:57,820 [INFO] Analysis parameters - Skill: 20, Depth: 15
+2025-05-29 17:31:57,821 [INFO] Processing chessboard image
+2025-05-29 17:31:59,398 [INFO] Generated FEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+2025-05-29 17:31:59,399 [INFO] Calculating best move for FEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+2025-05-29 17:31:59,399 [INFO] Parameters - Skill: 20, Depth: 15
+2025-05-29 17:32:00,569 [INFO] Best move found: d2d4 with score: 0.32
+2025-05-29 17:32:00,569 [INFO] Analysis successful: {'fen': 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', 'best_move': 'd2d4', 'score': 32, 'status': 'success', 'timestamp': '2025-05-29T17:32:00.569664'}
+2025-05-29 17:32:00,570 [INFO] 127.0.0.1 - - [29/May/2025 17:32:00] "POST /analyze?skill_level=20&depth=15 HTTP/1.1" 200 -
+2025-05-29 17:32:03,671 [INFO] Received analyze request
+2025-05-29 17:32:03,671 [INFO] Request method: POST
+2025-05-29 17:32:03,671 [INFO] Request headers: {'Host': '127.0.0.1:5000', 'User-Agent': 'python-requests/2.31.0', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '157383', 'Content-Type': 'multipart/form-data; boundary=bf0253e58dcc07cda5e0df6fed40845d'}
+2025-05-29 17:32:03,672 [INFO] Processing uploaded file: chessboard.png
+2025-05-29 17:32:03,686 [INFO] Analysis parameters - Skill: 20, Depth: 15
+2025-05-29 17:32:03,686 [INFO] Processing chessboard image
+2025-05-29 17:32:04,916 [INFO] Generated FEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+2025-05-29 17:32:04,916 [INFO] Calculating best move for FEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+2025-05-29 17:32:04,916 [INFO] Parameters - Skill: 20, Depth: 15
+2025-05-29 17:32:05,975 [INFO] Best move found: d2d4 with score: 0.29
+2025-05-29 17:32:05,975 [INFO] Analysis successful: {'fen': 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', 'best_move': 'd2d4', 'score': 29, 'status': 'success', 'timestamp': '2025-05-29T17:32:05.975470'}
+2025-05-29 17:32:05,975 [INFO] 127.0.0.1 - - [29/May/2025 17:32:05] "POST /analyze?skill_level=20&depth=15 HTTP/1.1" 200 -
+2025-05-29 17:32:09,083 [INFO] Received analyze request
+2025-05-29 17:32:09,084 [INFO] Request method: POST
+2025-05-29 17:32:09,084 [INFO] Request headers: {'Host': '127.0.0.1:5000', 'User-Agent': 'python-requests/2.31.0', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '157383', 'Content-Type': 'multipart/form-data; boundary=89910d94b93eb2e25dc3e1a59e972295'}
+2025-05-29 17:32:09,085 [INFO] Processing uploaded file: chessboard.png
+2025-05-29 17:32:09,097 [INFO] Analysis parameters - Skill: 20, Depth: 15
+2025-05-29 17:32:09,097 [INFO] Processing chessboard image
+2025-05-29 17:32:10,581 [INFO] Generated FEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+2025-05-29 17:32:10,581 [INFO] Calculating best move for FEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+2025-05-29 17:32:10,581 [INFO] Parameters - Skill: 20, Depth: 15
+2025-05-29 17:32:11,618 [INFO] Best move found: d2d4 with score: 0.29
+2025-05-29 17:32:11,618 [INFO] Analysis successful: {'fen': 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', 'best_move': 'd2d4', 'score': 29, 'status': 'success', 'timestamp': '2025-05-29T17:32:11.618698'}
+2025-05-29 17:32:11,619 [INFO] 127.0.0.1 - - [29/May/2025 17:32:11] "POST /analyze?skill_level=20&depth=15 HTTP/1.1" 200 -
+2025-05-29 17:34:18,886 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.148:5000
+2025-05-29 17:34:18,886 [INFO] [33mPress CTRL+C to quit[0m
+2025-05-29 17:34:29,585 [INFO] Received analyze request
+2025-05-29 17:34:29,586 [INFO] 127.0.0.1 - - [29/May/2025 17:34:29] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:34:32,697 [INFO] Received analyze request
+2025-05-29 17:34:32,698 [INFO] 127.0.0.1 - - [29/May/2025 17:34:32] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:34:35,743 [INFO] Received analyze request
+2025-05-29 17:34:35,744 [INFO] 127.0.0.1 - - [29/May/2025 17:34:35] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:34:38,854 [INFO] Received analyze request
+2025-05-29 17:34:38,854 [INFO] 127.0.0.1 - - [29/May/2025 17:34:38] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:34:41,932 [INFO] Received analyze request
+2025-05-29 17:34:41,933 [INFO] 127.0.0.1 - - [29/May/2025 17:34:41] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:34:44,991 [INFO] Received analyze request
+2025-05-29 17:34:44,991 [INFO] 127.0.0.1 - - [29/May/2025 17:34:44] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:34:48,045 [INFO] Received analyze request
+2025-05-29 17:34:48,045 [INFO] 127.0.0.1 - - [29/May/2025 17:34:48] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:47:10,988 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://192.168.1.148:5001
+2025-05-29 17:47:10,988 [INFO] [33mPress CTRL+C to quit[0m
+2025-05-29 17:47:28,116 [INFO] Received analyze request
+2025-05-29 17:47:28,116 [INFO] 127.0.0.1 - - [29/May/2025 17:47:28] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:47:31,205 [INFO] Received analyze request
+2025-05-29 17:47:31,206 [INFO] 127.0.0.1 - - [29/May/2025 17:47:31] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:47:34,301 [INFO] Received analyze request
+2025-05-29 17:47:34,301 [INFO] 127.0.0.1 - - [29/May/2025 17:47:34] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:47:37,357 [INFO] Received analyze request
+2025-05-29 17:47:37,358 [INFO] 127.0.0.1 - - [29/May/2025 17:47:37] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:47:40,480 [INFO] Received analyze request
+2025-05-29 17:47:40,481 [INFO] 127.0.0.1 - - [29/May/2025 17:47:40] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:47:43,568 [INFO] Received analyze request
+2025-05-29 17:47:43,568 [INFO] 127.0.0.1 - - [29/May/2025 17:47:43] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:47:46,619 [INFO] Received analyze request
+2025-05-29 17:47:46,619 [INFO] 127.0.0.1 - - [29/May/2025 17:47:46] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:47:49,724 [INFO] Received analyze request
+2025-05-29 17:47:49,724 [INFO] 127.0.0.1 - - [29/May/2025 17:47:49] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:47:52,830 [INFO] Received analyze request
+2025-05-29 17:47:52,831 [INFO] 127.0.0.1 - - [29/May/2025 17:47:52] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:47:55,880 [INFO] Received analyze request
+2025-05-29 17:47:55,880 [INFO] 127.0.0.1 - - [29/May/2025 17:47:55] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:47:58,939 [INFO] Received analyze request
+2025-05-29 17:47:58,939 [INFO] 127.0.0.1 - - [29/May/2025 17:47:58] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:48:02,050 [INFO] Received analyze request
+2025-05-29 17:48:02,051 [INFO] 127.0.0.1 - - [29/May/2025 17:48:02] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:48:05,147 [INFO] Received analyze request
+2025-05-29 17:48:05,148 [INFO] 127.0.0.1 - - [29/May/2025 17:48:05] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:48:08,197 [INFO] Received analyze request
+2025-05-29 17:48:08,197 [INFO] 127.0.0.1 - - [29/May/2025 17:48:08] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:48:11,250 [INFO] Received analyze request
+2025-05-29 17:48:11,251 [INFO] 127.0.0.1 - - [29/May/2025 17:48:11] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:48:14,303 [INFO] Received analyze request
+2025-05-29 17:48:14,304 [INFO] 127.0.0.1 - - [29/May/2025 17:48:14] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:48:17,359 [INFO] Received analyze request
+2025-05-29 17:48:17,360 [INFO] 127.0.0.1 - - [29/May/2025 17:48:17] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:48:20,410 [INFO] Received analyze request
+2025-05-29 17:48:20,410 [INFO] 127.0.0.1 - - [29/May/2025 17:48:20] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:48:23,467 [INFO] Received analyze request
+2025-05-29 17:48:23,467 [INFO] 127.0.0.1 - - [29/May/2025 17:48:23] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:48:26,518 [INFO] Received analyze request
+2025-05-29 17:48:26,518 [INFO] 127.0.0.1 - - [29/May/2025 17:48:26] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:48:29,568 [INFO] Received analyze request
+2025-05-29 17:48:29,568 [INFO] 127.0.0.1 - - [29/May/2025 17:48:29] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:48:32,667 [INFO] Received analyze request
+2025-05-29 17:48:32,667 [INFO] 127.0.0.1 - - [29/May/2025 17:48:32] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:48:35,725 [INFO] Received analyze request
+2025-05-29 17:48:35,725 [INFO] 127.0.0.1 - - [29/May/2025 17:48:35] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:48:38,778 [INFO] Received analyze request
+2025-05-29 17:48:38,778 [INFO] 127.0.0.1 - - [29/May/2025 17:48:38] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:48:41,823 [INFO] Received analyze request
+2025-05-29 17:48:41,824 [INFO] 127.0.0.1 - - [29/May/2025 17:48:41] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:48:44,877 [INFO] Received analyze request
+2025-05-29 17:48:44,878 [INFO] 127.0.0.1 - - [29/May/2025 17:48:44] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:48:47,928 [INFO] Received analyze request
+2025-05-29 17:48:47,928 [INFO] 127.0.0.1 - - [29/May/2025 17:48:47] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:48:50,987 [INFO] Received analyze request
+2025-05-29 17:48:50,987 [INFO] 127.0.0.1 - - [29/May/2025 17:48:50] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:48:54,041 [INFO] Received analyze request
+2025-05-29 17:48:54,041 [INFO] 127.0.0.1 - - [29/May/2025 17:48:54] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:48:57,091 [INFO] Received analyze request
+2025-05-29 17:48:57,091 [INFO] 127.0.0.1 - - [29/May/2025 17:48:57] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:49:00,142 [INFO] Received analyze request
+2025-05-29 17:49:00,142 [INFO] 127.0.0.1 - - [29/May/2025 17:49:00] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:49:03,206 [INFO] Received analyze request
+2025-05-29 17:49:03,206 [INFO] 127.0.0.1 - - [29/May/2025 17:49:03] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:49:06,308 [INFO] Received analyze request
+2025-05-29 17:49:06,309 [INFO] 127.0.0.1 - - [29/May/2025 17:49:06] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:49:09,365 [INFO] Received analyze request
+2025-05-29 17:49:09,365 [INFO] 127.0.0.1 - - [29/May/2025 17:49:09] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:49:12,467 [INFO] Received analyze request
+2025-05-29 17:49:12,467 [INFO] 127.0.0.1 - - [29/May/2025 17:49:12] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:49:15,527 [INFO] Received analyze request
+2025-05-29 17:49:15,527 [INFO] 127.0.0.1 - - [29/May/2025 17:49:15] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:49:18,578 [INFO] Received analyze request
+2025-05-29 17:49:18,578 [INFO] 127.0.0.1 - - [29/May/2025 17:49:18] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:49:21,631 [INFO] Received analyze request
+2025-05-29 17:49:21,631 [INFO] 127.0.0.1 - - [29/May/2025 17:49:21] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:49:24,708 [INFO] Received analyze request
+2025-05-29 17:49:24,708 [INFO] 127.0.0.1 - - [29/May/2025 17:49:24] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:49:27,759 [INFO] Received analyze request
+2025-05-29 17:49:27,760 [INFO] 127.0.0.1 - - [29/May/2025 17:49:27] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:49:59,809 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://192.168.1.148:5001
+2025-05-29 17:49:59,810 [INFO] [33mPress CTRL+C to quit[0m
+2025-05-29 17:51:42,923 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://192.168.1.148:5001
+2025-05-29 17:51:42,923 [INFO] [33mPress CTRL+C to quit[0m
+2025-05-29 17:51:56,372 [INFO] Received analyze request
+2025-05-29 17:51:56,372 [INFO] 127.0.0.1 - - [29/May/2025 17:51:56] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:51:59,467 [INFO] Received analyze request
+2025-05-29 17:51:59,467 [INFO] 127.0.0.1 - - [29/May/2025 17:51:59] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:52:02,564 [INFO] Received analyze request
+2025-05-29 17:52:02,565 [INFO] 127.0.0.1 - - [29/May/2025 17:52:02] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:52:05,628 [INFO] Received analyze request
+2025-05-29 17:52:05,628 [INFO] 127.0.0.1 - - [29/May/2025 17:52:05] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:52:08,732 [INFO] Received analyze request
+2025-05-29 17:52:08,813 [INFO] 127.0.0.1 - - [29/May/2025 17:52:08] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:52:11,917 [INFO] Received analyze request
+2025-05-29 17:52:12,020 [INFO] 127.0.0.1 - - [29/May/2025 17:52:12] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:52:15,086 [INFO] Received analyze request
+2025-05-29 17:52:15,161 [INFO] 127.0.0.1 - - [29/May/2025 17:52:15] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:52:18,203 [INFO] Received analyze request
+2025-05-29 17:52:18,281 [INFO] 127.0.0.1 - - [29/May/2025 17:52:18] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:52:21,341 [INFO] Received analyze request
+2025-05-29 17:52:21,425 [INFO] 127.0.0.1 - - [29/May/2025 17:52:21] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:52:24,510 [INFO] Received analyze request
+2025-05-29 17:52:24,568 [INFO] 127.0.0.1 - - [29/May/2025 17:52:24] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:52:27,625 [INFO] Received analyze request
+2025-05-29 17:52:27,693 [INFO] 127.0.0.1 - - [29/May/2025 17:52:27] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:54:51,973 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://192.168.1.148:5001
+2025-05-29 17:54:51,973 [INFO] [33mPress CTRL+C to quit[0m
+2025-05-29 17:55:00,360 [INFO] Received analyze request
+2025-05-29 17:55:00,360 [INFO] 127.0.0.1 - - [29/May/2025 17:55:00] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:55:03,460 [INFO] Received analyze request
+2025-05-29 17:55:03,460 [INFO] 127.0.0.1 - - [29/May/2025 17:55:03] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:55:06,560 [INFO] Received analyze request
+2025-05-29 17:55:06,637 [ERROR] Erreur lors de la vérification de la clé API: 1054 (42S22): Unknown column 'is_valid' in 'field list'
+2025-05-29 17:55:06,638 [INFO] 127.0.0.1 - - [29/May/2025 17:55:06] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:55:09,737 [INFO] Received analyze request
+2025-05-29 17:55:09,797 [ERROR] Erreur lors de la vérification de la clé API: 1054 (42S22): Unknown column 'is_valid' in 'field list'
+2025-05-29 17:55:09,799 [INFO] 127.0.0.1 - - [29/May/2025 17:55:09] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:55:12,878 [INFO] Received analyze request
+2025-05-29 17:55:12,932 [ERROR] Erreur lors de la vérification de la clé API: 1054 (42S22): Unknown column 'is_valid' in 'field list'
+2025-05-29 17:55:12,933 [INFO] 127.0.0.1 - - [29/May/2025 17:55:12] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:55:15,987 [INFO] Received analyze request
+2025-05-29 17:55:16,063 [ERROR] Erreur lors de la vérification de la clé API: 1054 (42S22): Unknown column 'is_valid' in 'field list'
+2025-05-29 17:55:16,065 [INFO] 127.0.0.1 - - [29/May/2025 17:55:16] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:55:19,122 [INFO] Received analyze request
+2025-05-29 17:55:19,192 [ERROR] Erreur lors de la vérification de la clé API: 1054 (42S22): Unknown column 'is_valid' in 'field list'
+2025-05-29 17:55:19,193 [INFO] 127.0.0.1 - - [29/May/2025 17:55:19] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:55:22,239 [INFO] Received analyze request
+2025-05-29 17:55:22,311 [ERROR] Erreur lors de la vérification de la clé API: 1054 (42S22): Unknown column 'is_valid' in 'field list'
+2025-05-29 17:55:22,312 [INFO] 127.0.0.1 - - [29/May/2025 17:55:22] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:55:25,366 [INFO] Received analyze request
+2025-05-29 17:55:25,439 [ERROR] Erreur lors de la vérification de la clé API: 1054 (42S22): Unknown column 'is_valid' in 'field list'
+2025-05-29 17:55:25,440 [INFO] 127.0.0.1 - - [29/May/2025 17:55:25] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:55:28,505 [INFO] Received analyze request
+2025-05-29 17:55:28,570 [ERROR] Erreur lors de la vérification de la clé API: 1054 (42S22): Unknown column 'is_valid' in 'field list'
+2025-05-29 17:55:28,572 [INFO] 127.0.0.1 - - [29/May/2025 17:55:28] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:55:31,632 [INFO] Received analyze request
+2025-05-29 17:55:31,702 [ERROR] Erreur lors de la vérification de la clé API: 1054 (42S22): Unknown column 'is_valid' in 'field list'
+2025-05-29 17:55:31,703 [INFO] 127.0.0.1 - - [29/May/2025 17:55:31] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:55:34,756 [INFO] Received analyze request
+2025-05-29 17:55:34,830 [ERROR] Erreur lors de la vérification de la clé API: 1054 (42S22): Unknown column 'is_valid' in 'field list'
+2025-05-29 17:55:34,832 [INFO] 127.0.0.1 - - [29/May/2025 17:55:34] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:55:37,928 [INFO] Received analyze request
+2025-05-29 17:55:38,010 [ERROR] Erreur lors de la vérification de la clé API: 1054 (42S22): Unknown column 'is_valid' in 'field list'
+2025-05-29 17:55:38,011 [INFO] 127.0.0.1 - - [29/May/2025 17:55:38] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:55:41,051 [INFO] Received analyze request
+2025-05-29 17:55:41,124 [ERROR] Erreur lors de la vérification de la clé API: 1054 (42S22): Unknown column 'is_valid' in 'field list'
+2025-05-29 17:55:41,125 [INFO] 127.0.0.1 - - [29/May/2025 17:55:41] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:55:49,151 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://192.168.1.148:5001
+2025-05-29 17:55:49,152 [INFO] [33mPress CTRL+C to quit[0m
+2025-05-29 17:56:11,263 [INFO] Received analyze request
+2025-05-29 17:56:11,263 [INFO] Vérification de la clé API reçue: ''
+2025-05-29 17:56:11,264 [INFO] 127.0.0.1 - - [29/May/2025 17:56:11] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:56:14,321 [INFO] Received analyze request
+2025-05-29 17:56:14,322 [INFO] Vérification de la clé API reçue: ''
+2025-05-29 17:56:14,322 [INFO] 127.0.0.1 - - [29/May/2025 17:56:14] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:56:17,400 [INFO] Received analyze request
+2025-05-29 17:56:17,400 [INFO] Vérification de la clé API reçue: ''
+2025-05-29 17:56:17,401 [INFO] 127.0.0.1 - - [29/May/2025 17:56:17] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:56:20,511 [INFO] Received analyze request
+2025-05-29 17:56:20,511 [INFO] Vérification de la clé API reçue: ''
+2025-05-29 17:56:20,512 [INFO] 127.0.0.1 - - [29/May/2025 17:56:20] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:56:23,612 [INFO] Received analyze request
+2025-05-29 17:56:23,612 [INFO] Vérification de la clé API reçue: 'sk-chessbot-d4891915c28dd1c8971493c08e53b94e'
+2025-05-29 17:56:23,688 [INFO] Résultat SQL pour la clé: (1,)
+2025-05-29 17:56:23,689 [INFO] Request method: POST
+2025-05-29 17:56:23,689 [INFO] Request headers: {'Host': '127.0.0.1:5001', 'User-Agent': 'python-requests/2.31.0', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'X-Api-Key': 'sk-chessbot-d4891915c28dd1c8971493c08e53b94e', 'Content-Length': '157383', 'Content-Type': 'multipart/form-data; boundary=058c5ef365608511897739f8a09c3246'}
+2025-05-29 17:56:23,690 [INFO] Processing uploaded file: chessboard.png
+2025-05-29 17:56:23,696 [INFO] Analysis parameters - Skill: 20, Depth: 15
+2025-05-29 17:56:23,696 [INFO] Processing chessboard image
+2025-05-29 17:56:24,947 [INFO] Generated FEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+2025-05-29 17:56:24,947 [INFO] Calculating best move for FEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+2025-05-29 17:56:24,947 [INFO] Parameters - Skill: 20, Depth: 15
+2025-05-29 17:56:26,050 [INFO] Best move found: d2d4 with score: 0.34
+2025-05-29 17:56:26,050 [INFO] Analysis successful: {'fen': 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', 'best_move': 'd2d4', 'score': 34, 'status': 'success', 'timestamp': '2025-05-29T17:56:26.050292'}
+2025-05-29 17:56:26,050 [INFO] 127.0.0.1 - - [29/May/2025 17:56:26] "POST /analyze?skill_level=20&depth=15 HTTP/1.1" 200 -
+2025-05-29 17:56:29,105 [INFO] Received analyze request
+2025-05-29 17:56:29,105 [INFO] Vérification de la clé API reçue: 'sk-chessbot-d4891915c28dd1c8971493c08e53b94e'
+2025-05-29 17:56:29,176 [INFO] Résultat SQL pour la clé: (1,)
+2025-05-29 17:56:29,177 [INFO] Request method: POST
+2025-05-29 17:56:29,177 [INFO] Request headers: {'Host': '127.0.0.1:5001', 'User-Agent': 'python-requests/2.31.0', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'X-Api-Key': 'sk-chessbot-d4891915c28dd1c8971493c08e53b94e', 'Content-Length': '157383', 'Content-Type': 'multipart/form-data; boundary=07b4b31f1e9b5487314596fe5b82535b'}
+2025-05-29 17:56:29,178 [INFO] Processing uploaded file: chessboard.png
+2025-05-29 17:56:29,183 [INFO] Analysis parameters - Skill: 20, Depth: 15
+2025-05-29 17:56:29,183 [INFO] Processing chessboard image
+2025-05-29 17:56:30,387 [INFO] Generated FEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+2025-05-29 17:56:30,388 [INFO] Calculating best move for FEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+2025-05-29 17:56:30,388 [INFO] Parameters - Skill: 20, Depth: 15
+2025-05-29 17:56:31,413 [INFO] Best move found: d2d4 with score: 0.34
+2025-05-29 17:56:31,413 [INFO] Analysis successful: {'fen': 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', 'best_move': 'd2d4', 'score': 34, 'status': 'success', 'timestamp': '2025-05-29T17:56:31.413730'}
+2025-05-29 17:56:31,413 [INFO] 127.0.0.1 - - [29/May/2025 17:56:31] "POST /analyze?skill_level=20&depth=15 HTTP/1.1" 200 -
+2025-05-29 17:56:34,511 [INFO] Received analyze request
+2025-05-29 17:56:34,511 [INFO] Vérification de la clé API reçue: 'sk-chessbot-d4891915c28dd1c8971493c08e53b94e'
+2025-05-29 17:56:34,593 [INFO] Résultat SQL pour la clé: (1,)
+2025-05-29 17:56:34,593 [INFO] Request method: POST
+2025-05-29 17:56:34,593 [INFO] Request headers: {'Host': '127.0.0.1:5001', 'User-Agent': 'python-requests/2.31.0', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'X-Api-Key': 'sk-chessbot-d4891915c28dd1c8971493c08e53b94e', 'Content-Length': '157383', 'Content-Type': 'multipart/form-data; boundary=bb501ae9b17709a3a8b64826331c8e8c'}
+2025-05-29 17:56:34,594 [INFO] Processing uploaded file: chessboard.png
+2025-05-29 17:56:34,599 [INFO] Analysis parameters - Skill: 20, Depth: 15
+2025-05-29 17:56:34,599 [INFO] Processing chessboard image
+2025-05-29 17:56:35,769 [INFO] Generated FEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+2025-05-29 17:56:35,769 [INFO] Calculating best move for FEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+2025-05-29 17:56:35,769 [INFO] Parameters - Skill: 20, Depth: 15
+2025-05-29 17:56:36,780 [INFO] Best move found: d2d4 with score: 0.28
+2025-05-29 17:56:36,780 [INFO] Analysis successful: {'fen': 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', 'best_move': 'd2d4', 'score': 28, 'status': 'success', 'timestamp': '2025-05-29T17:56:36.780194'}
+2025-05-29 17:56:36,780 [INFO] 127.0.0.1 - - [29/May/2025 17:56:36] "POST /analyze?skill_level=20&depth=15 HTTP/1.1" 200 -
+2025-05-29 17:56:39,836 [INFO] Received analyze request
+2025-05-29 17:56:39,836 [INFO] Vérification de la clé API reçue: 'sk-chessbot-d4891915c28dd1c8971493c08e53b94'
+2025-05-29 17:56:39,896 [INFO] Résultat SQL pour la clé: None
+2025-05-29 17:56:39,897 [INFO] 127.0.0.1 - - [29/May/2025 17:56:39] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:56:42,949 [INFO] Received analyze request
+2025-05-29 17:56:42,949 [INFO] Vérification de la clé API reçue: 'sk-chessbot-d4891915c28dd1c8971493c08e53b94e'
+2025-05-29 17:56:43,015 [INFO] Résultat SQL pour la clé: (1,)
+2025-05-29 17:56:43,015 [INFO] Request method: POST
+2025-05-29 17:56:43,016 [INFO] Request headers: {'Host': '127.0.0.1:5001', 'User-Agent': 'python-requests/2.31.0', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'X-Api-Key': 'sk-chessbot-d4891915c28dd1c8971493c08e53b94e', 'Content-Length': '157383', 'Content-Type': 'multipart/form-data; boundary=1938b4018db6f4ede143daacc032de55'}
+2025-05-29 17:56:43,016 [INFO] Processing uploaded file: chessboard.png
+2025-05-29 17:56:43,021 [INFO] Analysis parameters - Skill: 20, Depth: 15
+2025-05-29 17:56:43,021 [INFO] Processing chessboard image
+2025-05-29 17:56:44,275 [INFO] Generated FEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+2025-05-29 17:56:44,275 [INFO] Calculating best move for FEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+2025-05-29 17:56:44,275 [INFO] Parameters - Skill: 20, Depth: 15
+2025-05-29 17:56:45,293 [INFO] Best move found: d2d4 with score: 0.32
+2025-05-29 17:56:45,293 [INFO] Analysis successful: {'fen': 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', 'best_move': 'd2d4', 'score': 32, 'status': 'success', 'timestamp': '2025-05-29T17:56:45.293743'}
+2025-05-29 17:56:45,294 [INFO] 127.0.0.1 - - [29/May/2025 17:56:45] "POST /analyze?skill_level=20&depth=15 HTTP/1.1" 200 -
+2025-05-29 17:56:48,351 [INFO] Received analyze request
+2025-05-29 17:56:48,352 [INFO] Vérification de la clé API reçue: 'sk-chessbot-d4891915c28dd1c8971493c08e53b94e'
+2025-05-29 17:56:48,414 [INFO] Résultat SQL pour la clé: (1,)
+2025-05-29 17:56:48,414 [INFO] Request method: POST
+2025-05-29 17:56:48,415 [INFO] Request headers: {'Host': '127.0.0.1:5001', 'User-Agent': 'python-requests/2.31.0', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'X-Api-Key': 'sk-chessbot-d4891915c28dd1c8971493c08e53b94e', 'Content-Length': '157383', 'Content-Type': 'multipart/form-data; boundary=538d169c707e64197e72607d9476f67d'}
+2025-05-29 17:56:48,415 [INFO] Processing uploaded file: chessboard.png
+2025-05-29 17:56:48,420 [INFO] Analysis parameters - Skill: 20, Depth: 15
+2025-05-29 17:56:48,421 [INFO] Processing chessboard image
+2025-05-29 17:56:49,636 [INFO] Generated FEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+2025-05-29 17:56:49,636 [INFO] Calculating best move for FEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+2025-05-29 17:56:49,636 [INFO] Parameters - Skill: 20, Depth: 15
+2025-05-29 17:56:50,653 [INFO] Best move found: d2d4 with score: 0.34
+2025-05-29 17:56:50,653 [INFO] Analysis successful: {'fen': 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', 'best_move': 'd2d4', 'score': 34, 'status': 'success', 'timestamp': '2025-05-29T17:56:50.653816'}
+2025-05-29 17:56:50,654 [INFO] 127.0.0.1 - - [29/May/2025 17:56:50] "POST /analyze?skill_level=20&depth=15 HTTP/1.1" 200 -
+2025-05-29 17:56:53,758 [INFO] Received analyze request
+2025-05-29 17:56:53,758 [INFO] Vérification de la clé API reçue: 'sk-chessbot-d4891915c28dd1c8971493c08e53b94e'
+2025-05-29 17:56:53,841 [INFO] Résultat SQL pour la clé: (1,)
+2025-05-29 17:56:53,842 [INFO] Request method: POST
+2025-05-29 17:56:53,842 [INFO] Request headers: {'Host': '127.0.0.1:5001', 'User-Agent': 'python-requests/2.31.0', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'X-Api-Key': 'sk-chessbot-d4891915c28dd1c8971493c08e53b94e', 'Content-Length': '157383', 'Content-Type': 'multipart/form-data; boundary=eef2497ecad62ada34860b8679ebbc99'}
+2025-05-29 17:56:53,843 [INFO] Processing uploaded file: chessboard.png
+2025-05-29 17:56:53,848 [INFO] Analysis parameters - Skill: 20, Depth: 15
+2025-05-29 17:56:53,848 [INFO] Processing chessboard image
+2025-05-29 17:56:55,096 [INFO] Generated FEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+2025-05-29 17:56:55,096 [INFO] Calculating best move for FEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+2025-05-29 17:56:55,096 [INFO] Parameters - Skill: 20, Depth: 15
+2025-05-29 17:56:56,187 [INFO] Best move found: d2d4 with score: 0.27
+2025-05-29 17:56:56,188 [INFO] Analysis successful: {'fen': 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', 'best_move': 'd2d4', 'score': 27, 'status': 'success', 'timestamp': '2025-05-29T17:56:56.188035'}
+2025-05-29 17:56:56,188 [INFO] 127.0.0.1 - - [29/May/2025 17:56:56] "POST /analyze?skill_level=20&depth=15 HTTP/1.1" 200 -
+2025-05-29 17:56:59,259 [INFO] Received analyze request
+2025-05-29 17:56:59,259 [INFO] Vérification de la clé API reçue: 'sk-chessbot-d4891915c28dd1c8971493c08e53b94e'
+2025-05-29 17:56:59,337 [INFO] Résultat SQL pour la clé: (1,)
+2025-05-29 17:56:59,339 [INFO] Request method: POST
+2025-05-29 17:56:59,339 [INFO] Request headers: {'Host': '127.0.0.1:5001', 'User-Agent': 'python-requests/2.31.0', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'X-Api-Key': 'sk-chessbot-d4891915c28dd1c8971493c08e53b94e', 'Content-Length': '157383', 'Content-Type': 'multipart/form-data; boundary=506ed1c4e0df65ad0239acf768e5e76a'}
+2025-05-29 17:56:59,341 [INFO] Processing uploaded file: chessboard.png
+2025-05-29 17:56:59,349 [INFO] Analysis parameters - Skill: 20, Depth: 15
+2025-05-29 17:56:59,349 [INFO] Processing chessboard image
+2025-05-29 17:57:00,612 [INFO] Generated FEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+2025-05-29 17:57:00,613 [INFO] Calculating best move for FEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+2025-05-29 17:57:00,613 [INFO] Parameters - Skill: 20, Depth: 15
+2025-05-29 17:57:01,670 [INFO] Best move found: d2d4 with score: 0.31
+2025-05-29 17:57:01,670 [INFO] Analysis successful: {'fen': 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', 'best_move': 'd2d4', 'score': 31, 'status': 'success', 'timestamp': '2025-05-29T17:57:01.670398'}
+2025-05-29 17:57:01,670 [INFO] 127.0.0.1 - - [29/May/2025 17:57:01] "POST /analyze?skill_level=20&depth=15 HTTP/1.1" 200 -
+2025-05-29 17:57:04,719 [INFO] Received analyze request
+2025-05-29 17:57:04,720 [INFO] Vérification de la clé API reçue: 'sk-chessbot-d4891915c28dd1c8971493c08e53b94e'
+2025-05-29 17:57:04,781 [INFO] Résultat SQL pour la clé: (0,)
+2025-05-29 17:57:04,782 [INFO] 127.0.0.1 - - [29/May/2025 17:57:04] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:57:07,839 [INFO] Received analyze request
+2025-05-29 17:57:07,840 [INFO] Vérification de la clé API reçue: 'sk-chessbot-d4891915c28dd1c8971493c08e53b94e'
+2025-05-29 17:57:07,905 [INFO] Résultat SQL pour la clé: (0,)
+2025-05-29 17:57:07,906 [INFO] 127.0.0.1 - - [29/May/2025 17:57:07] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:57:10,962 [INFO] Received analyze request
+2025-05-29 17:57:10,963 [INFO] Vérification de la clé API reçue: 'sk-ch'
+2025-05-29 17:57:11,036 [INFO] Résultat SQL pour la clé: None
+2025-05-29 17:57:11,037 [INFO] 127.0.0.1 - - [29/May/2025 17:57:11] "[31m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 401 -
+2025-05-29 17:57:14,098 [INFO] Received analyze request
+2025-05-29 17:57:14,098 [INFO] Vérification de la clé API reçue: 'sk-chessbot-a839745fcba9a0d39648928934337d16'
+2025-05-29 17:57:14,169 [INFO] Résultat SQL pour la clé: (1,)
+2025-05-29 17:57:14,170 [INFO] Request method: POST
+2025-05-29 17:57:14,170 [INFO] Request headers: {'Host': '127.0.0.1:5001', 'User-Agent': 'python-requests/2.31.0', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'X-Api-Key': 'sk-chessbot-a839745fcba9a0d39648928934337d16', 'Content-Length': '157383', 'Content-Type': 'multipart/form-data; boundary=e953ced7b6add788fd0f14e5689384e3'}
+2025-05-29 17:57:14,180 [INFO] Processing uploaded file: chessboard.png
+2025-05-29 17:57:14,185 [INFO] Analysis parameters - Skill: 20, Depth: 15
+2025-05-29 17:57:14,185 [INFO] Processing chessboard image
+2025-05-29 17:57:15,373 [INFO] Generated FEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+2025-05-29 17:57:15,373 [INFO] Calculating best move for FEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+2025-05-29 17:57:15,373 [INFO] Parameters - Skill: 20, Depth: 15
+2025-05-29 17:57:16,397 [INFO] Best move found: d2d4 with score: 0.25
+2025-05-29 17:57:16,397 [INFO] Analysis successful: {'fen': 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', 'best_move': 'd2d4', 'score': 25, 'status': 'success', 'timestamp': '2025-05-29T17:57:16.397915'}
+2025-05-29 17:57:16,398 [INFO] 127.0.0.1 - - [29/May/2025 17:57:16] "POST /analyze?skill_level=20&depth=15 HTTP/1.1" 200 -
+2025-05-29 17:57:19,446 [INFO] Received analyze request
+2025-05-29 17:57:19,447 [INFO] Vérification de la clé API reçue: 'sk-chessbot-a839745fcba9a0d39648928934337d16'
+2025-05-29 17:57:19,508 [INFO] Résultat SQL pour la clé: (1,)
+2025-05-29 17:57:19,509 [INFO] Request method: POST
+2025-05-29 17:57:19,509 [INFO] Request headers: {'Host': '127.0.0.1:5001', 'User-Agent': 'python-requests/2.31.0', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'X-Api-Key': 'sk-chessbot-a839745fcba9a0d39648928934337d16', 'Content-Length': '157383', 'Content-Type': 'multipart/form-data; boundary=9cd257023f6e3290f60c358d1c1a3dd4'}
+2025-05-29 17:57:19,510 [INFO] Processing uploaded file: chessboard.png
+2025-05-29 17:57:19,515 [INFO] Analysis parameters - Skill: 20, Depth: 15
+2025-05-29 17:57:19,515 [INFO] Processing chessboard image
+2025-05-29 17:57:20,735 [INFO] Generated FEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+2025-05-29 17:57:20,735 [INFO] Calculating best move for FEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+2025-05-29 17:57:20,735 [INFO] Parameters - Skill: 20, Depth: 15
+2025-05-29 17:57:21,796 [INFO] Best move found: d2d4 with score: 0.37
+2025-05-29 17:57:21,796 [INFO] Analysis successful: {'fen': 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', 'best_move': 'd2d4', 'score': 37, 'status': 'success', 'timestamp': '2025-05-29T17:57:21.796270'}
+2025-05-29 17:57:21,796 [INFO] 127.0.0.1 - - [29/May/2025 17:57:21] "POST /analyze?skill_level=20&depth=15 HTTP/1.1" 200 -
+2025-05-29 17:57:24,891 [INFO] Received analyze request
+2025-05-29 17:57:24,891 [INFO] Vérification de la clé API reçue: 'sk-chessbot-a839745fcba9a0d39648928934337d16'
+2025-05-29 17:57:24,963 [INFO] Résultat SQL pour la clé: (1,)
+2025-05-29 17:57:24,964 [INFO] Request method: POST
+2025-05-29 17:57:24,964 [INFO] Request headers: {'Host': '127.0.0.1:5001', 'User-Agent': 'python-requests/2.31.0', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'X-Api-Key': 'sk-chessbot-a839745fcba9a0d39648928934337d16', 'Content-Length': '157383', 'Content-Type': 'multipart/form-data; boundary=ea0ce173d2df4d305287450dd6ca6fb2'}
+2025-05-29 17:57:24,965 [INFO] Processing uploaded file: chessboard.png
+2025-05-29 17:57:24,970 [INFO] Analysis parameters - Skill: 20, Depth: 15
+2025-05-29 17:57:24,970 [INFO] Processing chessboard image
+2025-05-29 17:57:26,173 [INFO] Generated FEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+2025-05-29 17:57:26,173 [INFO] Calculating best move for FEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+2025-05-29 17:57:26,173 [INFO] Parameters - Skill: 20, Depth: 15
+2025-05-29 17:57:27,198 [INFO] Best move found: d2d4 with score: 0.34
+2025-05-29 17:57:27,198 [INFO] Analysis successful: {'fen': 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', 'best_move': 'd2d4', 'score': 34, 'status': 'success', 'timestamp': '2025-05-29T17:57:27.198786'}
+2025-05-29 17:57:27,199 [INFO] 127.0.0.1 - - [29/May/2025 17:57:27] "POST /analyze?skill_level=20&depth=15 HTTP/1.1" 200 -
+2025-05-29 17:57:30,251 [INFO] Received analyze request
+2025-05-29 17:57:30,251 [INFO] Vérification de la clé API reçue: 'sk-chessbot-a839745fcba9a0d39648928934337d16'
+2025-05-29 17:57:30,326 [INFO] Résultat SQL pour la clé: (1,)
+2025-05-29 17:57:30,327 [INFO] Request method: POST
+2025-05-29 17:57:30,327 [INFO] Request headers: {'Host': '127.0.0.1:5001', 'User-Agent': 'python-requests/2.31.0', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'X-Api-Key': 'sk-chessbot-a839745fcba9a0d39648928934337d16', 'Content-Length': '157383', 'Content-Type': 'multipart/form-data; boundary=cdaf191cfafcf0da6cb7d75871ade380'}
+2025-05-29 17:57:30,328 [INFO] Processing uploaded file: chessboard.png
+2025-05-29 17:57:30,333 [INFO] Analysis parameters - Skill: 20, Depth: 15
+2025-05-29 17:57:30,333 [INFO] Processing chessboard image
+2025-05-29 17:57:31,557 [INFO] Generated FEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+2025-05-29 17:57:31,557 [INFO] Calculating best move for FEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+2025-05-29 17:57:31,557 [INFO] Parameters - Skill: 20, Depth: 15
+2025-05-29 17:57:32,620 [INFO] Best move found: d2d4 with score: 0.37
+2025-05-29 17:57:32,620 [INFO] Analysis successful: {'fen': 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', 'best_move': 'd2d4', 'score': 37, 'status': 'success', 'timestamp': '2025-05-29T17:57:32.620522'}
+2025-05-29 17:57:32,620 [INFO] 127.0.0.1 - - [29/May/2025 17:57:32] "POST /analyze?skill_level=20&depth=15 HTTP/1.1" 200 -
+2025-05-29 17:57:35,675 [INFO] Received analyze request
+2025-05-29 17:57:35,675 [INFO] Vérification de la clé API reçue: 'sk-chessbot-a839745fcba9a0d39648928934337d16'
+2025-05-29 17:57:35,756 [INFO] Résultat SQL pour la clé: (1,)
+2025-05-29 17:57:35,757 [INFO] Request method: POST
+2025-05-29 17:57:35,757 [INFO] Request headers: {'Host': '127.0.0.1:5001', 'User-Agent': 'python-requests/2.31.0', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'X-Api-Key': 'sk-chessbot-a839745fcba9a0d39648928934337d16', 'Content-Length': '137781', 'Content-Type': 'multipart/form-data; boundary=da39278b151dfd252fb47be449b2eb6a'}
+2025-05-29 17:57:35,758 [INFO] Processing uploaded file: chessboard.png
+2025-05-29 17:57:35,763 [INFO] Analysis parameters - Skill: 20, Depth: 15
+2025-05-29 17:57:35,763 [INFO] Processing chessboard image
+2025-05-29 17:57:37,033 [INFO] Generated FEN: Nkbqkbnr/pnpppppp/nn6/nn6/nn6/nn6/nnPPPPPP/nnBQKBNR w KQkq - 0 1
+2025-05-29 17:57:37,033 [INFO] Calculating best move for FEN: Nkbqkbnr/pnpppppp/nn6/nn6/nn6/nn6/nnPPPPPP/nnBQKBNR w KQkq - 0 1
+2025-05-29 17:57:37,033 [INFO] Parameters - Skill: 20, Depth: 15
+2025-05-29 17:57:38,036 [INFO] Best move found: f2f4 with score: -0.05
+2025-05-29 17:57:38,036 [INFO] Analysis successful: {'fen': 'Nkbqkbnr/pnpppppp/nn6/nn6/nn6/nn6/nnPPPPPP/nnBQKBNR w KQkq - 0 1', 'best_move': 'f2f4', 'score': -5, 'status': 'success', 'timestamp': '2025-05-29T17:57:38.036123'}
+2025-05-29 17:57:38,036 [INFO] 127.0.0.1 - - [29/May/2025 17:57:38] "POST /analyze?skill_level=20&depth=15 HTTP/1.1" 200 -
+2025-05-29 17:57:41,225 [INFO] Received analyze request
+2025-05-29 17:57:41,226 [INFO] Vérification de la clé API reçue: 'sk-chessbot-a839745fcba9a0d39648928934337d16'
+2025-05-29 17:57:41,298 [INFO] Résultat SQL pour la clé: (1,)
+2025-05-29 17:57:41,299 [INFO] Request method: POST
+2025-05-29 17:57:41,300 [INFO] Request headers: {'Host': '127.0.0.1:5001', 'User-Agent': 'python-requests/2.31.0', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'X-Api-Key': 'sk-chessbot-a839745fcba9a0d39648928934337d16', 'Content-Length': '1103176', 'Content-Type': 'multipart/form-data; boundary=a09c73e70456379084ff92e4ac619e72'}
+2025-05-29 17:57:41,303 [INFO] Processing uploaded file: chessboard.png
+2025-05-29 17:57:41,323 [INFO] Analysis parameters - Skill: 20, Depth: 15
+2025-05-29 17:57:41,323 [INFO] Processing chessboard image
+2025-05-29 17:57:43,632 [INFO] Generated FEN: RNBQKBNR/PPPPPPPP/1N1K1B1p/r1B1B1B1/1N1B1r1B/q1p1B1Q1/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+2025-05-29 17:57:43,633 [INFO] Calculating best move for FEN: RNBQKBNR/PPPPPPPP/1N1K1B1p/r1B1B1B1/1N1B1r1B/q1p1B1Q1/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+2025-05-29 17:57:43,633 [INFO] Parameters - Skill: 20, Depth: 15
+2025-05-29 17:57:45,374 [ERROR] Stockfish error: The Stockfish process has crashed
+Traceback (most recent call last):
+  File "/home/slayz/Repo Git/hess.com/ChessBotApi/api.py", line 171, in best_move_from_stockfish
+    move = stockfish.get_best_move_time(1000)  # 1000 ms de calcul
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/slayz/.local/lib/python3.11/site-packages/stockfish/models.py", line 351, in get_best_move_time
+    return self._get_best_move_from_sf_popen_process()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/slayz/.local/lib/python3.11/site-packages/stockfish/models.py", line 358, in _get_best_move_from_sf_popen_process
+    text = self._read_line()
+           ^^^^^^^^^^^^^^^^^
+  File "/home/slayz/.local/lib/python3.11/site-packages/stockfish/models.py", line 160, in _read_line
+    raise StockfishException("The Stockfish process has crashed")
+stockfish.models.StockfishException: The Stockfish process has crashed
+
+2025-05-29 17:57:45,374 [ERROR] Analysis failed: Stockfish error: The Stockfish process has crashed
+Traceback (most recent call last):
+  File "/home/slayz/Repo Git/hess.com/ChessBotApi/api.py", line 171, in best_move_from_stockfish
+    move = stockfish.get_best_move_time(1000)  # 1000 ms de calcul
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/slayz/.local/lib/python3.11/site-packages/stockfish/models.py", line 351, in get_best_move_time
+    return self._get_best_move_from_sf_popen_process()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/slayz/.local/lib/python3.11/site-packages/stockfish/models.py", line 358, in _get_best_move_from_sf_popen_process
+    text = self._read_line()
+           ^^^^^^^^^^^^^^^^^
+  File "/home/slayz/.local/lib/python3.11/site-packages/stockfish/models.py", line 160, in _read_line
+    raise StockfishException("The Stockfish process has crashed")
+stockfish.models.StockfishException: The Stockfish process has crashed
+
+2025-05-29 17:57:45,375 [INFO] 127.0.0.1 - - [29/May/2025 17:57:45] "[35m[1mPOST /analyze?skill_level=20&depth=15 HTTP/1.1[0m" 500 -
+2025-05-29 17:57:48,412 [INFO] Received analyze request
+2025-05-29 17:57:48,412 [INFO] Vérification de la clé API reçue: 'sk-chessbot-a839745fcba9a0d39648928934337d16'
+2025-05-29 17:57:48,471 [INFO] Résultat SQL pour la clé: (1,)
+2025-05-29 17:57:48,472 [INFO] Request method: POST
+2025-05-29 17:57:48,473 [INFO] Request headers: {'Host': '127.0.0.1:5001', 'User-Agent': 'python-requests/2.31.0', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'X-Api-Key': 'sk-chessbot-a839745fcba9a0d39648928934337d16', 'Content-Length': '173943', 'Content-Type': 'multipart/form-data; boundary=3f4bfa72fbd7edb49e1cca63a06f1ad8'}
+2025-05-29 17:57:48,474 [INFO] Processing uploaded file: chessboard.png
+2025-05-29 17:57:48,479 [INFO] Analysis parameters - Skill: 20, Depth: 15
+2025-05-29 17:57:48,479 [INFO] Processing chessboard image
+2025-05-29 17:57:51,459 [INFO] Generated FEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+2025-05-29 17:57:51,459 [INFO] Calculating best move for FEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+2025-05-29 17:57:51,460 [INFO] Parameters - Skill: 20, Depth: 15
+2025-05-29 17:57:53,125 [INFO] Best move found: d2d4 with score: 0.34
+2025-05-29 17:57:53,125 [INFO] Analysis successful: {'fen': 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', 'best_move': 'd2d4', 'score': 34, 'status': 'success', 'timestamp': '2025-05-29T17:57:53.125369'}
+2025-05-29 17:57:53,126 [INFO] 127.0.0.1 - - [29/May/2025 17:57:53] "POST /analyze?skill_level=20&depth=15 HTTP/1.1" 200 -
+2025-05-29 17:57:56,174 [INFO] Received analyze request
+2025-05-29 17:57:56,174 [INFO] Vérification de la clé API reçue: 'sk-chessbot-a839745fcba9a0d39648928934337d16'
+2025-05-29 17:57:56,249 [INFO] Résultat SQL pour la clé: (1,)
+2025-05-29 17:57:56,250 [INFO] Request method: POST
+2025-05-29 17:57:56,251 [INFO] Request headers: {'Host': '127.0.0.1:5001', 'User-Agent': 'python-requests/2.31.0', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'X-Api-Key': 'sk-chessbot-a839745fcba9a0d39648928934337d16', 'Content-Length': '173943', 'Content-Type': 'multipart/form-data; boundary=17cd982650a601fc50616629ead75372'}
+2025-05-29 17:57:56,251 [INFO] Processing uploaded file: chessboard.png
+2025-05-29 17:57:56,258 [INFO] Analysis parameters - Skill: 20, Depth: 15
+2025-05-29 17:57:56,258 [INFO] Processing chessboard image
+2025-05-29 17:57:58,766 [INFO] Generated FEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+2025-05-29 17:57:58,766 [INFO] Calculating best move for FEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+2025-05-29 17:57:58,766 [INFO] Parameters - Skill: 20, Depth: 15
+2025-05-29 17:57:59,790 [INFO] Best move found: d2d4 with score: 0.32
+2025-05-29 17:57:59,791 [INFO] Analysis successful: {'fen': 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', 'best_move': 'd2d4', 'score': 32, 'status': 'success', 'timestamp': '2025-05-29T17:57:59.791098'}
+2025-05-29 17:57:59,791 [INFO] 127.0.0.1 - - [29/May/2025 17:57:59] "POST /analyze?skill_level=20&depth=15 HTTP/1.1" 200 -
+2025-05-29 17:58:02,833 [INFO] Received analyze request
+2025-05-29 17:58:02,833 [INFO] Vérification de la clé API reçue: 'sk-chessbot-a839745fcba9a0d39648928934337d16'
+2025-05-29 17:58:02,907 [INFO] Résultat SQL pour la clé: (1,)
+2025-05-29 17:58:02,908 [INFO] Request method: POST
+2025-05-29 17:58:02,908 [INFO] Request headers: {'Host': '127.0.0.1:5001', 'User-Agent': 'python-requests/2.31.0', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'X-Api-Key': 'sk-chessbot-a839745fcba9a0d39648928934337d16', 'Content-Length': '173943', 'Content-Type': 'multipart/form-data; boundary=6e58f3ec11bf9d4b57123ccfe6a9d273'}
+2025-05-29 17:58:02,909 [INFO] Processing uploaded file: chessboard.png
+2025-05-29 17:58:02,914 [INFO] Analysis parameters - Skill: 20, Depth: 15
+2025-05-29 17:58:02,914 [INFO] Processing chessboard image
+2025-05-29 17:58:04,980 [INFO] Generated FEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+2025-05-29 17:58:04,980 [INFO] Calculating best move for FEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+2025-05-29 17:58:04,980 [INFO] Parameters - Skill: 20, Depth: 15
+2025-05-29 17:58:06,048 [INFO] Best move found: d2d4 with score: 0.22
+2025-05-29 17:58:06,049 [INFO] Analysis successful: {'fen': 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', 'best_move': 'd2d4', 'score': 22, 'status': 'success', 'timestamp': '2025-05-29T17:58:06.048970'}
+2025-05-29 17:58:06,049 [INFO] 127.0.0.1 - - [29/May/2025 17:58:06] "POST /analyze?skill_level=20&depth=15 HTTP/1.1" 200 -
+2025-05-29 17:58:09,083 [INFO] Received analyze request
+2025-05-29 17:58:09,083 [INFO] Vérification de la clé API reçue: 'sk-chessbot-a839745fcba9a0d39648928934337d16'
+2025-05-29 17:58:09,137 [INFO] Résultat SQL pour la clé: (1,)
+2025-05-29 17:58:09,138 [INFO] Request method: POST
+2025-05-29 17:58:09,138 [INFO] Request headers: {'Host': '127.0.0.1:5001', 'User-Agent': 'python-requests/2.31.0', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'X-Api-Key': 'sk-chessbot-a839745fcba9a0d39648928934337d16', 'Content-Length': '173943', 'Content-Type': 'multipart/form-data; boundary=7ad748fd5a74089bff9ff3235e1c1413'}
+2025-05-29 17:58:09,139 [INFO] Processing uploaded file: chessboard.png
+2025-05-29 17:58:09,144 [INFO] Analysis parameters - Skill: 20, Depth: 15
+2025-05-29 17:58:09,144 [INFO] Processing chessboard image
+2025-05-29 17:58:10,375 [INFO] Generated FEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+2025-05-29 17:58:10,375 [INFO] Calculating best move for FEN: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+2025-05-29 17:58:10,375 [INFO] Parameters - Skill: 20, Depth: 15
+2025-05-29 17:58:11,401 [INFO] Best move found: d2d4 with score: 0.40
+2025-05-29 17:58:11,401 [INFO] Analysis successful: {'fen': 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', 'best_move': 'd2d4', 'score': 40, 'status': 'success', 'timestamp': '2025-05-29T17:58:11.401725'}
+2025-05-29 17:58:11,402 [INFO] 127.0.0.1 - - [29/May/2025 17:58:11] "POST /analyze?skill_level=20&depth=15 HTTP/1.1" 200 -
+2025-05-29 17:58:15,820 [INFO] Received analyze request
+2025-05-29 17:58:15,820 [INFO] Vérification de la clé API reçue: 'sk-chessbot-a839745fcba9a0d39648928934337d16'
+2025-05-29 17:58:15,900 [INFO] Résultat SQL pour la clé: (1,)
+2025-05-29 17:58:15,901 [INFO] Request method: POST
+2025-05-29 17:58:15,902 [INFO] Request headers: {'Host': '127.0.0.1:5001', 'User-Agent': 'python-requests/2.31.0', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'X-Api-Key': 'sk-chessbot-a839745fcba9a0d39648928934337d16', 'Content-Length': '183361', 'Content-Type': 'multipart/form-data; boundary=2ecb80d5d9b7d9860b5b19de36cfb884'}
+2025-05-29 17:58:15,902 [INFO] Processing uploaded file: chessboard.png
+2025-05-29 17:58:15,908 [INFO] Analysis parameters - Skill: 20, Depth: 15
+2025-05-29 17:58:15,908 [INFO] Processing chessboard image
+2025-05-29 17:58:17,210 [INFO] Generated FEN: rnbqkb1r/pppppppp/5n2/8/3P4/8/PPP1PPPP/RNBQKBNR w KQkq - 0 1
+2025-05-29 17:58:17,210 [INFO] Calculating best move for FEN: rnbqkb1r/pppppppp/5n2/8/3P4/8/PPP1PPPP/RNBQKBNR w KQkq - 0 1
+2025-05-29 17:58:17,210 [INFO] Parameters - Skill: 20, Depth: 15
+2025-05-29 17:58:18,285 [INFO] Best move found: c2c4 with score: 0.34
+2025-05-29 17:58:18,285 [INFO] Analysis successful: {'fen': 'rnbqkb1r/pppppppp/5n2/8/3P4/8/PPP1PPPP/RNBQKBNR w KQkq - 0 1', 'best_move': 'c2c4', 'score': 34, 'status': 'success', 'timestamp': '2025-05-29T17:58:18.285474'}
+2025-05-29 17:58:18,285 [INFO] 127.0.0.1 - - [29/May/2025 17:58:18] "POST /analyze?skill_level=20&depth=15 HTTP/1.1" 200 -
+2025-05-29 17:58:22,622 [INFO] Received analyze request
+2025-05-29 17:58:22,622 [INFO] Vérification de la clé API reçue: 'sk-chessbot-a839745fcba9a0d39648928934337d16'
+2025-05-29 17:58:22,683 [INFO] Résultat SQL pour la clé: (1,)
+2025-05-29 17:58:22,683 [INFO] Request method: POST
+2025-05-29 17:58:22,684 [INFO] Request headers: {'Host': '127.0.0.1:5001', 'User-Agent': 'python-requests/2.31.0', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'X-Api-Key': 'sk-chessbot-a839745fcba9a0d39648928934337d16', 'Content-Length': '187743', 'Content-Type': 'multipart/form-data; boundary=65abc15debf2c2031f39b798cfd5c867'}
+2025-05-29 17:58:22,684 [INFO] Processing uploaded file: chessboard.png
+2025-05-29 17:58:22,690 [INFO] Analysis parameters - Skill: 20, Depth: 15
+2025-05-29 17:58:22,690 [INFO] Processing chessboard image
+2025-05-29 17:58:24,317 [INFO] Generated FEN: rnbqkb1r/pppppppp/5n2/8/2PP4/8/PP2PPPP/RNBQKBNR w KQkq - 0 1
+2025-05-29 17:58:24,317 [INFO] Calculating best move for FEN: rnbqkb1r/pppppppp/5n2/8/2PP4/8/PP2PPPP/RNBQKBNR w KQkq - 0 1
+2025-05-29 17:58:24,317 [INFO] Parameters - Skill: 20, Depth: 15
+2025-05-29 17:58:25,543 [INFO] Best move found: b1c3 with score: 0.93
+2025-05-29 17:58:25,543 [INFO] Analysis successful: {'fen': 'rnbqkb1r/pppppppp/5n2/8/2PP4/8/PP2PPPP/RNBQKBNR w KQkq - 0 1', 'best_move': 'b1c3', 'score': 93, 'status': 'success', 'timestamp': '2025-05-29T17:58:25.543435'}
+2025-05-29 17:58:25,543 [INFO] 127.0.0.1 - - [29/May/2025 17:58:25] "POST /analyze?skill_level=20&depth=15 HTTP/1.1" 200 -
+2025-05-29 17:58:28,596 [INFO] Received analyze request
+2025-05-29 17:58:28,596 [INFO] Vérification de la clé API reçue: 'sk-chessbot-a839745fcba9a0d39648928934337d16'
+2025-05-29 17:58:28,652 [INFO] Résultat SQL pour la clé: (1,)
+2025-05-29 17:58:28,653 [INFO] Request method: POST
+2025-05-29 17:58:28,653 [INFO] Request headers: {'Host': '127.0.0.1:5001', 'User-Agent': 'python-requests/2.31.0', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'X-Api-Key': 'sk-chessbot-a839745fcba9a0d39648928934337d16', 'Content-Length': '191943', 'Content-Type': 'multipart/form-data; boundary=1365e5ca70d222e9a03bb4cf8f4e988f'}
+2025-05-29 17:58:28,654 [INFO] Processing uploaded file: chessboard.png
+2025-05-29 17:58:28,659 [INFO] Analysis parameters - Skill: 20, Depth: 15
+2025-05-29 17:58:28,659 [INFO] Processing chessboard image
+2025-05-29 17:58:30,052 [INFO] Generated FEN: rnbqkb1r/pppppp1p/5np1/8/2PP4/8/PP2PPPP/RNBQKBNR w KQkq - 0 1
+2025-05-29 17:58:30,052 [INFO] Calculating best move for FEN: rnbqkb1r/pppppp1p/5np1/8/2PP4/8/PP2PPPP/RNBQKBNR w KQkq - 0 1
+2025-05-29 17:58:30,052 [INFO] Parameters - Skill: 20, Depth: 15
+2025-05-29 17:58:31,235 [INFO] Best move found: g1f3 with score: 0.25
+2025-05-29 17:58:31,235 [INFO] Analysis successful: {'fen': 'rnbqkb1r/pppppp1p/5np1/8/2PP4/8/PP2PPPP/RNBQKBNR w KQkq - 0 1', 'best_move': 'g1f3', 'score': 25, 'status': 'success', 'timestamp': '2025-05-29T17:58:31.235154'}
+2025-05-29 17:58:31,235 [INFO] 127.0.0.1 - - [29/May/2025 17:58:31] "POST /analyze?skill_level=20&depth=15 HTTP/1.1" 200 -
+2025-05-29 17:58:34,273 [INFO] Received analyze request
+2025-05-29 17:58:34,273 [INFO] Vérification de la clé API reçue: 'sk-chessbot-a839745fcba9a0d39648928934337d16'
+2025-05-29 17:58:34,335 [INFO] Résultat SQL pour la clé: (1,)
+2025-05-29 17:58:34,335 [INFO] Request method: POST
+2025-05-29 17:58:34,336 [INFO] Request headers: {'Host': '127.0.0.1:5001', 'User-Agent': 'python-requests/2.31.0', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'X-Api-Key': 'sk-chessbot-a839745fcba9a0d39648928934337d16', 'Content-Length': '195538', 'Content-Type': 'multipart/form-data; boundary=aa4ef3e910eff69f9c015b8171fd2cde'}
+2025-05-29 17:58:34,336 [INFO] Processing uploaded file: chessboard.png
+2025-05-29 17:58:34,342 [INFO] Analysis parameters - Skill: 20, Depth: 15
+2025-05-29 17:58:34,342 [INFO] Processing chessboard image
+2025-05-29 17:58:35,726 [INFO] Generated FEN: rnbqkb1r/pppppp1p/5np1/8/2PP4/2N5/PP2PPPP/R1BQKBNR w KQkq - 0 1
+2025-05-29 17:58:35,726 [INFO] Calculating best move for FEN: rnbqkb1r/pppppp1p/5np1/8/2PP4/2N5/PP2PPPP/R1BQKBNR w KQkq - 0 1
+2025-05-29 17:58:35,726 [INFO] Parameters - Skill: 20, Depth: 15
+2025-05-29 17:58:36,888 [INFO] Best move found: e2e4 with score: 1.16
+2025-05-29 17:58:36,888 [INFO] Analysis successful: {'fen': 'rnbqkb1r/pppppp1p/5np1/8/2PP4/2N5/PP2PPPP/R1BQKBNR w KQkq - 0 1', 'best_move': 'e2e4', 'score': 116, 'status': 'success', 'timestamp': '2025-05-29T17:58:36.888217'}
+2025-05-29 17:58:36,888 [INFO] 127.0.0.1 - - [29/May/2025 17:58:36] "POST /analyze?skill_level=20&depth=15 HTTP/1.1" 200 -
+2025-05-29 17:58:39,941 [INFO] Received analyze request
+2025-05-29 17:58:39,941 [INFO] Vérification de la clé API reçue: 'sk-chessbot-a839745fcba9a0d39648928934337d16'
+2025-05-29 17:58:40,011 [INFO] Résultat SQL pour la clé: (1,)
+2025-05-29 17:58:40,012 [INFO] Request method: POST
+2025-05-29 17:58:40,012 [INFO] Request headers: {'Host': '127.0.0.1:5001', 'User-Agent': 'python-requests/2.31.0', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'X-Api-Key': 'sk-chessbot-a839745fcba9a0d39648928934337d16', 'Content-Length': '197847', 'Content-Type': 'multipart/form-data; boundary=15a46cf657dec5f22d2ba7fc7d21f475'}
+2025-05-29 17:58:40,012 [INFO] Processing uploaded file: chessboard.png
+2025-05-29 17:58:40,018 [INFO] Analysis parameters - Skill: 20, Depth: 15
+2025-05-29 17:58:40,019 [INFO] Processing chessboard image
+2025-05-29 17:58:42,394 [INFO] Generated FEN: rnbqk2r/ppppppbp/5np1/8/2PP4/2N5/PP2PPPP/R1BQKBNR w KQkq - 0 1
+2025-05-29 17:58:42,394 [INFO] Calculating best move for FEN: rnbqk2r/ppppppbp/5np1/8/2PP4/2N5/PP2PPPP/R1BQKBNR w KQkq - 0 1
+2025-05-29 17:58:42,394 [INFO] Parameters - Skill: 20, Depth: 15
+2025-05-29 17:58:43,465 [INFO] Best move found: e2e4 with score: 0.49
+2025-05-29 17:58:43,466 [INFO] Analysis successful: {'fen': 'rnbqk2r/ppppppbp/5np1/8/2PP4/2N5/PP2PPPP/R1BQKBNR w KQkq - 0 1', 'best_move': 'e2e4', 'score': 49, 'status': 'success', 'timestamp': '2025-05-29T17:58:43.466009'}
+2025-05-29 17:58:43,466 [INFO] 127.0.0.1 - - [29/May/2025 17:58:43] "POST /analyze?skill_level=20&depth=15 HTTP/1.1" 200 -
+2025-05-29 17:58:46,517 [INFO] Received analyze request
+2025-05-29 17:58:46,517 [INFO] Vérification de la clé API reçue: 'sk-chessbot-a839745fcba9a0d39648928934337d16'
+2025-05-29 17:58:46,587 [INFO] Résultat SQL pour la clé: (1,)
+2025-05-29 17:58:46,588 [INFO] Request method: POST
+2025-05-29 17:58:46,588 [INFO] Request headers: {'Host': '127.0.0.1:5001', 'User-Agent': 'python-requests/2.31.0', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'X-Api-Key': 'sk-chessbot-a839745fcba9a0d39648928934337d16', 'Content-Length': '202003', 'Content-Type': 'multipart/form-data; boundary=f0ffec846b27d3cb0cf6e72278597cf0'}
+2025-05-29 17:58:46,589 [INFO] Processing uploaded file: chessboard.png
+2025-05-29 17:58:46,594 [INFO] Analysis parameters - Skill: 20, Depth: 15
+2025-05-29 17:58:46,595 [INFO] Processing chessboard image
+2025-05-29 17:58:47,867 [INFO] Generated FEN: rnbqk2r/ppp1ppbp/3p1np1/8/2PPP3/2N5/PP3PPP/R1BQKBNR w KQkq - 0 1
+2025-05-29 17:58:47,867 [INFO] Calculating best move for FEN: rnbqk2r/ppp1ppbp/3p1np1/8/2PPP3/2N5/PP3PPP/R1BQKBNR w KQkq - 0 1
+2025-05-29 17:58:47,867 [INFO] Parameters - Skill: 20, Depth: 15
+2025-05-29 17:58:48,915 [INFO] Best move found: g1f3 with score: 0.60
+2025-05-29 17:58:48,915 [INFO] Analysis successful: {'fen': 'rnbqk2r/ppp1ppbp/3p1np1/8/2PPP3/2N5/PP3PPP/R1BQKBNR w KQkq - 0 1', 'best_move': 'g1f3', 'score': 60, 'status': 'success', 'timestamp': '2025-05-29T17:58:48.915324'}
+2025-05-29 17:58:48,915 [INFO] 127.0.0.1 - - [29/May/2025 17:58:48] "POST /analyze?skill_level=20&depth=15 HTTP/1.1" 200 -
+2025-05-29 17:58:51,971 [INFO] Received analyze request
+2025-05-29 17:58:51,971 [INFO] Vérification de la clé API reçue: 'sk-chessbot-a839745fcba9a0d39648928934337d16'
+2025-05-29 17:58:52,035 [INFO] Résultat SQL pour la clé: (1,)
+2025-05-29 17:58:52,036 [INFO] Request method: POST
+2025-05-29 17:58:52,036 [INFO] Request headers: {'Host': '127.0.0.1:5001', 'User-Agent': 'python-requests/2.31.0', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'X-Api-Key': 'sk-chessbot-a839745fcba9a0d39648928934337d16', 'Content-Length': '202003', 'Content-Type': 'multipart/form-data; boundary=4bfab09e71e95b01249ea245db129023'}
+2025-05-29 17:58:52,037 [INFO] Processing uploaded file: chessboard.png
+2025-05-29 17:58:52,042 [INFO] Analysis parameters - Skill: 20, Depth: 15
+2025-05-29 17:58:52,042 [INFO] Processing chessboard image
+2025-05-29 17:58:53,281 [INFO] Generated FEN: rnbqk2r/ppp1ppbp/3p1np1/8/2PPP3/2N5/PP3PPP/R1BQKBNR w KQkq - 0 1
+2025-05-29 17:58:53,281 [INFO] Calculating best move for FEN: rnbqk2r/ppp1ppbp/3p1np1/8/2PPP3/2N5/PP3PPP/R1BQKBNR w KQkq - 0 1
+2025-05-29 17:58:53,281 [INFO] Parameters - Skill: 20, Depth: 15
+2025-05-29 17:58:54,429 [INFO] Best move found: g1f3 with score: 0.57
+2025-05-29 17:58:54,430 [INFO] Analysis successful: {'fen': 'rnbqk2r/ppp1ppbp/3p1np1/8/2PPP3/2N5/PP3PPP/R1BQKBNR w KQkq - 0 1', 'best_move': 'g1f3', 'score': 57, 'status': 'success', 'timestamp': '2025-05-29T17:58:54.429970'}
+2025-05-29 17:58:54,430 [INFO] 127.0.0.1 - - [29/May/2025 17:58:54] "POST /analyze?skill_level=20&depth=15 HTTP/1.1" 200 -
+2025-05-29 17:58:57,480 [INFO] Received analyze request
+2025-05-29 17:58:57,480 [INFO] Vérification de la clé API reçue: 'sk-chessbot-a839745fcba9a0d39648928934337d16'
+2025-05-29 17:58:57,552 [INFO] Résultat SQL pour la clé: (1,)
+2025-05-29 17:58:57,553 [INFO] Request method: POST
+2025-05-29 17:58:57,553 [INFO] Request headers: {'Host': '127.0.0.1:5001', 'User-Agent': 'python-requests/2.31.0', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'X-Api-Key': 'sk-chessbot-a839745fcba9a0d39648928934337d16', 'Content-Length': '202003', 'Content-Type': 'multipart/form-data; boundary=35756cd0179690a8b994d51119f779b1'}
+2025-05-29 17:58:57,555 [INFO] Processing uploaded file: chessboard.png
+2025-05-29 17:58:57,564 [INFO] Analysis parameters - Skill: 20, Depth: 15
+2025-05-29 17:58:57,564 [INFO] Processing chessboard image
+2025-05-29 17:58:58,964 [INFO] Generated FEN: rnbqk2r/ppp1ppbp/3p1np1/8/2PPP3/2N5/PP3PPP/R1BQKBNR w KQkq - 0 1
+2025-05-29 17:58:58,964 [INFO] Calculating best move for FEN: rnbqk2r/ppp1ppbp/3p1np1/8/2PPP3/2N5/PP3PPP/R1BQKBNR w KQkq - 0 1
+2025-05-29 17:58:58,964 [INFO] Parameters - Skill: 20, Depth: 15
+2025-05-29 17:59:00,009 [INFO] Best move found: g1f3 with score: 0.59
+2025-05-29 17:59:00,009 [INFO] Analysis successful: {'fen': 'rnbqk2r/ppp1ppbp/3p1np1/8/2PPP3/2N5/PP3PPP/R1BQKBNR w KQkq - 0 1', 'best_move': 'g1f3', 'score': 59, 'status': 'success', 'timestamp': '2025-05-29T17:59:00.009565'}
+2025-05-29 17:59:00,009 [INFO] 127.0.0.1 - - [29/May/2025 17:59:00] "POST /analyze?skill_level=20&depth=15 HTTP/1.1" 200 -
+2025-05-29 17:59:03,112 [INFO] Received analyze request
+2025-05-29 17:59:03,112 [INFO] Vérification de la clé API reçue: 'sk-chessbot-a839745fcba9a0d39648928934337d16'
+2025-05-29 17:59:03,186 [INFO] Résultat SQL pour la clé: (1,)
+2025-05-29 17:59:03,187 [INFO] Request method: POST
+2025-05-29 17:59:03,187 [INFO] Request headers: {'Host': '127.0.0.1:5001', 'User-Agent': 'python-requests/2.31.0', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'X-Api-Key': 'sk-chessbot-a839745fcba9a0d39648928934337d16', 'Content-Length': '202003', 'Content-Type': 'multipart/form-data; boundary=ebe1dd8520b0175b2b41102d41c15191'}
+2025-05-29 17:59:03,188 [INFO] Processing uploaded file: chessboard.png
+2025-05-29 17:59:03,193 [INFO] Analysis parameters - Skill: 20, Depth: 15
+2025-05-29 17:59:03,193 [INFO] Processing chessboard image
+2025-05-29 17:59:04,435 [INFO] Generated FEN: rnbqk2r/ppp1ppbp/3p1np1/8/2PPP3/2N5/PP3PPP/R1BQKBNR w KQkq - 0 1
+2025-05-29 17:59:04,435 [INFO] Calculating best move for FEN: rnbqk2r/ppp1ppbp/3p1np1/8/2PPP3/2N5/PP3PPP/R1BQKBNR w KQkq - 0 1
+2025-05-29 17:59:04,435 [INFO] Parameters - Skill: 20, Depth: 15
+2025-05-29 17:59:05,485 [INFO] Best move found: g1f3 with score: 0.60
+2025-05-29 17:59:05,485 [INFO] Analysis successful: {'fen': 'rnbqk2r/ppp1ppbp/3p1np1/8/2PPP3/2N5/PP3PPP/R1BQKBNR w KQkq - 0 1', 'best_move': 'g1f3', 'score': 60, 'status': 'success', 'timestamp': '2025-05-29T17:59:05.485598'}
+2025-05-29 17:59:05,485 [INFO] 127.0.0.1 - - [29/May/2025 17:59:05] "POST /analyze?skill_level=20&depth=15 HTTP/1.1" 200 -
+2025-05-29 17:59:08,537 [INFO] Received analyze request
+2025-05-29 17:59:08,537 [INFO] Vérification de la clé API reçue: 'sk-chessbot-a839745fcba9a0d39648928934337d16'
+2025-05-29 17:59:08,600 [INFO] Résultat SQL pour la clé: (1,)
+2025-05-29 17:59:08,600 [INFO] Request method: POST
+2025-05-29 17:59:08,601 [INFO] Request headers: {'Host': '127.0.0.1:5001', 'User-Agent': 'python-requests/2.31.0', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'X-Api-Key': 'sk-chessbot-a839745fcba9a0d39648928934337d16', 'Content-Length': '202003', 'Content-Type': 'multipart/form-data; boundary=d8bad848222f98c9960fd6f15bc5f369'}
+2025-05-29 17:59:08,601 [INFO] Processing uploaded file: chessboard.png
+2025-05-29 17:59:08,607 [INFO] Analysis parameters - Skill: 20, Depth: 15
+2025-05-29 17:59:08,607 [INFO] Processing chessboard image
+2025-05-29 17:59:09,907 [INFO] Generated FEN: rnbqk2r/ppp1ppbp/3p1np1/8/2PPP3/2N5/PP3PPP/R1BQKBNR w KQkq - 0 1
+2025-05-29 17:59:09,908 [INFO] Calculating best move for FEN: rnbqk2r/ppp1ppbp/3p1np1/8/2PPP3/2N5/PP3PPP/R1BQKBNR w KQkq - 0 1
+2025-05-29 17:59:09,908 [INFO] Parameters - Skill: 20, Depth: 15
+2025-05-29 17:59:10,976 [INFO] Best move found: g1f3 with score: 0.62
+2025-05-29 17:59:10,976 [INFO] Analysis successful: {'fen': 'rnbqk2r/ppp1ppbp/3p1np1/8/2PPP3/2N5/PP3PPP/R1BQKBNR w KQkq - 0 1', 'best_move': 'g1f3', 'score': 62, 'status': 'success', 'timestamp': '2025-05-29T17:59:10.976786'}
+2025-05-29 17:59:10,977 [INFO] 127.0.0.1 - - [29/May/2025 17:59:10] "POST /analyze?skill_level=20&depth=15 HTTP/1.1" 200 -
+2025-05-29 17:59:14,027 [INFO] Received analyze request
+2025-05-29 17:59:14,027 [INFO] Vérification de la clé API reçue: 'sk-chessbot-a839745fcba9a0d39648928934337d16'
+2025-05-29 17:59:14,084 [INFO] Résultat SQL pour la clé: (1,)
+2025-05-29 17:59:14,084 [INFO] Request method: POST
+2025-05-29 17:59:14,085 [INFO] Request headers: {'Host': '127.0.0.1:5001', 'User-Agent': 'python-requests/2.31.0', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'X-Api-Key': 'sk-chessbot-a839745fcba9a0d39648928934337d16', 'Content-Length': '202003', 'Content-Type': 'multipart/form-data; boundary=26a4626d8341214ffe5f262df4d52ca9'}
+2025-05-29 17:59:14,085 [INFO] Processing uploaded file: chessboard.png
+2025-05-29 17:59:14,091 [INFO] Analysis parameters - Skill: 20, Depth: 15
+2025-05-29 17:59:14,091 [INFO] Processing chessboard image
+2025-05-29 17:59:15,528 [INFO] Generated FEN: rnbqk2r/ppp1ppbp/3p1np1/8/2PPP3/2N5/PP3PPP/R1BQKBNR w KQkq - 0 1
+2025-05-29 17:59:15,528 [INFO] Calculating best move for FEN: rnbqk2r/ppp1ppbp/3p1np1/8/2PPP3/2N5/PP3PPP/R1BQKBNR w KQkq - 0 1
+2025-05-29 17:59:15,528 [INFO] Parameters - Skill: 20, Depth: 15
+2025-05-29 17:59:16,626 [INFO] Best move found: g1f3 with score: 0.54
+2025-05-29 17:59:16,627 [INFO] Analysis successful: {'fen': 'rnbqk2r/ppp1ppbp/3p1np1/8/2PPP3/2N5/PP3PPP/R1BQKBNR w KQkq - 0 1', 'best_move': 'g1f3', 'score': 54, 'status': 'success', 'timestamp': '2025-05-29T17:59:16.627078'}
+2025-05-29 17:59:16,627 [INFO] 127.0.0.1 - - [29/May/2025 17:59:16] "POST /analyze?skill_level=20&depth=15 HTTP/1.1" 200 -
+2025-05-29 17:59:19,723 [INFO] Received analyze request
+2025-05-29 17:59:19,723 [INFO] Vérification de la clé API reçue: 'sk-chessbot-a839745fcba9a0d39648928934337d16'
+2025-05-29 17:59:19,803 [INFO] Résultat SQL pour la clé: (1,)
+2025-05-29 17:59:19,804 [INFO] Request method: POST
+2025-05-29 17:59:19,804 [INFO] Request headers: {'Host': '127.0.0.1:5001', 'User-Agent': 'python-requests/2.31.0', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'X-Api-Key': 'sk-chessbot-a839745fcba9a0d39648928934337d16', 'Content-Length': '202003', 'Content-Type': 'multipart/form-data; boundary=a1e3f9587f20e5e80b3d771756de9156'}
+2025-05-29 17:59:19,804 [INFO] Processing uploaded file: chessboard.png
+2025-05-29 17:59:19,810 [INFO] Analysis parameters - Skill: 20, Depth: 15
+2025-05-29 17:59:19,810 [INFO] Processing chessboard image
+2025-05-29 17:59:21,093 [INFO] Generated FEN: rnbqk2r/ppp1ppbp/3p1np1/8/2PPP3/2N5/PP3PPP/R1BQKBNR w KQkq - 0 1
+2025-05-29 17:59:21,093 [INFO] Calculating best move for FEN: rnbqk2r/ppp1ppbp/3p1np1/8/2PPP3/2N5/PP3PPP/R1BQKBNR w KQkq - 0 1
+2025-05-29 17:59:21,093 [INFO] Parameters - Skill: 20, Depth: 15
+2025-05-29 17:59:22,209 [INFO] Best move found: g1f3 with score: 0.53
+2025-05-29 17:59:22,209 [INFO] Analysis successful: {'fen': 'rnbqk2r/ppp1ppbp/3p1np1/8/2PPP3/2N5/PP3PPP/R1BQKBNR w KQkq - 0 1', 'best_move': 'g1f3', 'score': 53, 'status': 'success', 'timestamp': '2025-05-29T17:59:22.209753'}
+2025-05-29 17:59:22,210 [INFO] 127.0.0.1 - - [29/May/2025 17:59:22] "POST /analyze?skill_level=20&depth=15 HTTP/1.1" 200 -
+2025-05-29 17:59:25,312 [INFO] Received analyze request
+2025-05-29 17:59:25,312 [INFO] Vérification de la clé API reçue: 'sk-chessbot-a839745fcba9a0d39648928934337d16'
+2025-05-29 17:59:25,390 [INFO] Résultat SQL pour la clé: (1,)
+2025-05-29 17:59:25,391 [INFO] Request method: POST
+2025-05-29 17:59:25,391 [INFO] Request headers: {'Host': '127.0.0.1:5001', 'User-Agent': 'python-requests/2.31.0', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'X-Api-Key': 'sk-chessbot-a839745fcba9a0d39648928934337d16', 'Content-Length': '202003', 'Content-Type': 'multipart/form-data; boundary=e46cc5514bfffc96a65647d12d9c3389'}
+2025-05-29 17:59:25,392 [INFO] Processing uploaded file: chessboard.png
+2025-05-29 17:59:25,398 [INFO] Analysis parameters - Skill: 20, Depth: 15
+2025-05-29 17:59:25,398 [INFO] Processing chessboard image
+2025-05-29 17:59:26,664 [INFO] Generated FEN: rnbqk2r/ppp1ppbp/3p1np1/8/2PPP3/2N5/PP3PPP/R1BQKBNR w KQkq - 0 1
+2025-05-29 17:59:26,664 [INFO] Calculating best move for FEN: rnbqk2r/ppp1ppbp/3p1np1/8/2PPP3/2N5/PP3PPP/R1BQKBNR w KQkq - 0 1
+2025-05-29 17:59:26,664 [INFO] Parameters - Skill: 20, Depth: 15
+2025-05-29 17:59:27,687 [INFO] Best move found: g1f3 with score: 0.57
+2025-05-29 17:59:27,688 [INFO] Analysis successful: {'fen': 'rnbqk2r/ppp1ppbp/3p1np1/8/2PPP3/2N5/PP3PPP/R1BQKBNR w KQkq - 0 1', 'best_move': 'g1f3', 'score': 57, 'status': 'success', 'timestamp': '2025-05-29T17:59:27.688011'}
+2025-05-29 17:59:27,688 [INFO] 127.0.0.1 - - [29/May/2025 17:59:27] "POST /analyze?skill_level=20&depth=15 HTTP/1.1" 200 -
+2025-05-29 17:59:30,792 [INFO] Received analyze request
+2025-05-29 17:59:30,792 [INFO] Vérification de la clé API reçue: 'sk-chessbot-a839745fcba9a0d39648928934337d16'
+2025-05-29 17:59:30,874 [INFO] Résultat SQL pour la clé: (1,)
+2025-05-29 17:59:30,875 [INFO] Request method: POST
+2025-05-29 17:59:30,875 [INFO] Request headers: {'Host': '127.0.0.1:5001', 'User-Agent': 'python-requests/2.31.0', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'X-Api-Key': 'sk-chessbot-a839745fcba9a0d39648928934337d16', 'Content-Length': '202003', 'Content-Type': 'multipart/form-data; boundary=694b076b9a259a52da45561a09df6bc0'}
+2025-05-29 17:59:30,876 [INFO] Processing uploaded file: chessboard.png
+2025-05-29 17:59:30,881 [INFO] Analysis parameters - Skill: 20, Depth: 15
+2025-05-29 17:59:30,881 [INFO] Processing chessboard image
+2025-05-29 17:59:32,192 [INFO] Generated FEN: rnbqk2r/ppp1ppbp/3p1np1/8/2PPP3/2N5/PP3PPP/R1BQKBNR w KQkq - 0 1
+2025-05-29 17:59:32,192 [INFO] Calculating best move for FEN: rnbqk2r/ppp1ppbp/3p1np1/8/2PPP3/2N5/PP3PPP/R1BQKBNR w KQkq - 0 1
+2025-05-29 17:59:32,192 [INFO] Parameters - Skill: 20, Depth: 15
+2025-05-29 17:59:33,271 [INFO] Best move found: g1f3 with score: 0.59
+2025-05-29 17:59:33,272 [INFO] Analysis successful: {'fen': 'rnbqk2r/ppp1ppbp/3p1np1/8/2PPP3/2N5/PP3PPP/R1BQKBNR w KQkq - 0 1', 'best_move': 'g1f3', 'score': 59, 'status': 'success', 'timestamp': '2025-05-29T17:59:33.272086'}
+2025-05-29 17:59:33,272 [INFO] 127.0.0.1 - - [29/May/2025 17:59:33] "POST /analyze?skill_level=20&depth=15 HTTP/1.1" 200 -
+2025-05-29 17:59:36,323 [INFO] Received analyze request
+2025-05-29 17:59:36,323 [INFO] Vérification de la clé API reçue: 'sk-chessbot-a839745fcba9a0d39648928934337d16'
+2025-05-29 17:59:36,388 [INFO] Résultat SQL pour la clé: (1,)
+2025-05-29 17:59:36,389 [INFO] Request method: POST
+2025-05-29 17:59:36,389 [INFO] Request headers: {'Host': '127.0.0.1:5001', 'User-Agent': 'python-requests/2.31.0', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'X-Api-Key': 'sk-chessbot-a839745fcba9a0d39648928934337d16', 'Content-Length': '202003', 'Content-Type': 'multipart/form-data; boundary=027537ee74f3a9dbe781b3d2d15ec1e5'}
+2025-05-29 17:59:36,390 [INFO] Processing uploaded file: chessboard.png
+2025-05-29 17:59:36,395 [INFO] Analysis parameters - Skill: 20, Depth: 15
+2025-05-29 17:59:36,395 [INFO] Processing chessboard image
+2025-05-29 17:59:37,677 [INFO] Generated FEN: rnbqk2r/ppp1ppbp/3p1np1/8/2PPP3/2N5/PP3PPP/R1BQKBNR w KQkq - 0 1
+2025-05-29 17:59:37,678 [INFO] Calculating best move for FEN: rnbqk2r/ppp1ppbp/3p1np1/8/2PPP3/2N5/PP3PPP/R1BQKBNR w KQkq - 0 1
+2025-05-29 17:59:37,678 [INFO] Parameters - Skill: 20, Depth: 15
+2025-05-29 17:59:38,761 [INFO] Best move found: g1f3 with score: 0.50
+2025-05-29 17:59:38,761 [INFO] Analysis successful: {'fen': 'rnbqk2r/ppp1ppbp/3p1np1/8/2PPP3/2N5/PP3PPP/R1BQKBNR w KQkq - 0 1', 'best_move': 'g1f3', 'score': 50, 'status': 'success', 'timestamp': '2025-05-29T17:59:38.761559'}
+2025-05-29 17:59:38,761 [INFO] 127.0.0.1 - - [29/May/2025 17:59:38] "POST /analyze?skill_level=20&depth=15 HTTP/1.1" 200 -
+2025-05-29 17:59:41,869 [INFO] Received analyze request
+2025-05-29 17:59:41,869 [INFO] Vérification de la clé API reçue: 'sk-chessbot-a839745fcba9a0d39648928934337d16'
+2025-05-29 17:59:41,941 [INFO] Résultat SQL pour la clé: (1,)
+2025-05-29 17:59:41,942 [INFO] Request method: POST
+2025-05-29 17:59:41,942 [INFO] Request headers: {'Host': '127.0.0.1:5001', 'User-Agent': 'python-requests/2.31.0', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'X-Api-Key': 'sk-chessbot-a839745fcba9a0d39648928934337d16', 'Content-Length': '202003', 'Content-Type': 'multipart/form-data; boundary=30aaca50441eab83e51aa479ce91f393'}
+2025-05-29 17:59:41,943 [INFO] Processing uploaded file: chessboard.png
+2025-05-29 17:59:41,949 [INFO] Analysis parameters - Skill: 20, Depth: 15
+2025-05-29 17:59:41,949 [INFO] Processing chessboard image
+2025-05-29 17:59:43,231 [INFO] Generated FEN: rnbqk2r/ppp1ppbp/3p1np1/8/2PPP3/2N5/PP3PPP/R1BQKBNR w KQkq - 0 1
+2025-05-29 17:59:43,231 [INFO] Calculating best move for FEN: rnbqk2r/ppp1ppbp/3p1np1/8/2PPP3/2N5/PP3PPP/R1BQKBNR w KQkq - 0 1
+2025-05-29 17:59:43,231 [INFO] Parameters - Skill: 20, Depth: 15
+2025-05-29 17:59:44,350 [INFO] Best move found: g1f3 with score: 0.63
+2025-05-29 17:59:44,350 [INFO] Analysis successful: {'fen': 'rnbqk2r/ppp1ppbp/3p1np1/8/2PPP3/2N5/PP3PPP/R1BQKBNR w KQkq - 0 1', 'best_move': 'g1f3', 'score': 63, 'status': 'success', 'timestamp': '2025-05-29T17:59:44.350633'}
+2025-05-29 17:59:44,350 [INFO] 127.0.0.1 - - [29/May/2025 17:59:44] "POST /analyze?skill_level=20&depth=15 HTTP/1.1" 200 -
+2025-05-29 17:59:47,404 [INFO] Received analyze request
+2025-05-29 17:59:47,404 [INFO] Vérification de la clé API reçue: 'sk-chessbot-a839745fcba9a0d39648928934337d16'
+2025-05-29 17:59:47,466 [INFO] Résultat SQL pour la clé: (1,)
+2025-05-29 17:59:47,466 [INFO] Request method: POST
+2025-05-29 17:59:47,467 [INFO] Request headers: {'Host': '127.0.0.1:5001', 'User-Agent': 'python-requests/2.31.0', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'X-Api-Key': 'sk-chessbot-a839745fcba9a0d39648928934337d16', 'Content-Length': '202003', 'Content-Type': 'multipart/form-data; boundary=d2ee731addd860b6d0a477afbff3ee40'}
+2025-05-29 17:59:47,467 [INFO] Processing uploaded file: chessboard.png
+2025-05-29 17:59:47,473 [INFO] Analysis parameters - Skill: 20, Depth: 15
+2025-05-29 17:59:47,473 [INFO] Processing chessboard image
+2025-05-29 17:59:48,771 [INFO] Generated FEN: rnbqk2r/ppp1ppbp/3p1np1/8/2PPP3/2N5/PP3PPP/R1BQKBNR w KQkq - 0 1
+2025-05-29 17:59:48,771 [INFO] Calculating best move for FEN: rnbqk2r/ppp1ppbp/3p1np1/8/2PPP3/2N5/PP3PPP/R1BQKBNR w KQkq - 0 1
+2025-05-29 17:59:48,771 [INFO] Parameters - Skill: 20, Depth: 15
+2025-05-29 17:59:49,875 [INFO] Best move found: g1f3 with score: 0.62
+2025-05-29 17:59:49,875 [INFO] Analysis successful: {'fen': 'rnbqk2r/ppp1ppbp/3p1np1/8/2PPP3/2N5/PP3PPP/R1BQKBNR w KQkq - 0 1', 'best_move': 'g1f3', 'score': 62, 'status': 'success', 'timestamp': '2025-05-29T17:59:49.875564'}
+2025-05-29 17:59:49,875 [INFO] 127.0.0.1 - - [29/May/2025 17:59:49] "POST /analyze?skill_level=20&depth=15 HTTP/1.1" 200 -
+2025-05-29 17:59:52,973 [INFO] Received analyze request
+2025-05-29 17:59:52,973 [INFO] Vérification de la clé API reçue: 'sk-chessbot-a839745fcba9a0d39648928934337d16'
+2025-05-29 17:59:53,051 [INFO] Résultat SQL pour la clé: (1,)
+2025-05-29 17:59:53,052 [INFO] Request method: POST
+2025-05-29 17:59:53,052 [INFO] Request headers: {'Host': '127.0.0.1:5001', 'User-Agent': 'python-requests/2.31.0', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'X-Api-Key': 'sk-chessbot-a839745fcba9a0d39648928934337d16', 'Content-Length': '202003', 'Content-Type': 'multipart/form-data; boundary=39398274840af3b3902897c0cbd8c7cf'}
+2025-05-29 17:59:53,053 [INFO] Processing uploaded file: chessboard.png
+2025-05-29 17:59:53,058 [INFO] Analysis parameters - Skill: 20, Depth: 15
+2025-05-29 17:59:53,058 [INFO] Processing chessboard image
+2025-05-29 17:59:54,298 [INFO] Generated FEN: rnbqk2r/ppp1ppbp/3p1np1/8/2PPP3/2N5/PP3PPP/R1BQKBNR w KQkq - 0 1
+2025-05-29 17:59:54,298 [INFO] Calculating best move for FEN: rnbqk2r/ppp1ppbp/3p1np1/8/2PPP3/2N5/PP3PPP/R1BQKBNR w KQkq - 0 1
+2025-05-29 17:59:54,298 [INFO] Parameters - Skill: 20, Depth: 15
+2025-05-29 17:59:55,449 [INFO] Best move found: g1f3 with score: 0.65
+2025-05-29 17:59:55,449 [INFO] Analysis successful: {'fen': 'rnbqk2r/ppp1ppbp/3p1np1/8/2PPP3/2N5/PP3PPP/R1BQKBNR w KQkq - 0 1', 'best_move': 'g1f3', 'score': 65, 'status': 'success', 'timestamp': '2025-05-29T17:59:55.449247'}
+2025-05-29 17:59:55,449 [INFO] 127.0.0.1 - - [29/May/2025 17:59:55] "POST /analyze?skill_level=20&depth=15 HTTP/1.1" 200 -
+2025-05-29 17:59:58,500 [INFO] Received analyze request
+2025-05-29 17:59:58,500 [INFO] Vérification de la clé API reçue: 'sk-chessbot-a839745fcba9a0d39648928934337d16'
+2025-05-29 17:59:58,564 [INFO] Résultat SQL pour la clé: (1,)
+2025-05-29 17:59:58,565 [INFO] Request method: POST
+2025-05-29 17:59:58,565 [INFO] Request headers: {'Host': '127.0.0.1:5001', 'User-Agent': 'python-requests/2.31.0', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'X-Api-Key': 'sk-chessbot-a839745fcba9a0d39648928934337d16', 'Content-Length': '202003', 'Content-Type': 'multipart/form-data; boundary=2aaf227852057caec30c4daed9dc27f9'}
+2025-05-29 17:59:58,566 [INFO] Processing uploaded file: chessboard.png
+2025-05-29 17:59:58,575 [INFO] Analysis parameters - Skill: 20, Depth: 15
+2025-05-29 17:59:58,575 [INFO] Processing chessboard image
+2025-05-29 17:59:59,808 [INFO] Generated FEN: rnbqk2r/ppp1ppbp/3p1np1/8/2PPP3/2N5/PP3PPP/R1BQKBNR w KQkq - 0 1
+2025-05-29 17:59:59,809 [INFO] Calculating best move for FEN: rnbqk2r/ppp1ppbp/3p1np1/8/2PPP3/2N5/PP3PPP/R1BQKBNR w KQkq - 0 1
+2025-05-29 17:59:59,809 [INFO] Parameters - Skill: 20, Depth: 15
+2025-05-29 18:00:00,888 [INFO] Best move found: g1f3 with score: 0.64
+2025-05-29 18:00:00,889 [INFO] Analysis successful: {'fen': 'rnbqk2r/ppp1ppbp/3p1np1/8/2PPP3/2N5/PP3PPP/R1BQKBNR w KQkq - 0 1', 'best_move': 'g1f3', 'score': 64, 'status': 'success', 'timestamp': '2025-05-29T18:00:00.889114'}
+2025-05-29 18:00:00,889 [INFO] 127.0.0.1 - - [29/May/2025 18:00:00] "POST /analyze?skill_level=20&depth=15 HTTP/1.1" 200 -
+2025-05-29 18:00:03,929 [INFO] Received analyze request
+2025-05-29 18:00:03,930 [INFO] Vérification de la clé API reçue: 'sk-chessbot-a839745fcba9a0d39648928934337d16'
+2025-05-29 18:00:03,991 [INFO] Résultat SQL pour la clé: (1,)
+2025-05-29 18:00:03,991 [INFO] Request method: POST
+2025-05-29 18:00:03,991 [INFO] Request headers: {'Host': '127.0.0.1:5001', 'User-Agent': 'python-requests/2.31.0', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'X-Api-Key': 'sk-chessbot-a839745fcba9a0d39648928934337d16', 'Content-Length': '202003', 'Content-Type': 'multipart/form-data; boundary=97a5824a4d5c4347a2384807153ae90a'}
+2025-05-29 18:00:03,992 [INFO] Processing uploaded file: chessboard.png
+2025-05-29 18:00:03,997 [INFO] Analysis parameters - Skill: 20, Depth: 15
+2025-05-29 18:00:03,998 [INFO] Processing chessboard image
+2025-05-29 18:00:05,278 [INFO] Generated FEN: rnbqk2r/ppp1ppbp/3p1np1/8/2PPP3/2N5/PP3PPP/R1BQKBNR w KQkq - 0 1
+2025-05-29 18:00:05,278 [INFO] Calculating best move for FEN: rnbqk2r/ppp1ppbp/3p1np1/8/2PPP3/2N5/PP3PPP/R1BQKBNR w KQkq - 0 1
+2025-05-29 18:00:05,278 [INFO] Parameters - Skill: 20, Depth: 15
+2025-05-29 18:00:06,315 [INFO] Best move found: g1f3 with score: 0.52
+2025-05-29 18:00:06,315 [INFO] Analysis successful: {'fen': 'rnbqk2r/ppp1ppbp/3p1np1/8/2PPP3/2N5/PP3PPP/R1BQKBNR w KQkq - 0 1', 'best_move': 'g1f3', 'score': 52, 'status': 'success', 'timestamp': '2025-05-29T18:00:06.315540'}
+2025-05-29 18:00:06,315 [INFO] 127.0.0.1 - - [29/May/2025 18:00:06] "POST /analyze?skill_level=20&depth=15 HTTP/1.1" 200 -
+2025-05-29 18:00:09,358 [INFO] Received analyze request
+2025-05-29 18:00:09,358 [INFO] Vérification de la clé API reçue: 'sk-chessbot-a839745fcba9a0d39648928934337d16'
+2025-05-29 18:00:09,416 [INFO] Résultat SQL pour la clé: (1,)
+2025-05-29 18:00:09,416 [INFO] Request method: POST
+2025-05-29 18:00:09,417 [INFO] Request headers: {'Host': '127.0.0.1:5001', 'User-Agent': 'python-requests/2.31.0', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'X-Api-Key': 'sk-chessbot-a839745fcba9a0d39648928934337d16', 'Content-Length': '202288', 'Content-Type': 'multipart/form-data; boundary=faae2af09c0cea15098419a29ec3ea58'}
+2025-05-29 18:00:09,417 [INFO] Processing uploaded file: chessboard.png
+2025-05-29 18:00:09,423 [INFO] Analysis parameters - Skill: 20, Depth: 15
+2025-05-29 18:00:09,423 [INFO] Processing chessboard image
+2025-05-29 18:00:10,657 [INFO] Generated FEN: rnbqk2r/ppp1ppbp/3p1np1/8/2PPP3/2N5/PP3PPP/R1BQKBNR w KQkq - 0 1
+2025-05-29 18:00:10,657 [INFO] Calculating best move for FEN: rnbqk2r/ppp1ppbp/3p1np1/8/2PPP3/2N5/PP3PPP/R1BQKBNR w KQkq - 0 1
+2025-05-29 18:00:10,657 [INFO] Parameters - Skill: 20, Depth: 15
+2025-05-29 18:00:11,772 [INFO] Best move found: g1f3 with score: 0.54
+2025-05-29 18:00:11,772 [INFO] Analysis successful: {'fen': 'rnbqk2r/ppp1ppbp/3p1np1/8/2PPP3/2N5/PP3PPP/R1BQKBNR w KQkq - 0 1', 'best_move': 'g1f3', 'score': 54, 'status': 'success', 'timestamp': '2025-05-29T18:00:11.772386'}
+2025-05-29 18:00:11,772 [INFO] 127.0.0.1 - - [29/May/2025 18:00:11] "POST /analyze?skill_level=20&depth=15 HTTP/1.1" 200 -
+2025-05-29 18:00:14,827 [INFO] Received analyze request
+2025-05-29 18:00:14,827 [INFO] Vérification de la clé API reçue: 'sk-chessbot-a839745fcba9a0d39648928934337d16'
+2025-05-29 18:00:14,892 [INFO] Résultat SQL pour la clé: (1,)
+2025-05-29 18:00:14,893 [INFO] Request method: POST
+2025-05-29 18:00:14,893 [INFO] Request headers: {'Host': '127.0.0.1:5001', 'User-Agent': 'python-requests/2.31.0', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'X-Api-Key': 'sk-chessbot-a839745fcba9a0d39648928934337d16', 'Content-Length': '202288', 'Content-Type': 'multipart/form-data; boundary=cd197c9abb1df585cb14b0395b39f134'}
+2025-05-29 18:00:14,894 [INFO] Processing uploaded file: chessboard.png
+2025-05-29 18:00:14,899 [INFO] Analysis parameters - Skill: 20, Depth: 15
+2025-05-29 18:00:14,899 [INFO] Processing chessboard image
+2025-05-29 18:00:16,107 [INFO] Generated FEN: rnbqk2r/ppp1ppbp/3p1np1/8/2PPP3/2N5/PP3PPP/R1BQKBNR w KQkq - 0 1
+2025-05-29 18:00:16,107 [INFO] Calculating best move for FEN: rnbqk2r/ppp1ppbp/3p1np1/8/2PPP3/2N5/PP3PPP/R1BQKBNR w KQkq - 0 1
+2025-05-29 18:00:16,107 [INFO] Parameters - Skill: 20, Depth: 15
+2025-05-29 18:00:17,173 [INFO] Best move found: g1f3 with score: 0.60
+2025-05-29 18:00:17,173 [INFO] Analysis successful: {'fen': 'rnbqk2r/ppp1ppbp/3p1np1/8/2PPP3/2N5/PP3PPP/R1BQKBNR w KQkq - 0 1', 'best_move': 'g1f3', 'score': 60, 'status': 'success', 'timestamp': '2025-05-29T18:00:17.173860'}
+2025-05-29 18:00:17,174 [INFO] 127.0.0.1 - - [29/May/2025 18:00:17] "POST /analyze?skill_level=20&depth=15 HTTP/1.1" 200 -
+2025-05-29 18:00:20,225 [INFO] Received analyze request
+2025-05-29 18:00:20,225 [INFO] Vérification de la clé API reçue: 'sk-chessbot-a839745fcba9a0d39648928934337d16'
+2025-05-29 18:00:20,289 [INFO] Résultat SQL pour la clé: (1,)
+2025-05-29 18:00:20,290 [INFO] Request method: POST
+2025-05-29 18:00:20,290 [INFO] Request headers: {'Host': '127.0.0.1:5001', 'User-Agent': 'python-requests/2.31.0', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept': '*/*', 'Connection': 'keep-alive', 'X-Api-Key': 'sk-chessbot-a839745fcba9a0d39648928934337d16', 'Content-Length': '202288', 'Content-Type': 'multipart/form-data; boundary=b758e51b02d6588a4647a8b3c7f35719'}
+2025-05-29 18:00:20,291 [INFO] Processing uploaded file: chessboard.png
+2025-05-29 18:00:20,296 [INFO] Analysis parameters - Skill: 20, Depth: 15
+2025-05-29 18:00:20,296 [INFO] Processing chessboard image
+2025-05-29 18:00:21,621 [INFO] Generated FEN: rnbqk2r/ppp1ppbp/3p1np1/8/2PPP3/2N5/PP3PPP/R1BQKBNR w KQkq - 0 1
+2025-05-29 18:00:21,621 [INFO] Calculating best move for FEN: rnbqk2r/ppp1ppbp/3p1np1/8/2PPP3/2N5/PP3PPP/R1BQKBNR w KQkq - 0 1
+2025-05-29 18:00:21,621 [INFO] Parameters - Skill: 20, Depth: 15
+2025-05-29 18:00:22,694 [INFO] Best move found: g1f3 with score: 0.55
+2025-05-29 18:00:22,694 [INFO] Analysis successful: {'fen': 'rnbqk2r/ppp1ppbp/3p1np1/8/2PPP3/2N5/PP3PPP/R1BQKBNR w KQkq - 0 1', 'best_move': 'g1f3', 'score': 55, 'status': 'success', 'timestamp': '2025-05-29T18:00:22.694618'}
+2025-05-29 18:00:22,694 [INFO] 127.0.0.1 - - [29/May/2025 18:00:22] "POST /analyze?skill_level=20&depth=15 HTTP/1.1" 200 -

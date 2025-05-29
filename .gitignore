@@ -22,4 +22,5 @@ uploads/
 *.fen
 
 screenshots/
+
 chessbot_api.log

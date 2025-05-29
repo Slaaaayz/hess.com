@@ -6,6 +6,8 @@ import signal
 import logging
 import traceback
 from datetime import datetime
+import mysql.connector
+from mysql.connector import Error
 
 # Ajouter le répertoire parent au PYTHONPATH pour permettre les imports absolus
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -22,7 +24,48 @@ app = Flask(__name__)
 UPLOAD_FOLDER = "uploads"
 ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg"}
 TEMPLATES_DIR = "./ChessBotApi/templates"
-STOCKFISH_PATH = os.getenv("STOCKFISH_PATH", "C:/Users/trist/Desktop/stockfish")
+STOCKFISH_PATH = os.getenv("STOCKFISH_PATH", "/usr/games/stockfish")
+
+# Configuration de la base de données
+DB_CONFIG = {
+    'host': os.getenv('DB_HOST', 'localhost'),
+    'port': int(os.getenv('DB_PORT', 3307)),
+    'user': os.getenv('DB_USER', 'hess_user'),
+    'password': os.getenv('DB_PASSWORD', 'hess_password'),
+    'database': os.getenv('DB_NAME', 'hess_db')
+}
+
+def get_db_connection():
+    try:
+        connection = mysql.connector.connect(**DB_CONFIG)
+        return connection
+    except Error as e:
+        logger.error(f"Erreur de connexion à la base de données: {e}")
+        return None
+
+def verify_api_key(api_key):
+    logger.info(f"Vérification de la clé API reçue: {api_key!r}")
+    if not api_key:
+        return False
+    
+    connection = get_db_connection()
+    if not connection:
+        return False
+    
+    try:
+        cursor = connection.cursor()
+        query = "SELECT isActive FROM ApiKey WHERE keyValue = %s"
+        cursor.execute(query, (api_key,))
+        result = cursor.fetchone()
+        logger.info(f"Résultat SQL pour la clé: {result}")
+        return result and result[0]
+    except Error as e:
+        logger.error(f"Erreur lors de la vérification de la clé API: {e}")
+        return False
+    finally:
+        if connection.is_connected():
+            cursor.close()
+            connection.close()
 
 # Vérifier si Stockfish existe
 if not os.path.exists(STOCKFISH_PATH):
@@ -141,6 +184,16 @@ def best_move_from_stockfish(fen: str, skill_level=20, depth=15) -> tuple[str, f
 def analyze():
     try:
         logger.info("Received analyze request")
+        
+        # Vérification de la clé API
+        api_key = request.headers.get('X-API-Key')
+        if not verify_api_key(api_key):
+            return jsonify({
+                "error": "invalid_api_key",
+                "status": "error",
+                "details": "Invalid or missing API key"
+            }), 401
+        
         img = None
         
         # Log request details
@@ -218,4 +271,4 @@ def analyze():
 if __name__ == "__main__":
     # Désactiver le mode debug en production
     debug_mode = os.getenv("FLASK_DEBUG", "False").lower() == "true"
-    app.run(debug=debug_mode, host="0.0.0.0", port=5000)
+    app.run(debug=debug_mode, host="0.0.0.0", port=5001)
