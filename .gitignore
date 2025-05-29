@@ -20,3 +20,6 @@ env/
 # Project specific
 uploads/
 *.fen
+
+screenshots/
+chessbot_api.log

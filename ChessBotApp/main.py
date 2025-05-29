@@ -20,6 +20,11 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
 import time
+import speech_recognition as sr
+
+# Rediriger stderr vers /dev/null pour supprimer les messages ALSA/JACK
+if platform.system() == 'Linux':
+    sys.stderr = open(os.devnull, 'w')
 
 class ModernSwitch(QCheckBox):
     def __init__(self, label=""):
@@ -362,9 +367,12 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("klar.gg")
         self.setFixedSize(350, 400)
         self.capture_thread = None
+        self.voice_thread = None
         self.skill_level = 20
         self.depth = 15
         self.auto_play = False
+        self.voice_enabled = False
+        self.move_executor = None
         
         # Création de l'overlay
         self.overlay = OverlayWindow()
@@ -450,6 +458,15 @@ class MainWindow(QMainWindow):
         bot_layout.addWidget(self.bot_switch)
         bot_layout.addStretch(1)
         layout.addLayout(bot_layout)
+
+        # Voice Recognition switch
+        voice_layout = QHBoxLayout()
+        voice_layout.addWidget(QLabel("Voice:"))
+        self.voice_switch = ModernSwitch()
+        self.voice_switch.stateChanged.connect(self.toggle_voice)
+        voice_layout.addWidget(self.voice_switch)
+        voice_layout.addStretch(1)
+        layout.addLayout(voice_layout)
 
         # Skill Level
         skill_layout = QHBoxLayout()
@@ -538,6 +555,15 @@ class MainWindow(QMainWindow):
             self.capture_thread.update_parameters(self.skill_level, self.depth, self.auto_play)
         self.log_message(f"Bot {'activé' if self.auto_play else 'désactivé'}")
 
+    def toggle_voice(self, state):
+        self.voice_enabled = bool(state)
+        if self.voice_enabled:
+            self.start_voice_recognition()
+            self.log_message("Reconnaissance vocale activée")
+        else:
+            self.stop_voice_recognition()
+            self.log_message("Reconnaissance vocale désactivée")
+
     def start_capture(self):
         if self.capture_thread and self.capture_thread.isRunning():
             return
@@ -606,11 +632,92 @@ class MainWindow(QMainWindow):
 
     def closeEvent(self, e):
         self.stop_capture()
-        self.overlay.destroy()  # Fermer l'overlay
+        self.stop_voice_recognition()
+        self.overlay.destroy()
         e.accept()
 
     def toggle_overlay(self):
         self.overlay.toggle_visibility()
+
+    def start_voice_recognition(self):
+        if self.voice_thread and self.voice_thread.isRunning():
+            return
+        self.voice_thread = VoiceRecognitionThread()
+        self.voice_thread.text_recognized.connect(self.handle_voice_command)
+        self.voice_thread.error.connect(self.show_error)
+        self.voice_thread.start()
+
+    def stop_voice_recognition(self):
+        if self.voice_thread:
+            self.voice_thread.stop()
+            self.voice_thread.wait()
+            self.voice_thread = None
+
+    def handle_voice_command(self, text):
+        self.log_message(f"Commande vocale détectée: {text}")
+        
+        # Convertir le texte en minuscules pour la cohérence
+        text = text.lower()
+        
+        # Patterns de reconnaissance pour les mouvements
+        patterns = [
+            r"([a-h][1-8])\s*(?:en|à|vers)\s*([a-h][1-8])",  # d2 en d4
+            r"([a-h][1-8])\s*([a-h][1-8])",                  # d2 d4
+            r"([a-h][1-8])\s*-\s*([a-h][1-8])"              # d2-d4
+        ]
+        
+        import re
+        move = None
+        
+        # Essayer chaque pattern
+        for pattern in patterns:
+            match = re.search(pattern, text)
+            if match:
+                from_square = match.group(1)
+                to_square = match.group(2)
+                move = from_square + to_square
+                break
+        
+        if move:
+            self.log_message(f"Mouvement détecté: {move}")
+            if self.capture_thread and self.capture_thread.move_executor:
+                # Utiliser le move_executor du capture_thread pour exécuter le mouvement
+                success = self.capture_thread.move_executor.execute_move(move)
+                if success:
+                    self.log_message(f"Mouvement {move} exécuté avec succès")
+                else:
+                    self.log_message(f"Échec de l'exécution du mouvement {move}", is_error=True)
+        else:
+            self.log_message(f"Format de mouvement non reconnu: {text}", is_error=True)
+
+class VoiceRecognitionThread(QThread):
+    text_recognized = pyqtSignal(str)
+    error = pyqtSignal(str)
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self._running = True
+        self.recognizer = sr.Recognizer()
+
+    def stop(self):
+        self._running = False
+
+    def run(self):
+        while self._running:
+            try:
+                with sr.Microphone() as source:
+                    self.recognizer.adjust_for_ambient_noise(source)
+                    audio = self.recognizer.listen(source)
+                    try:
+                        text = self.recognizer.recognize_google(audio, language="fr-FR")
+                        self.text_recognized.emit(text)
+                    except sr.UnknownValueError:
+                        pass
+                    except sr.RequestError as e:
+                        self.error.emit(f"Erreur de reconnaissance vocale: {e}")
+            except Exception as e:
+                self.error.emit(f"Erreur microphone: {e}")
+            self.msleep(100)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
