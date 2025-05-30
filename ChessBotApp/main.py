@@ -4,10 +4,10 @@ from tkinter import ttk
 from pynput import keyboard
 from PyQt6.QtWidgets import (
     QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QCheckBox,
-    QSlider, QTextEdit, QLineEdit, QFileDialog, QPushButton
+    QSlider, QTextEdit, QLineEdit, QFileDialog, QPushButton, QStackedWidget
 )
 from PyQt6.QtCore import Qt, QThread, pyqtSignal, QTimer
-from PyQt6.QtGui import QKeySequence, QShortcut
+from PyQt6.QtGui import QKeySequence, QShortcut, QPixmap
 from selenium import webdriver
 from selenium.webdriver.firefox.service import Service as FirefoxService
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
@@ -274,57 +274,58 @@ class OverlayWindow:
     def __init__(self):
         self.root = tk.Tk()
         self.root.withdraw()  # Cache la fenêtre initialement
-        
+
+        # Style général Pawned
+        self.root.configure(bg='#0a0f0d')
+        self.root.option_add("*Font", "SegoeUI 11")
+
+        # Appliquer le style néon/futuriste sur les widgets Tkinter
+        style = ttk.Style()
+        style.theme_use('clam')
+        style.configure('TFrame', background='#0a0f0d')
+        style.configure('TLabel', background='#0a0f0d', foreground='#00ff99', font=('Segoe UI', 11, 'bold'))
+        style.configure('TButton', background='#101a14', foreground='#00ff99', borderwidth=2, focusthickness=3, focuscolor='#00ff99')
+        style.map('TButton', background=[('active', '#00ff99')], foreground=[('active', '#101a14')])
+
         # Configuration de la fenêtre
         self.root.overrideredirect(True)  # Supprime la barre de titre
         self.root.attributes('-topmost', True)  # Garde la fenêtre au-dessus
-        self.root.attributes('-alpha', 0.9)  # Transparence
-        
-        # Position initiale
+        self.root.attributes('-alpha', 0.92)  # Transparence
         self.root.geometry('350x400+50+50')
-        
-        # Style
-        self.root.configure(bg='#181a20')
-        
+
         # Création du conteneur principal
-        self.main_frame = ttk.Frame(self.root)
+        self.main_frame = ttk.Frame(self.root, style='TFrame')
         self.main_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
-        
+
         # Variables
         self.visible = True
         self.ctrl_pressed = False
-        
+
         # Bindings
         self.root.bind('<Button-1>', self.start_move)
         self.root.bind('<B1-Motion>', self.on_move)
-        
+
         # Raccourci global avec pynput
         self.listener = keyboard.Listener(
             on_press=self.on_press,
             on_release=self.on_release
         )
         self.listener.start()
-        
-        # Style ttk
-        style = ttk.Style()
-        style.configure('TFrame', background='#181a20')
-        style.configure('TLabel', background='#181a20', foreground='#e0e0e0')
-        
+
         # Labels pour les informations
-        self.move_label = ttk.Label(self.main_frame, text="Next Move: ")
+        self.move_label = ttk.Label(self.main_frame, text="Next Move:", style='TLabel')
         self.move_label.pack(anchor='w', pady=2)
-        
-        self.score_label = ttk.Label(self.main_frame, text="Score: ")
+        self.score_label = ttk.Label(self.main_frame, text="Score:", style='TLabel')
         self.score_label.pack(anchor='w', pady=2)
-        
-        self.fen_label = ttk.Label(self.main_frame, text="FEN: ")
+        self.fen_label = ttk.Label(self.main_frame, text="FEN:", style='TLabel')
         self.fen_label.pack(anchor='w', pady=2)
-        
-        # Zone de logs
-        self.log_text = tk.Text(self.main_frame, height=10, bg='#1a1c22', fg='#a0a0a0',
-                               font=('Consolas', 10))
+
+        # Zone de logs stylée
+        self.log_text = tk.Text(self.main_frame, height=10, bg='#181a20', fg='#00ff99',
+                               font=('Consolas', 10), insertbackground='#00ff99',
+                               borderwidth=2, relief='groove')
         self.log_text.pack(fill=tk.BOTH, expand=True, pady=5)
-        
+
         # Afficher la fenêtre
         self.root.deiconify()
         
@@ -385,7 +386,7 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("klar.gg")
-        self.setFixedSize(350, 400)
+        self.setMinimumSize(900, 600)
         self.capture_thread = None
         self.voice_thread = None
         self.skill_level = 20
@@ -394,202 +395,231 @@ class MainWindow(QMainWindow):
         self.voice_enabled = False
         self.move_executor = None
         self.api_key = ""
-        
-        # Création de l'overlay
+
+        # Overlay flottant
         self.overlay = OverlayWindow()
-        
-        # Timer pour mettre à jour l'overlay
         self.update_timer = QTimer()
         self.update_timer.timeout.connect(self.update_overlay)
-        self.update_timer.start(100)  # Mise à jour toutes les 100ms
-        
-        # Raccourci global pour masquer/afficher l'overlay
+        self.update_timer.start(100)
         self.shortcut = QShortcut(QKeySequence("Ctrl+Space"), self)
         self.shortcut.activated.connect(self.toggle_overlay)
-        
-        self.setStyleSheet('''
-            QMainWindow, QWidget {
-                background: #181a20;
-                color: #e0e0e0;
-                font-family: Segoe UI, Arial, sans-serif;
-                font-size: 13px;
-            }
-            QLabel {
-                color: #e0e0e0;
-            }
-            QLineEdit {
-                background: #1a1c22;
-                color: #e0e0e0;
-                border: 1px solid #2a2d35;
-                border-radius: 4px;
-                padding: 4px;
-            }
-            QLineEdit:focus {
-                border: 1px solid #4e8cff;
-            }
-            QSlider::groove:horizontal {
-                border: 1px solid #3a3d45;
-                height: 8px;
-                background: #2a2d35;
-                margin: 2px 0;
-                border-radius: 4px;
-            }
-            QSlider::handle:horizontal {
-                background: #4e8cff;
-                border: none;
-                width: 16px;
-                height: 16px;
-                margin: -4px 0;
-                border-radius: 8px;
-            }
-            QSlider::handle:horizontal:hover {
-                background: #5e9cff;
-            }
-            QSlider::sub-page:horizontal {
-                background: #4e8cff;
-                border-radius: 4px;
-            }
-            QSlider::add-page:horizontal {
-                background: #2a2d35;
-                border-radius: 4px;
-            }
-            QTextEdit {
-                background: #1a1c22;
-                color: #a0a0a0;
-                border: 1px solid #2a2d35;
-                border-radius: 4px;
-                padding: 4px;
-                font-family: 'Consolas', 'Courier New', monospace;
-                font-size: 12px;
-            }
-        ''')
+
+        # Widgets partagés (toujours initialisés)
+        self.bestmove_label = QLabel("")
+        self.score_label = QLabel("")
+        self.fen_label = QLabel("")
+        self.enabled_switch = ModernSwitch("Enabled")
+        self.bot_switch = ModernSwitch("Bot")
+        self.voice_switch = ModernSwitch("Voice")
+        self.skill_slider = QSlider(Qt.Orientation.Horizontal)
+        self.skill_value_label = QLabel(str(self.skill_level))
+        self.depth_slider = QSlider(Qt.Orientation.Horizontal)
+        self.depth_value_label = QLabel(str(self.depth))
+        self.api_key_input = QLineEdit()
+        self.log_text = QTextEdit()
+
         self.init_ui()
 
     def init_ui(self):
         central = QWidget()
         self.setCentralWidget(central)
-        layout = QVBoxLayout(central)
-        layout.setContentsMargins(16, 16, 16, 16)
-        layout.setSpacing(10)
+        main_layout = QHBoxLayout(central)
+        main_layout.setContentsMargins(0, 0, 0, 0)
+        main_layout.setSpacing(0)
 
-        # API Key
-        api_key_layout = QHBoxLayout()
-        api_key_layout.addWidget(QLabel("API Key:"))
-        self.api_key_input = QLineEdit()
-        self.api_key_input.setPlaceholderText("Enter your API key")
-        self.api_key_input.textChanged.connect(self.update_api_key)
-        api_key_layout.addWidget(self.api_key_input)
-        layout.addLayout(api_key_layout)
+        # Sidebar (menu vertical)
+        sidebar = QWidget()
+        sidebar_layout = QVBoxLayout(sidebar)
+        sidebar_layout.setContentsMargins(16, 32, 16, 32)
+        sidebar_layout.setSpacing(24)
+        sidebar.setFixedWidth(160)
+        sidebar.setStyleSheet("background: #101a14;")
 
-        # Enabled switch
-        enabled_layout = QHBoxLayout()
-        enabled_layout.addWidget(QLabel("Enabled:"))
-        self.enabled_switch = ModernSwitch()
+        # Logo en haut de la sidebar
+        logo_label = QLabel()
+        pixmap = QPixmap("./ChessBotSite/Pawned.png")
+        pixmap = pixmap.scaled(64, 64)
+        logo_label.setPixmap(pixmap)
+        logo_label.setAlignment(Qt.AlignmentFlag.AlignHCenter)
+        sidebar_layout.addWidget(logo_label)
+        sidebar_layout.addSpacing(20)
+
+        # Boutons menu
+        self.dashboard_btn = QPushButton("Dashboard")
+        self.options_btn = QPushButton("Options")
+        for btn in [self.dashboard_btn, self.options_btn]:
+            btn.setMinimumHeight(40)
+            btn.setStyleSheet("QPushButton { color: #00ff99; background: #181a20; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; } QPushButton:hover { background: #00ff99; color: #101a14; }")
+            sidebar_layout.addWidget(btn)
+        sidebar_layout.addStretch(1)
+
+        main_layout.addWidget(sidebar)
+
+        # Zone principale (contenu)
+        self.stack = QStackedWidget()
+        # Page Dashboard
+        dashboard_page = QWidget()
+        dash_layout = QVBoxLayout(dashboard_page)
+        dash_layout.setContentsMargins(0, 0, 0, 0)
+        dash_layout.setSpacing(28)
+        dash_layout.addStretch(2)
+        dash_label = QLabel("Dashboard")
+        dash_label.setAlignment(Qt.AlignmentFlag.AlignHCenter)
+        dash_label.setStyleSheet("font-size: 22px; color: #00ff99; font-weight: bold;")
+        dash_layout.addWidget(dash_label)
+        dash_layout.addSpacing(18)
+
+        # Switches sur une ligne
+        switches_layout = QHBoxLayout()
+        switches_layout.setAlignment(Qt.AlignmentFlag.AlignHCenter)
+        self.enabled_switch.setFixedWidth(100)
         self.enabled_switch.stateChanged.connect(self.toggle_capture)
-        enabled_layout.addWidget(self.enabled_switch)
-        enabled_layout.addStretch(1)
-        layout.addLayout(enabled_layout)
-
-        # Bot switch
-        bot_layout = QHBoxLayout()
-        bot_layout.addWidget(QLabel("Bot:"))
-        self.bot_switch = ModernSwitch()
+        self.bot_switch.setFixedWidth(100)
         self.bot_switch.stateChanged.connect(self.toggle_bot)
-        bot_layout.addWidget(self.bot_switch)
-        bot_layout.addStretch(1)
-        layout.addLayout(bot_layout)
-
-        # Voice Recognition switch
-        voice_layout = QHBoxLayout()
-        voice_layout.addWidget(QLabel("Voice:"))
-        self.voice_switch = ModernSwitch()
+        self.voice_switch.setFixedWidth(100)
         self.voice_switch.stateChanged.connect(self.toggle_voice)
-        voice_layout.addWidget(self.voice_switch)
-        voice_layout.addStretch(1)
-        layout.addLayout(voice_layout)
-
-        # Skill Level
-        skill_layout = QHBoxLayout()
-        skill_label = QLabel("Skill Level:")
-        skill_label.setFixedWidth(80)
-        skill_layout.addWidget(skill_label)
-        
-        self.skill_slider = QSlider(Qt.Orientation.Horizontal)
-        self.skill_slider.setRange(1, 20)
-        self.skill_slider.setValue(self.skill_level)
-        self.skill_slider.setFixedWidth(180)
-        self.skill_slider.valueChanged.connect(self.update_skill)
-        skill_layout.addWidget(self.skill_slider)
-        
-        self.skill_value_label = QLabel(str(self.skill_level))
-        self.skill_value_label.setFixedWidth(30)
-        self.skill_value_label.setAlignment(Qt.AlignmentFlag.AlignRight)
-        skill_layout.addWidget(self.skill_value_label)
-        skill_layout.addStretch(1)
-        layout.addLayout(skill_layout)
-
-        # Depth
-        depth_layout = QHBoxLayout()
-        depth_label = QLabel("Depth:")
-        depth_label.setFixedWidth(80)
-        depth_layout.addWidget(depth_label)
-        
-        self.depth_slider = QSlider(Qt.Orientation.Horizontal)
-        self.depth_slider.setRange(1, 30)
-        self.depth_slider.setValue(self.depth)
-        self.depth_slider.setFixedWidth(180)
-        self.depth_slider.valueChanged.connect(self.update_depth)
-        depth_layout.addWidget(self.depth_slider)
-        
-        self.depth_value_label = QLabel(str(self.depth))
-        self.depth_value_label.setFixedWidth(30)
-        self.depth_value_label.setAlignment(Qt.AlignmentFlag.AlignRight)
-        depth_layout.addWidget(self.depth_value_label)
-        depth_layout.addStretch(1)
-        layout.addLayout(depth_layout)
+        for sw in [self.enabled_switch, self.bot_switch, self.voice_switch]:
+            switches_layout.addWidget(sw)
+            switches_layout.addSpacing(12)
+        dash_layout.addLayout(switches_layout)
+        dash_layout.addSpacing(18)
 
         # Best move
         move_layout = QHBoxLayout()
-        move_layout.addWidget(QLabel("Next Move:"))
-        self.bestmove_label = QLabel("")
+        move_layout.setAlignment(Qt.AlignmentFlag.AlignHCenter)
+        move_label = QLabel("Next Move:")
+        move_layout.addWidget(move_label)
         move_layout.addWidget(self.bestmove_label)
-        move_layout.addStretch(1)
-        layout.addLayout(move_layout)
+        dash_layout.addLayout(move_layout)
+        dash_layout.addSpacing(8)
 
         # Score
         score_layout = QHBoxLayout()
-        score_layout.addWidget(QLabel("Score:"))
-        self.score_label = QLabel("")
+        score_layout.setAlignment(Qt.AlignmentFlag.AlignHCenter)
+        score_label = QLabel("Score:")
+        score_layout.addWidget(score_label)
         score_layout.addWidget(self.score_label)
-        score_layout.addStretch(1)
-        layout.addLayout(score_layout)
+        dash_layout.addLayout(score_layout)
+        dash_layout.addSpacing(8)
 
         # FEN
         fen_layout = QHBoxLayout()
-        fen_layout.addWidget(QLabel("FEN:"))
-        self.fen_label = QLabel("")
+        fen_layout.setAlignment(Qt.AlignmentFlag.AlignHCenter)
+        fen_label = QLabel("FEN:")
+        fen_layout.addWidget(fen_label)
         fen_layout.addWidget(self.fen_label)
-        fen_layout.addStretch(1)
-        layout.addLayout(fen_layout)
+        dash_layout.addLayout(fen_layout)
+        dash_layout.addSpacing(18)
 
-        # Boutons Export/Import
+        # Boutons Export/Import sur une ligne
         config_layout = QHBoxLayout()
+        config_layout.setAlignment(Qt.AlignmentFlag.AlignHCenter)
         export_btn = QPushButton("Exporter config")
         import_btn = QPushButton("Importer config")
+        export_btn.setMinimumWidth(140)
+        import_btn.setMinimumWidth(140)
+        export_btn.setFixedHeight(32)
+        import_btn.setFixedHeight(32)
         export_btn.clicked.connect(self.export_config)
         import_btn.clicked.connect(self.import_config)
         config_layout.addWidget(export_btn)
+        config_layout.addSpacing(16)
         config_layout.addWidget(import_btn)
-        layout.addLayout(config_layout)
+        dash_layout.addLayout(config_layout)
+        dash_layout.addStretch(3)
 
-        # Logs
-        log_layout = QVBoxLayout()
-        log_layout.addWidget(QLabel("Logs:"))
-        self.log_text = QTextEdit()
+        # Page Options
+        options_page = QWidget()
+        opt_main_layout = QVBoxLayout(options_page)
+        opt_main_layout.setContentsMargins(0, 0, 0, 0)
+        opt_main_layout.setSpacing(0)
+        opt_main_layout.addStretch(2)
+
+        # Conteneur centré avec marges
+        center_widget = QWidget()
+        center_layout = QVBoxLayout(center_widget)
+        center_layout.setContentsMargins(60, 0, 60, 0)  # marges latérales
+        center_layout.setSpacing(28)
+
+        opt_label = QLabel("Options")
+        opt_label.setAlignment(Qt.AlignmentFlag.AlignHCenter)
+        opt_label.setStyleSheet("font-size: 22px; color: #00ff99; font-weight: bold;")
+        center_layout.addWidget(opt_label)
+        center_layout.addSpacing(28)
+
+        # API Key
+        api_key_layout = QHBoxLayout()
+        api_key_layout.setAlignment(Qt.AlignmentFlag.AlignHCenter)
+        api_key_label = QLabel("API Key:")
+        self.api_key_input.setPlaceholderText("Enter your API key")
+        self.api_key_input.setMinimumWidth(320)
+        self.api_key_input.setFixedHeight(32)
+        self.api_key_input.textChanged.connect(self.update_api_key)
+        api_key_layout.addWidget(api_key_label)
+        api_key_layout.addWidget(self.api_key_input)
+        center_layout.addLayout(api_key_layout)
+        center_layout.addSpacing(28)
+
+        # Skill Level slider
+        skill_layout = QHBoxLayout()
+        skill_layout.setAlignment(Qt.AlignmentFlag.AlignHCenter)
+        skill_label = QLabel("Skill Level:")
+        skill_label.setFixedWidth(110)
+        self.skill_slider.setRange(1, 20)
+        self.skill_slider.setValue(self.skill_level)
+        self.skill_slider.setMinimumWidth(260)
+        self.skill_slider.setFixedHeight(28)
+        self.skill_slider.valueChanged.connect(self.update_skill)
+        self.skill_value_label.setText(str(self.skill_level))
+        self.skill_value_label.setFixedWidth(40)
+        self.skill_value_label.setAlignment(Qt.AlignmentFlag.AlignRight)
+        skill_layout.addWidget(skill_label)
+        skill_layout.addWidget(self.skill_slider)
+        skill_layout.addWidget(self.skill_value_label)
+        center_layout.addLayout(skill_layout)
+        center_layout.addSpacing(18)
+
+        # Depth slider
+        depth_layout = QHBoxLayout()
+        depth_layout.setAlignment(Qt.AlignmentFlag.AlignHCenter)
+        depth_label = QLabel("Depth:")
+        depth_label.setFixedWidth(110)
+        self.depth_slider.setRange(1, 30)
+        self.depth_slider.setValue(self.depth)
+        self.depth_slider.setMinimumWidth(260)
+        self.depth_slider.setFixedHeight(28)
+        self.depth_slider.valueChanged.connect(self.update_depth)
+        self.depth_value_label.setText(str(self.depth))
+        self.depth_value_label.setFixedWidth(40)
+        self.depth_value_label.setAlignment(Qt.AlignmentFlag.AlignRight)
+        depth_layout.addWidget(depth_label)
+        depth_layout.addWidget(self.depth_slider)
+        depth_layout.addWidget(self.depth_value_label)
+        center_layout.addLayout(depth_layout)
+        center_layout.addSpacing(28)
+
+        log_label = QLabel("Logs:")
+        log_label.setAlignment(Qt.AlignmentFlag.AlignHCenter)
+        center_layout.addWidget(log_label)
         self.log_text.setReadOnly(True)
         self.log_text.setFixedHeight(100)
-        log_layout.addWidget(self.log_text)
-        layout.addLayout(log_layout)
+        self.log_text.setMinimumWidth(400)
+        center_layout.addWidget(self.log_text)
+
+        opt_main_layout.addWidget(center_widget, alignment=Qt.AlignmentFlag.AlignHCenter)
+        opt_main_layout.addStretch(3)
+
+        # Ajout des pages au stack
+        self.stack.addWidget(dashboard_page)
+        self.stack.addWidget(options_page)
+        main_layout.addWidget(self.stack)
+
+        # Connexion des boutons
+        self.dashboard_btn.clicked.connect(lambda: self.stack.setCurrentIndex(0))
+        self.options_btn.clicked.connect(lambda: self.stack.setCurrentIndex(1))
+
+        # Par défaut, afficher Dashboard
+        self.stack.setCurrentIndex(0)
 
     def toggle_capture(self):
         if self.enabled_switch.isChecked():
@@ -688,14 +718,11 @@ class MainWindow(QMainWindow):
 
     def log_message(self, message, is_error=False):
         timestamp = time.strftime("%H:%M:%S")
-        color = "#ff6b6b" if is_error else "#4e8cff"
+        color = "#ff6b6b" if is_error else "#00ff99"
         self.log_text.append(f'<span style="color: {color}">[{timestamp}]</span> {message}')
         self.log_text.verticalScrollBar().setValue(
             self.log_text.verticalScrollBar().maximum()
         )
-        
-        # Mise à jour des logs de l'overlay
-        self.overlay.log_message(message, is_error)
 
     def closeEvent(self, e):
         self.stop_capture()
