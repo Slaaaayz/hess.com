@@ -8,3 +8,8 @@ flask
 opencv-python
 numpy
 stockfish
+mysql-connector-python
+pynput
+SpeechRecognition
+python-chess
+python3-tk
