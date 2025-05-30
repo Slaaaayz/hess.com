@@ -268,6 +268,77 @@ def analyze():
         }), 500
 
 
+@app.route("/user_settings", methods=["GET"])
+def get_user_settings():
+    api_key = request.headers.get('X-API-Key')
+    if not api_key:
+        return jsonify({"error": "missing_api_key"}), 400
+
+    connection = get_db_connection()
+    if not connection:
+        return jsonify({"error": "db_connection_failed"}), 500
+
+    try:
+        cursor = connection.cursor(dictionary=True)
+        # 1. Trouver le userId associé à la clé
+        cursor.execute("SELECT userId FROM ApiKey WHERE keyValue = %s AND isActive = 1", (api_key,))
+        row = cursor.fetchone()
+        if not row:
+            return jsonify({"error": "invalid_api_key"}), 401
+        user_id = row["userId"]
+
+        # 2. Récupérer les settings
+        cursor.execute("SELECT * FROM UserSettings WHERE userId = %s", (user_id,))
+        settings = cursor.fetchone()
+        if not settings:
+            return jsonify({"error": "no_settings_found"}), 404
+
+        return jsonify({"settings": settings})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    finally:
+        if connection.is_connected():
+            cursor.close()
+            connection.close()
+
+
+@app.route("/user_settings", methods=["POST"])
+def update_user_settings():
+    api_key = request.headers.get('X-API-Key')
+    if not api_key:
+        return jsonify({"error": "missing_api_key"}), 400
+
+    data = request.json or {}
+    skill_level = data.get("skillLevel")
+    search_depth = data.get("searchDepth")
+
+    connection = get_db_connection()
+    if not connection:
+        return jsonify({"error": "db_connection_failed"}), 500
+
+    try:
+        cursor = connection.cursor(dictionary=True)
+        cursor.execute("SELECT userId FROM ApiKey WHERE keyValue = %s AND isActive = 1", (api_key,))
+        row = cursor.fetchone()
+        if not row:
+            return jsonify({"error": "invalid_api_key"}), 401
+        user_id = row["userId"]
+
+        # Mettre à jour les settings
+        cursor.execute(
+            "UPDATE UserSettings SET skillLevel = %s, searchDepth = %s, updatedAt = NOW() WHERE userId = %s",
+            (skill_level, search_depth, user_id)
+        )
+        connection.commit()
+        return jsonify({"status": "success"})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    finally:
+        if connection.is_connected():
+            cursor.close()
+            connection.close()
+
+
 if __name__ == "__main__":
     # Désactiver le mode debug en production
     debug_mode = os.getenv("FLASK_DEBUG", "False").lower() == "true"

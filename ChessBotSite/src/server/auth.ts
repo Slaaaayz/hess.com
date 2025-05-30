@@ -47,7 +47,7 @@ router.post('/register', async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, salt);
 
         // Validation des paramètres par défaut
-        validateUserSettings(1500, 3);
+        validateUserSettings(15, 3);
 
         // Création de l'utilisateur avec une date d'abonnement de 30 jours
         const user = await prisma.user.create({

@@ -4,23 +4,23 @@ from tkinter import ttk
 from pynput import keyboard
 from PyQt6.QtWidgets import (
     QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QCheckBox,
-    QSlider, QTextEdit, QLineEdit
+    QSlider, QTextEdit, QLineEdit, QFileDialog, QPushButton
 )
 from PyQt6.QtCore import Qt, QThread, pyqtSignal, QTimer
 from PyQt6.QtGui import QKeySequence, QShortcut
 from selenium import webdriver
 from selenium.webdriver.firefox.service import Service as FirefoxService
-from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
-from selenium.webdriver.chrome.options import Options as ChromeOptions
 from webdriver_manager.firefox import GeckoDriverManager
-from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
 import time
 import speech_recognition as sr
+import json
+import hmac
+import hashlib
 
 # Rediriger stderr vers /dev/null pour supprimer les messages ALSA/JACK
 if platform.system() == 'Linux':
@@ -157,6 +157,20 @@ class CaptureThread(QThread):
         data = requests.get(url, timeout=30).content
         driver_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "drivers")
         os.makedirs(driver_dir, exist_ok=True)
+        driver_path = os.path.join(driver_dir, "geckodriver" + (".exe" if system == "windows" else ""))
+        
+        # Vérifier si le driver existe déjà et est en cours d'utilisation
+        if os.path.exists(driver_path):
+            try:
+                # Essayer de supprimer l'ancien driver
+                os.remove(driver_path)
+            except PermissionError:
+                # Si on ne peut pas le supprimer, on essaie de le renommer
+                try:
+                    os.rename(driver_path, driver_path + ".old")
+                except:
+                    raise RuntimeError("Impossible d'accéder au geckodriver existant. Veuillez redémarrer l'application.")
+        
         if ext == ".zip":
             with zipfile.ZipFile(io.BytesIO(data)) as z:
                 z.extractall(driver_dir)
@@ -164,9 +178,11 @@ class CaptureThread(QThread):
             import tarfile, io as _io
             with tarfile.open(fileobj=_io.BytesIO(data), mode="r:gz") as t:
                 t.extractall(driver_dir)
+        
         if system != "windows":
-            os.chmod(os.path.join(driver_dir, "geckodriver"), 0o755)
-        return os.path.join(driver_dir, "geckodriver" + (".exe" if system == "windows" else ""))
+            os.chmod(driver_path, 0o755)
+        
+        return driver_path
 
     def get_driver(self):
         try:
@@ -180,14 +196,8 @@ class CaptureThread(QThread):
             d = webdriver.Firefox(service=srv, options=firefox_opts)
             d.maximize_window()
             return d
-        except Exception:
-            chrome_opts = ChromeOptions()
-            chrome_opts.add_argument("--start-maximized")
-            chrome_opts.add_argument("--disable-blink-features=AutomationControlled")
-            srv = ChromeService(ChromeDriverManager().install())
-            d = webdriver.Chrome(service=srv, options=chrome_opts)
-            d.maximize_window()
-            return d
+        except Exception as e:
+            raise RuntimeError(f"Erreur lors de l'initialisation de Firefox: {str(e)}")
 
     def run(self):
         try:
@@ -562,6 +572,16 @@ class MainWindow(QMainWindow):
         fen_layout.addStretch(1)
         layout.addLayout(fen_layout)
 
+        # Boutons Export/Import
+        config_layout = QHBoxLayout()
+        export_btn = QPushButton("Exporter config")
+        import_btn = QPushButton("Importer config")
+        export_btn.clicked.connect(self.export_config)
+        import_btn.clicked.connect(self.import_config)
+        config_layout.addWidget(export_btn)
+        config_layout.addWidget(import_btn)
+        layout.addLayout(config_layout)
+
         # Logs
         log_layout = QVBoxLayout()
         log_layout.addWidget(QLabel("Logs:"))
@@ -622,6 +642,8 @@ class MainWindow(QMainWindow):
         self.log_message(f"Skill level updated to {value}")
         if self.capture_thread and self.capture_thread.isRunning():
             self.capture_thread.update_parameters(self.skill_level, self.depth, self.auto_play)
+        # Sauvegarde côté API
+        self.save_user_settings()
 
     def update_depth(self, value):
         self.depth = value
@@ -629,6 +651,20 @@ class MainWindow(QMainWindow):
         self.log_message(f"Depth updated to {value}")
         if self.capture_thread and self.capture_thread.isRunning():
             self.capture_thread.update_parameters(self.skill_level, self.depth, self.auto_play)
+        # Sauvegarde côté API
+        self.save_user_settings()
+
+    def save_user_settings(self):
+        import requests
+        try:
+            requests.post(
+                "http://127.0.0.1:5001/user_settings",
+                headers={"X-API-Key": self.api_key, "Content-Type": "application/json"},
+                json={"skillLevel": self.skill_level, "searchDepth": self.depth},
+                timeout=3
+            )
+        except Exception as e:
+            self.log_message(f"Erreur sauvegarde settings: {e}", is_error=True)
 
     def update_overlay(self):
         self.overlay.update()
@@ -731,6 +767,74 @@ class MainWindow(QMainWindow):
                 self.auto_play, 
                 self.api_key
             )
+        # --- AJOUT : récupération des settings utilisateur ---
+        try:
+            r = requests.get(
+                "http://127.0.0.1:5001/user_settings",
+                headers={"X-API-Key": text},
+                timeout=5
+            )
+            if r.ok:
+                data = r.json()
+                settings = data.get("settings", {})
+                # Appliquer les settings à l'UI
+                if "skillLevel" in settings:
+                    self.skill_level = int(settings["skillLevel"])
+                    self.skill_slider.setValue(self.skill_level)
+                if "searchDepth" in settings:
+                    self.depth = int(settings["searchDepth"])
+                    self.depth_slider.setValue(self.depth)
+                # Forcer la mise à jour des labels
+                self.skill_value_label.setText(str(self.skill_level))
+                self.depth_value_label.setText(str(self.depth))
+                self.log_message("User settings loaded depuis l'API")
+            else:
+                self.log_message("Clé API non reconnue ou pas de settings", is_error=True)
+        except Exception as e:
+            self.log_message(f"Erreur lors du chargement des settings: {e}", is_error=True)
+
+    def sign_config(self, config):
+        msg = f"{config['skillLevel']}|{config['searchDepth']}".encode()
+        return hmac.new(b"ma_cle_secrete_ultra_longue", msg, hashlib.sha256).hexdigest()
+
+    def export_config(self):
+        config = {
+            "skillLevel": self.skill_level,
+            "searchDepth": self.depth
+        }
+        config["signature"] = self.sign_config(config)
+        file_path, _ = QFileDialog.getSaveFileName(self, "Exporter la config", "", "JSON Files (*.json)")
+        if file_path:
+            try:
+                with open(file_path, "w") as f:
+                    json.dump(config, f, indent=2)
+                self.log_message(f"Config exportée vers {file_path}")
+            except Exception as e:
+                self.log_message(f"Erreur export config: {e}", is_error=True)
+
+    def import_config(self):
+        file_path, _ = QFileDialog.getOpenFileName(self, "Importer une config", "", "JSON Files (*.json)")
+        if file_path:
+            try:
+                with open(file_path, "r") as f:
+                    config = json.load(f)
+                # Vérification de la signature
+                signature = config.pop("signature", None)
+                if signature != self.sign_config(config):
+                    self.log_message("Fichier de config modifié ou corrompu !", is_error=True)
+                    return
+                if "skillLevel" in config:
+                    self.skill_level = int(config["skillLevel"])
+                    self.skill_slider.setValue(self.skill_level)
+                if "searchDepth" in config:
+                    self.depth = int(config["searchDepth"])
+                    self.depth_slider.setValue(self.depth)
+                self.skill_value_label.setText(str(self.skill_level))
+                self.depth_value_label.setText(str(self.depth))
+                self.save_user_settings()
+                self.log_message(f"Config importée depuis {file_path}")
+            except Exception as e:
+                self.log_message(f"Erreur import config: {e}", is_error=True)
 
 class VoiceRecognitionThread(QThread):
     text_recognized = pyqtSignal(str)
