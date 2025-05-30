@@ -55,10 +55,14 @@ fi
 # Installation de Python et pip
 if ! command_exists python3; then
     print_message "Installation de Python 3..."
-    sudo apt install -y python3 python3-pip
+    sudo apt install -y python3 python3-pip python3-tk
+    sudo apt install -y pip
     print_success "Python 3 installé"
 else
     print_success "Python 3 est déjà installé"
+    print_message "Vérification/installation de python3-tk..."
+    sudo apt install -y python3-tk
+    sudo apt install -y pip
 fi
 
 # Installation de Node.js et npm

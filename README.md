@@ -51,6 +51,7 @@ PORT=5000
 ```bash
 cd ChessBotSite
 npm install
+npx prisma generate
 ```
 
 ### 4. **Lancer le backend et le frontend web**
