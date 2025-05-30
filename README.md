@@ -16,6 +16,9 @@ ChessBot est un assistant d'échecs complet pour [chess.com](https://chess.com),
 ---
 
 ## 📝 Conseils pour le premier lancement
+- Si vous souhaitez passer par notre installation automatique, vous pouvez utiliser le script d'installation `ChessBotSite/install.sh` pour installer docker, python, node.js, et les dépendances. 
+- Une fois le script terminé, nous vous invitons à passer à l'étape [Installation & Lancement](#⚡-installation--lancement)
+---
 - Vérifie que tous les ports nécessaires sont libres (3307 pour MySQL, 5000 pour le backend, 5173 pour le frontend, 5001 pour l'API Python).
 - Si tu rencontres des problèmes de dépendances Python, installe-les avec :
   ```bash
@@ -23,6 +26,7 @@ ChessBot est un assistant d'échecs complet pour [chess.com](https://chess.com),
   ```
 - Assurez vous d'avoir firefox d'installé sur votre machine.
 - Installe Stockfish `https://stockfishchess.org/download/` ou sur linux un `sudo apt install stockfish` et va dans le fichier [ChessBotApi/api.py](ChessBotApi/api.py) et remplace la ligne 27 par le chemin de ton stockfish.
+---
 - Pour la reconnaissance vocale, un micro fonctionnel et de bonne qualité est necessaire, si le microphone de votre laptop est utilisable alors assurez vous de baisser la sensibilité de votre micro afin de ne pas perturber l'ia quand vous allez annoncer vos coup.
 - Les logs et erreurs sont affichés dans l'IHM et dans les consoles respectives.
 
@@ -36,7 +40,7 @@ Assure toi d'avoir lancer la base de données avec docker compose a la racine du
 docker compose up -d
 ```
 
-### 2. **Configurer l'environnement web**
+### 2. **Configurer l'environnement web** (Inutile si vous avez utilisé notre installation automatique)
 - Place le fichier `.env` à la racine de `ChessBotSite/` :
 ```env
 DATABASE_URL="mysql://hess_user:hess_password@localhost:3307/hess_db"

@@ -106,4 +106,3 @@ fi
 
 print_message "Installation terminée !"
 print_message "N'oubliez pas de vous déconnecter et de vous reconnecter pour que les changements de groupe Docker prennent effet."
-print_message "Vous pouvez maintenant lancer le projet avec : docker-compose up --build" 
