@@ -10,8 +10,21 @@ ChessBot est un assistant d'échecs complet pour [chess.com](https://chess.com),
 ## 🛠️ Prérequis
 - **Docker** (Pour la base de données et phpmyadmin)
 - **Python 3.9+** (pour les modules ScreenBot, API, IHM)
-- **Node.js + npm** (pour le backend et frontend web)
+- **Node.js version 20.x+ npm** (pour le backend et frontend web)
 - **Fichier** `.env à placer dans `ChessBotSite/ (voir plus bas)
+
+---
+
+## 📝 Conseils pour le premier lancement
+- Vérifie que tous les ports nécessaires sont libres (3307 pour MySQL, 5000 pour le backend, 5173 pour le frontend, 5001 pour l'API Python).
+- Si tu rencontres des problèmes de dépendances Python, installe-les avec :
+  ```bash
+  pip install -r requirements.txt
+  ```
+- Assurez vous d'avoir firefox d'installé sur votre machine.
+- Installe Stockfish `https://stockfishchess.org/download/` ou sur linux un `sudo apt install stockfish` et va dans le fichier [ChessBotApi/api.py](ChessBotApi/api.py) et remplace la ligne 27 par le chemin de ton stockfish.
+- Pour la reconnaissance vocale, un micro fonctionnel et de bonne qualité est necessaire, si le microphone de votre laptop est utilisable alors assurez vous de baisser la sensibilité de votre micro afin de ne pas perturber l'ia quand vous allez annoncer vos coup.
+- Les logs et erreurs sont affichés dans l'IHM et dans les consoles respectives.
 
 ---
 
@@ -68,17 +81,6 @@ Avant de pouvoir utiliser ChessBot, vous devez d'abord obtenir une **clé API** 
 6. **Dans l'application ChessBotApp (PyQt), allez dans l'onglet Options et renseignez votre clé API.**
 
 > ⚠️ **Sans clé API valide, l'API refusera toute requête et l'application ne fonctionnera pas.**
-
----
-
-## 📝 Conseils pour le premier lancement
-- Vérifie que tous les ports nécessaires sont libres (3307 pour MySQL, 5000 pour le backend, 5173 pour le frontend, 5001 pour l'API Python).
-- Si tu rencontres des problèmes de dépendances Python, installe-les avec :
-  ```bash
-  pip install -r requirements.txt
-  ```
-- Pour la reconnaissance vocale, un micro fonctionnel et de bonne qualité est necessaire, si le microphone de votre laptop est utilisable alors assurez vous de baisser la sensibilité de votre micro afin de ne pas perturber l'ia quand vous allez annoncer vos coup.
-- Les logs et erreurs sont affichés dans l'IHM et dans les consoles respectives.
 
 ---
 
