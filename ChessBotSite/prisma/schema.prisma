@@ -24,7 +24,6 @@ model User {
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
   settings          UserSettings?
-  api_keys          APIKeys[]
   apiKeys           ApiKey[]
 }
 

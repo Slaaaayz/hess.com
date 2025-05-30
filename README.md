@@ -1,4 +1,4 @@
-# ♟️ ChessBot – Projet B2 Ynov
+# ♟️ Pawned – Projet B2 Ynov
 
 > ⚠️ **Avertissement : Ce projet est un logiciel de triche pour chess.com, développé uniquement à des fins éducatives et de recherche. Il est strictement interdit d'utiliser ce logiciel sur des plateformes réelles, en compétition ou contre d'autres joueurs sans leur consentement. L'auteur décline toute responsabilité en cas d'usage abusif.**
 
