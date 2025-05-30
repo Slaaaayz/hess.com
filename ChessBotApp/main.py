@@ -388,6 +388,12 @@ class UiCustomizationDialog(QDialog):
         self.setWindowTitle("Personnaliser l'UI")
         self.setMinimumWidth(350)
         layout = QVBoxLayout(self)
+        # Disposition
+        layout_label = QLabel("Disposition :")
+        self.layout_combo = QComboBox()
+        self.layout_combo.addItems(["Sidebar à gauche", "Menu en haut"])
+        layout.addWidget(layout_label)
+        layout.addWidget(self.layout_combo)
         # Thème
         theme_label = QLabel("Thème :")
         self.theme_combo = QComboBox()
@@ -421,13 +427,13 @@ class UiCustomizationDialog(QDialog):
             self.color_btn.setStyleSheet(f"background: {self.selected_color}; color: #101a14;")
 
     def apply_changes(self):
-        # Signal custom ou accès direct au parent
         parent = self.parent()
         if parent:
+            layout_mode = self.layout_combo.currentText()
             theme = self.theme_combo.currentText()
             color = self.selected_color
             font_size = self.font_slider.value()
-            parent.apply_ui_customization(theme, color, font_size)
+            parent.apply_ui_customization(theme, color, font_size, layout_mode)
         self.accept()
 
 class MainWindow(QMainWindow):
@@ -921,7 +927,7 @@ class MainWindow(QMainWindow):
         dlg = UiCustomizationDialog(self)
         dlg.exec()
 
-    def apply_ui_customization(self, theme, color, font_size):
+    def apply_ui_customization(self, theme, color, font_size, layout_mode=None):
         # Applique le style selon le thème et la couleur
         if theme == "Clair":
             self.setStyleSheet(f'''
@@ -956,6 +962,199 @@ class MainWindow(QMainWindow):
         # Applique la police à tous les widgets principaux
         font = QFont("Orbitron", font_size)
         self.setFont(font)
+        # Applique la disposition si précisé
+        if layout_mode:
+            self.rebuild_layout(layout_mode)
+
+    def rebuild_layout(self, layout_mode):
+        # Supprime le layout principal existant
+        central = self.centralWidget()
+        if central:
+            central.deleteLater()
+        # Reconstruit l'UI selon le layout choisi
+        if layout_mode == "Menu en haut":
+            self.init_ui_horizontal_menu()
+        else:
+            self.init_ui()  # Sidebar à gauche (défaut)
+
+    def init_ui_horizontal_menu(self):
+        central = QWidget()
+        self.setCentralWidget(central)
+        main_layout = QVBoxLayout(central)
+        main_layout.setContentsMargins(0, 0, 0, 0)
+        main_layout.setSpacing(0)
+        # Menu horizontal en haut
+        menu_bar = QWidget()
+        menu_layout = QHBoxLayout(menu_bar)
+        menu_layout.setContentsMargins(16, 16, 16, 16)
+        menu_layout.setSpacing(24)
+        # Logo à gauche
+        logo_label = QLabel()
+        pixmap = QPixmap("./ChessBotSite/Pawned.png")
+        pixmap = pixmap.scaled(48, 48)
+        logo_label.setPixmap(pixmap)
+        logo_label.setAlignment(Qt.AlignmentFlag.AlignVCenter)
+        menu_layout.addWidget(logo_label)
+        # Boutons menu
+        self.dashboard_btn = QPushButton("Dashboard")
+        self.options_btn = QPushButton("Options")
+        for btn in [self.dashboard_btn, self.options_btn]:
+            btn.setMinimumHeight(36)
+            btn.setStyleSheet("QPushButton { color: #00ff99; background: #181a20; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; } QPushButton:hover { background: #00ff99; color: #101a14; }")
+            menu_layout.addWidget(btn)
+        menu_layout.addStretch(1)
+        main_layout.addWidget(menu_bar)
+        # Zone principale (stacked)
+        self.stack = QStackedWidget()
+        # (Réutilise les pages dashboard_page et options_page déjà construites)
+        # Il faut les reconstruire ici pour éviter les conflits
+        dashboard_page = QWidget()
+        dash_layout = QVBoxLayout(dashboard_page)
+        dash_layout.setContentsMargins(0, 0, 0, 0)
+        dash_layout.setSpacing(28)
+        dash_layout.addStretch(2)
+        dash_label = QLabel("Dashboard")
+        dash_label.setAlignment(Qt.AlignmentFlag.AlignHCenter)
+        dash_label.setStyleSheet("font-size: 22px; color: #00ff99; font-weight: bold;")
+        dash_layout.addWidget(dash_label)
+        dash_layout.addSpacing(18)
+        # Switches
+        switches_layout = QHBoxLayout()
+        switches_layout.setAlignment(Qt.AlignmentFlag.AlignHCenter)
+        self.enabled_switch.setFixedWidth(100)
+        self.enabled_switch.stateChanged.connect(self.toggle_capture)
+        self.bot_switch.setFixedWidth(100)
+        self.bot_switch.stateChanged.connect(self.toggle_bot)
+        self.voice_switch.setFixedWidth(100)
+        self.voice_switch.stateChanged.connect(self.toggle_voice)
+        for sw in [self.enabled_switch, self.bot_switch, self.voice_switch]:
+            switches_layout.addWidget(sw)
+            switches_layout.addSpacing(12)
+        dash_layout.addLayout(switches_layout)
+        dash_layout.addSpacing(18)
+        # Best move
+        move_layout = QHBoxLayout()
+        move_layout.setAlignment(Qt.AlignmentFlag.AlignHCenter)
+        move_label = QLabel("Next Move:")
+        move_layout.addWidget(move_label)
+        move_layout.addWidget(self.bestmove_label)
+        dash_layout.addLayout(move_layout)
+        dash_layout.addSpacing(8)
+        # Score
+        score_layout = QHBoxLayout()
+        score_layout.setAlignment(Qt.AlignmentFlag.AlignHCenter)
+        score_label = QLabel("Score:")
+        score_layout.addWidget(score_label)
+        score_layout.addWidget(self.score_label)
+        dash_layout.addLayout(score_layout)
+        dash_layout.addSpacing(8)
+        # FEN
+        fen_layout = QHBoxLayout()
+        fen_layout.setAlignment(Qt.AlignmentFlag.AlignHCenter)
+        fen_label = QLabel("FEN:")
+        fen_layout.addWidget(fen_label)
+        fen_layout.addWidget(self.fen_label)
+        dash_layout.addLayout(fen_layout)
+        dash_layout.addSpacing(18)
+        # Boutons Export/Import
+        config_layout = QHBoxLayout()
+        config_layout.setAlignment(Qt.AlignmentFlag.AlignHCenter)
+        export_btn = QPushButton("Exporter config")
+        import_btn = QPushButton("Importer config")
+        export_btn.setMinimumWidth(140)
+        import_btn.setMinimumWidth(140)
+        export_btn.setFixedHeight(32)
+        import_btn.setFixedHeight(32)
+        export_btn.clicked.connect(self.export_config)
+        import_btn.clicked.connect(self.import_config)
+        config_layout.addWidget(export_btn)
+        config_layout.addSpacing(16)
+        config_layout.addWidget(import_btn)
+        dash_layout.addLayout(config_layout)
+        dash_layout.addStretch(3)
+        # Page Options (identique à init_ui)
+        options_page = QWidget()
+        opt_main_layout = QVBoxLayout(options_page)
+        opt_main_layout.setContentsMargins(0, 0, 0, 0)
+        opt_main_layout.setSpacing(0)
+        opt_main_layout.addStretch(2)
+        center_widget = QWidget()
+        center_layout = QVBoxLayout(center_widget)
+        center_layout.setContentsMargins(60, 0, 60, 0)
+        center_layout.setSpacing(28)
+        opt_label = QLabel("Options")
+        opt_label.setAlignment(Qt.AlignmentFlag.AlignHCenter)
+        opt_label.setStyleSheet("font-size: 22px; color: #00ff99; font-weight: bold;")
+        center_layout.addWidget(opt_label)
+        center_layout.addSpacing(28)
+        # API Key
+        api_key_layout = QHBoxLayout()
+        api_key_layout.setAlignment(Qt.AlignmentFlag.AlignHCenter)
+        api_key_label = QLabel("API Key:")
+        self.api_key_input.setPlaceholderText("Enter your API key")
+        self.api_key_input.setMinimumWidth(320)
+        self.api_key_input.setFixedHeight(32)
+        self.api_key_input.textChanged.connect(self.update_api_key)
+        api_key_layout.addWidget(api_key_label)
+        api_key_layout.addWidget(self.api_key_input)
+        center_layout.addLayout(api_key_layout)
+        center_layout.addSpacing(28)
+        # Skill Level slider
+        skill_layout = QHBoxLayout()
+        skill_layout.setAlignment(Qt.AlignmentFlag.AlignHCenter)
+        skill_label = QLabel("Skill Level:")
+        skill_label.setFixedWidth(110)
+        self.skill_slider.setRange(1, 20)
+        self.skill_slider.setValue(self.skill_level)
+        self.skill_slider.setMinimumWidth(260)
+        self.skill_slider.setFixedHeight(28)
+        self.skill_slider.valueChanged.connect(self.update_skill)
+        self.skill_value_label.setText(str(self.skill_level))
+        self.skill_value_label.setFixedWidth(40)
+        self.skill_value_label.setAlignment(Qt.AlignmentFlag.AlignRight)
+        skill_layout.addWidget(skill_label)
+        skill_layout.addWidget(self.skill_slider)
+        skill_layout.addWidget(self.skill_value_label)
+        center_layout.addLayout(skill_layout)
+        center_layout.addSpacing(18)
+        # Depth slider
+        depth_layout = QHBoxLayout()
+        depth_layout.setAlignment(Qt.AlignmentFlag.AlignHCenter)
+        depth_label = QLabel("Depth:")
+        depth_label.setFixedWidth(110)
+        self.depth_slider.setRange(1, 30)
+        self.depth_slider.setValue(self.depth)
+        self.depth_slider.setMinimumWidth(260)
+        self.depth_slider.setFixedHeight(28)
+        self.depth_slider.valueChanged.connect(self.update_depth)
+        self.depth_value_label.setText(str(self.depth))
+        self.depth_value_label.setFixedWidth(40)
+        self.depth_value_label.setAlignment(Qt.AlignmentFlag.AlignRight)
+        depth_layout.addWidget(depth_label)
+        depth_layout.addWidget(self.depth_slider)
+        depth_layout.addWidget(self.depth_value_label)
+        center_layout.addLayout(depth_layout)
+        center_layout.addSpacing(28)
+        log_label = QLabel("Logs:")
+        log_label.setAlignment(Qt.AlignmentFlag.AlignHCenter)
+        center_layout.addWidget(log_label)
+        self.log_text.setReadOnly(True)
+        self.log_text.setFixedHeight(100)
+        self.log_text.setMinimumWidth(400)
+        center_layout.addWidget(self.log_text)
+        customize_btn = QPushButton("Personnaliser l'UI")
+        customize_btn.setMinimumWidth(180)
+        customize_btn.setFixedHeight(32)
+        customize_btn.clicked.connect(self.open_ui_customization)
+        center_layout.addWidget(customize_btn)
+        opt_main_layout.addWidget(center_widget, alignment=Qt.AlignmentFlag.AlignHCenter)
+        opt_main_layout.addStretch(3)
+        self.stack.addWidget(dashboard_page)
+        self.stack.addWidget(options_page)
+        main_layout.addWidget(self.stack)
+        self.dashboard_btn.clicked.connect(lambda: self.stack.setCurrentIndex(0))
+        self.options_btn.clicked.connect(lambda: self.stack.setCurrentIndex(1))
+        self.stack.setCurrentIndex(0)
 
 class VoiceRecognitionThread(QThread):
     text_recognized = pyqtSignal(str)
