@@ -21,6 +21,7 @@ import speech_recognition as sr
 import json
 import hmac
 import hashlib
+import re
 
 # Rediriger stderr vers /dev/null pour supprimer les messages ALSA/JACK
 if platform.system() == 'Linux':
@@ -807,22 +808,43 @@ class MainWindow(QMainWindow):
             self.voice_thread.wait()
             self.voice_thread = None
 
+    def normalize_speech(self, text):
+        text = text.lower()
+        corrections = {
+            "j'ai un": "g1",
+            "géant": "g1",
+            "g un": "g1",
+            "g hein": "g1",
+            "f trois": "f3",
+            "f roi": "f3",
+            "huit": "8",
+            "sept": "7",
+            "six": "6",
+            "cinq": "5",
+            "quatre": "4",
+            "trois": "3",
+            "deux": "2",
+            "un": "1",
+            # Ajoute d'autres corrections selon tes tests
+        }
+        for wrong, right in corrections.items():
+            text = text.replace(wrong, right)
+        # Correction pour les tirets entre lettre et chiffre (ex: c-4 -> c4)
+        text = re.sub(r'([a-h])-([1-8])', r'\1\2', text)
+        return text
+
     def handle_voice_command(self, text):
         self.log_message(f"Commande vocale détectée: {text}")
-        
+        text = self.normalize_speech(text)
         # Convertir le texte en minuscules pour la cohérence
-        text = text.lower()
-        
+        # text = text.lower()  # déjà fait dans normalize_speech
         # Patterns de reconnaissance pour les mouvements
         patterns = [
             r"([a-h][1-8])\s*(?:en|à|vers)\s*([a-h][1-8])",  # d2 en d4
             r"([a-h][1-8])\s*([a-h][1-8])",                  # d2 d4
             r"([a-h][1-8])\s*-\s*([a-h][1-8])"              # d2-d4
         ]
-        
-        import re
         move = None
-        
         # Essayer chaque pattern
         for pattern in patterns:
             match = re.search(pattern, text)
@@ -831,7 +853,6 @@ class MainWindow(QMainWindow):
                 to_square = match.group(2)
                 move = from_square + to_square
                 break
-        
         if move:
             self.log_message(f"Mouvement détecté: {move}")
             if self.capture_thread and self.capture_thread.move_executor:
