@@ -3,12 +3,10 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-# Distribution / packaging
 dist/
 build/
 *.egg-info/
 
-# Virtual environment
 venv/
 env/
 .env/
@@ -16,11 +14,12 @@ env/
 # IDE specific files
 .vscode/
 .idea/
-
 # Project specific
 uploads/
 *.fen
-
+*.log
 screenshots/
 
 chessbot_api.log
+
+.DS_Store
