@@ -4,10 +4,10 @@ from tkinter import ttk
 from pynput import keyboard
 from PyQt6.QtWidgets import (
     QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QCheckBox,
-    QSlider, QTextEdit, QLineEdit, QFileDialog, QPushButton, QStackedWidget
+    QSlider, QTextEdit, QLineEdit, QFileDialog, QPushButton, QStackedWidget, QColorDialog, QDialog, QComboBox
 )
 from PyQt6.QtCore import Qt, QThread, pyqtSignal, QTimer
-from PyQt6.QtGui import QKeySequence, QShortcut, QPixmap
+from PyQt6.QtGui import QKeySequence, QShortcut, QPixmap, QFont
 from selenium import webdriver
 from selenium.webdriver.firefox.service import Service as FirefoxService
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
@@ -382,6 +382,54 @@ class OverlayWindow:
             self.listener.stop()
         self.root.destroy()
 
+class UiCustomizationDialog(QDialog):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setWindowTitle("Personnaliser l'UI")
+        self.setMinimumWidth(350)
+        layout = QVBoxLayout(self)
+        # Thème
+        theme_label = QLabel("Thème :")
+        self.theme_combo = QComboBox()
+        self.theme_combo.addItems(["Pawned (sombre)", "Clair"])
+        layout.addWidget(theme_label)
+        layout.addWidget(self.theme_combo)
+        # Couleur principale
+        color_label = QLabel("Couleur principale :")
+        self.color_btn = QPushButton("Choisir la couleur")
+        self.color_btn.clicked.connect(self.pick_color)
+        self.selected_color = "#00ff99"
+        layout.addWidget(color_label)
+        layout.addWidget(self.color_btn)
+        # Taille de police
+        font_label = QLabel("Taille de police :")
+        self.font_slider = QSlider(Qt.Orientation.Horizontal)
+        self.font_slider.setRange(10, 24)
+        self.font_slider.setValue(14)
+        layout.addWidget(font_label)
+        layout.addWidget(self.font_slider)
+        # Appliquer
+        apply_btn = QPushButton("Appliquer")
+        apply_btn.clicked.connect(self.apply_changes)
+        layout.addWidget(apply_btn)
+        self.setLayout(layout)
+
+    def pick_color(self):
+        color = QColorDialog.getColor()
+        if color.isValid():
+            self.selected_color = color.name()
+            self.color_btn.setStyleSheet(f"background: {self.selected_color}; color: #101a14;")
+
+    def apply_changes(self):
+        # Signal custom ou accès direct au parent
+        parent = self.parent()
+        if parent:
+            theme = self.theme_combo.currentText()
+            color = self.selected_color
+            font_size = self.font_slider.value()
+            parent.apply_ui_customization(theme, color, font_size)
+        self.accept()
+
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -605,6 +653,12 @@ class MainWindow(QMainWindow):
         self.log_text.setFixedHeight(100)
         self.log_text.setMinimumWidth(400)
         center_layout.addWidget(self.log_text)
+
+        customize_btn = QPushButton("Personnaliser l'UI")
+        customize_btn.setMinimumWidth(180)
+        customize_btn.setFixedHeight(32)
+        customize_btn.clicked.connect(self.open_ui_customization)
+        center_layout.addWidget(customize_btn)
 
         opt_main_layout.addWidget(center_widget, alignment=Qt.AlignmentFlag.AlignHCenter)
         opt_main_layout.addStretch(3)
@@ -862,6 +916,46 @@ class MainWindow(QMainWindow):
                 self.log_message(f"Config importée depuis {file_path}")
             except Exception as e:
                 self.log_message(f"Erreur import config: {e}", is_error=True)
+
+    def open_ui_customization(self):
+        dlg = UiCustomizationDialog(self)
+        dlg.exec()
+
+    def apply_ui_customization(self, theme, color, font_size):
+        # Applique le style selon le thème et la couleur
+        if theme == "Clair":
+            self.setStyleSheet(f'''
+                QMainWindow, QWidget {{
+                    background: #f5f5f5;
+                    color: {color};
+                    font-family: "Orbitron", "Montserrat", Arial, sans-serif;
+                    font-size: {font_size}px;
+                }}
+                QLabel {{ color: {color}; font-weight: bold; }}
+                QPushButton {{ background: #fff; color: {color}; border: 2px solid {color}; border-radius: 8px; padding: 8px 16px; font-weight: bold; }}
+                QPushButton:hover {{ background: {color}; color: #fff; }}
+                QSlider::groove:horizontal {{ border: 1px solid {color}; height: 8px; background: #eee; border-radius: 4px; }}
+                QSlider::handle:horizontal {{ background: {color}; border: 2px solid {color}; width: 20px; height: 20px; margin: -6px 0; border-radius: 10px; }}
+                QTextEdit {{ background: #fff; color: {color}; border: 1px solid {color}; border-radius: 8px; font-family: "Consolas", "Courier New", monospace; font-size: {font_size-1}px; }}
+            ''')
+        else:
+            self.setStyleSheet(f'''
+                QMainWindow, QWidget {{
+                    background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #0a0f0d, stop:1 #101a14);
+                    color: {color};
+                    font-family: "Orbitron", "Montserrat", Arial, sans-serif;
+                    font-size: {font_size}px;
+                }}
+                QLabel {{ color: {color}; font-weight: bold; }}
+                QPushButton {{ background: #101a14; color: {color}; border: 2px solid {color}; border-radius: 8px; padding: 8px 16px; font-weight: bold; }}
+                QPushButton:hover {{ background: {color}; color: #101a14; }}
+                QSlider::groove:horizontal {{ border: 1px solid {color}; height: 8px; background: #222; border-radius: 4px; }}
+                QSlider::handle:horizontal {{ background: {color}; border: 2px solid {color}; width: 20px; height: 20px; margin: -6px 0; border-radius: 10px; }}
+                QTextEdit {{ background: rgba(10, 15, 13, 0.8); color: {color}; border: 1px solid {color}; border-radius: 8px; font-family: "Consolas", "Courier New", monospace; font-size: {font_size-1}px; }}
+            ''')
+        # Applique la police à tous les widgets principaux
+        font = QFont("Orbitron", font_size)
+        self.setFont(font)
 
 class VoiceRecognitionThread(QThread):
     text_recognized = pyqtSignal(str)
