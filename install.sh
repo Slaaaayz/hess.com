@@ -108,5 +108,17 @@ EOL
     print_success "Fichier .env créé dans ChessBotSite/"
 fi
 
+# Installation des dépendances Node.js et configuration de Prisma
+print_message "Installation des dépendances Node.js et configuration de Prisma..."
+cd ChessBotSite
+npm install
+npx prisma db pull
+npx prisma db push
+npx prisma generate
+print_success "Configuration de Prisma terminée"
+
+# Retour à la racine du projet
+cd ..
+
 print_message "Installation terminée !"
 print_message "N'oubliez pas de vous déconnecter et de vous reconnecter pour que les changements de groupe Docker prennent effet."

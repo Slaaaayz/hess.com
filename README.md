@@ -18,9 +18,8 @@ ChessBot est un assistant d'échecs complet pour [chess.com](https://chess.com),
 ## 📝 Conseils pour le premier lancement
 - Assurez vous d'avoir firefox d'installé sur votre machine.
 
-- Si vous souhaitez passer par notre installation automatique, vous pouvez utiliser le script d'installation `ChessBotSite/install.sh` pour installer docker, python, node.js, et les dépendances. 
+- Si vous souhaitez passer par notre installation automatique, vous pouvez utiliser le script d'installation `ChessBotSite/install.sh` pour installer docker, python, node.js, et les dépendances et lancer. 
 
-- Une fois le script terminé, nous vous invitons à passer à l'étape [Installation & Lancement](#⚡-installation--lancement)
 ---
 - Vérifie que tous les ports nécessaires sont libres (3307 pour MySQL, 5000 pour le backend, 5173 pour le frontend, 5001 pour l'API Python).
 - Si tu rencontres des problèmes de dépendances Python, installe-les avec :
@@ -51,7 +50,7 @@ Assure toi d'avoir lancer la base de données avec docker compose a la racine du
 docker compose up -d
 ```
 
-### 2. **Configurer l'environnement web** (Inutile si vous avez utilisé notre installation automatique)
+### 2. **Configurer l'environnement web**
 - Place le fichier `.env` à la racine de `ChessBotSite/` :
 ```env
 DATABASE_URL="mysql://hess_user:hess_password@localhost:3307/hess_db"
