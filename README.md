@@ -33,7 +33,7 @@ ChessBot est un assistant d'échecs complet pour [chess.com](https://chess.com),
 - Les logs et erreurs sont affichés dans l'IHM et dans les consoles respectives.
 
 ---
-- Lors de votre premiere immersion dans le projet, vous pouvez vous connectez en admin sur le site, executez alors ce script `npm run ChessBotSite/script-admin.js` Puis sur l'url suivante : http://localhost:5173/admin-login.html vous pouvez vous connecter avec les identifiants suivants :
+- Lors de votre premiere immersion dans le projet, vous pouvez vous connectez en admin sur le site, executez alors ce script `node hessBotSite/script-admin.js` Puis sur l'url suivante : http://localhost:5173/admin-login.html vous pouvez vous connecter avec les identifiants suivants :
 ```
 admin
 admin
@@ -62,6 +62,8 @@ PORT=5000
 ```bash
 cd ChessBotSite
 npm install
+npx prisma db pull
+npx prisma db push
 npx prisma generate
 ```
 

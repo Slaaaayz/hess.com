@@ -85,27 +85,27 @@ else
 fi
 
 # Vérification et création du fichier .env
-if [ -f .env ]; then
-    print_message "Le fichier .env existe déjà."
+if [ -f ChessBotSite/.env ]; then
+    print_message "Le fichier .env existe déjà dans ChessBotSite/."
     read -p "Voulez-vous le remplacer ? (y/n) " -n 1 -r
     echo
     if [[ $REPLY =~ ^[Yy]$ ]]; then
         print_message "Remplacement du fichier .env..."
-        cat > .env << EOL
+        cat > ChessBotSite/.env << EOL
 DATABASE_URL="mysql://hess_user:hess_password@localhost:3307/hess_db"
 PORT=5000
 EOL
-        print_success "Fichier .env remplacé"
+        print_success "Fichier .env remplacé dans ChessBotSite/"
     else
         print_message "Le fichier .env n'a pas été modifié"
     fi
 else
-    print_message "Création du fichier .env..."
-    cat > .env << EOL
+    print_message "Création du fichier .env dans ChessBotSite/..."
+    cat > ChessBotSite/.env << EOL
 DATABASE_URL="mysql://hess_user:hess_password@localhost:3307/hess_db"
 PORT=5000
 EOL
-    print_success "Fichier .env créé"
+    print_success "Fichier .env créé dans ChessBotSite/"
 fi
 
 print_message "Installation terminée !"
