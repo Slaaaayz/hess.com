@@ -18,7 +18,16 @@ ChessBot est un assistant d'échecs complet pour [chess.com](https://chess.com),
 ## 📝 Conseils pour le premier lancement
 - Assurez vous d'avoir firefox d'installé sur votre machine.
 
+---
+## Linux 
+
 - Si vous souhaitez passer par notre installation automatique, vous pouvez utiliser le script d'installation `ChessBotSite/install.sh` pour installer docker, python, node.js, et les dépendances et lancer. 
+
+- Vous pouvez stopper le projet avec le script `ChessBotSite/stop.sh`
+
+---
+## Windows
+
 
 ---
 - Vérifie que tous les ports nécessaires sont libres (3307 pour MySQL, 5000 pour le backend, 5173 pour le frontend, 5001 pour l'API Python).
