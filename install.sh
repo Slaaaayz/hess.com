@@ -113,6 +113,13 @@ print_message "Lancement des conteneurs Docker..."
 sudo docker compose up -d
 print_success "Conteneurs Docker lancés"
 
+# Attente que MySQL soit prêt
+print_message "Attente que MySQL (port 3307) soit prêt..."
+until nc -z localhost 3307; do
+  sleep 1
+done
+print_success "MySQL est prêt !"
+
 # Installation des dépendances Node.js et configuration de Prisma
 print_message "Installation des dépendances Node.js et configuration de Prisma..."
 cd ChessBotSite
