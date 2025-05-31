@@ -29,7 +29,7 @@ async function createOrUpdateAdmin() {
                 subscriptionEndDate: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000), // +1 an
                 settings: {
                     create: {
-                        skillLevel: 1500,
+                        skillLevel: 15,
                         searchDepth: 3
                     }
                 }

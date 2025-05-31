@@ -58,7 +58,7 @@ router.post('/register', async (req, res) => {
                 subscriptionEndDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // +30 jours
                 settings: {
                     create: {
-                        skillLevel: 1500,
+                        skillLevel: 15,
                         searchDepth: 3
                     }
                 }
