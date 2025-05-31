@@ -108,6 +108,11 @@ EOL
     print_success "Fichier .env créé dans ChessBotSite/"
 fi
 
+# Lancement de Docker Compose
+print_message "Lancement des conteneurs Docker..."
+docker compose up -d
+print_success "Conteneurs Docker lancés"
+
 # Installation des dépendances Node.js et configuration de Prisma
 print_message "Installation des dépendances Node.js et configuration de Prisma..."
 cd ChessBotSite
@@ -117,8 +122,30 @@ npx prisma db push
 npx prisma generate
 print_success "Configuration de Prisma terminée"
 
+# Lancement du serveur de développement
+print_message "Lancement du serveur de développement..."
+npm run dev:server &  # Lance le backend en arrière-plan
+sleep 5  # Attendre que le backend soit prêt
+npm run dev &        # Lance le frontend en arrière-plan
+print_success "Serveur de développement lancé"
+
 # Retour à la racine du projet
 cd ..
+
+# Installation des dépendances Python
+print_message "Installation des dépendances Python..."
+pip install -r requirements.txt
+print_success "Dépendances Python installées"
+
+# Lancement de l'API Python
+print_message "Lancement de l'API Python..."
+python3 -m ChessBotApi.api &
+print_success "API Python lancée"
+
+# Lancement du bot
+print_message "Lancement du bot..."
+python3 ChessBotApp/main.py &
+print_success "Bot lancé"
 
 print_message "Installation terminée !"
 print_message "N'oubliez pas de vous déconnecter et de vous reconnecter pour que les changements de groupe Docker prennent effet."

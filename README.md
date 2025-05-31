@@ -73,8 +73,6 @@ npm run dev:server   # Lance le backend (API Node.js)
 npm run dev          # Lance le frontend (React.js)
 ```
 
-
-
 ### 5. **Lancer l'API Python (analyse d'échiquier, Stockfish, etc.)**
 Dans la racine du projet :
 ```bash
