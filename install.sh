@@ -110,14 +110,13 @@ fi
 
 # Lancement de Docker Compose
 print_message "Lancement des conteneurs Docker..."
-docker compose up -d
+sudo docker compose up -d
 print_success "Conteneurs Docker lancés"
 
 # Installation des dépendances Node.js et configuration de Prisma
 print_message "Installation des dépendances Node.js et configuration de Prisma..."
 cd ChessBotSite
 npm install
-npx prisma db pull
 npx prisma db push
 npx prisma generate
 print_success "Configuration de Prisma terminée"
@@ -134,7 +133,7 @@ cd ..
 
 # Installation des dépendances Python
 print_message "Installation des dépendances Python..."
-pip install -r requirements.txt
+pip install -r requirements.txt --break-system-packages
 print_success "Dépendances Python installées"
 
 # Lancement de l'API Python
